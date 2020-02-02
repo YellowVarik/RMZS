@@ -9,13 +9,17 @@ function createWindow () {
   win = new BrowserWindow({
     width: 800,
     height: 600,
+    autoHideMenuBar: true,
     webPreferences: {
       nodeIntegration: true
     }
   })
 
+  win.setTitle('Rood met Zwarte Stippen')
+
   // and load the index.html of the app.
   win.loadFile('index.html')
+  
 
   // Emitted when the window is closed.
   win.on('closed', () => {
