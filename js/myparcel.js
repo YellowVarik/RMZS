@@ -2,7 +2,7 @@ const https = require('https')
 const fs = require('fs')
 window.$ = window.jQuery = require('./js/jquery-3.4.1.min.js')
 
-var mpURL = "api.myparcel.nl";
+var mpURL = "bruhapi.myparcel.nl";
 var mpKey = "914bb634d3cf4a01ba809dd4b121e33f9d2ea50a";
 
 getMyParcelData();
@@ -19,7 +19,7 @@ function getMyParcelData(){
     path: "/shipments",
     method: "GET",
     headers:{
-      "Host": "api.myparcel.nl",
+      "Host": mpURL,
       "Authorization": "base " + base64Key,
       "Content-Type": "application/json;charset=utf-8",
       "Connection": "keep-alive",
@@ -47,7 +47,16 @@ function getMyParcelData(){
     })
   })
   request.on('error', (e) => {
-    console.error(e);
+    console.error("KON DATA VAN MYPARCEL NIET OPHALEN \n" + e);
+
+    if(fs.existsSync("./data/zendingen.json")){
+      fs.readFile("data/zendingen.json", function(err, data){
+        let zending = JSON.parse(data).data.shipments[0];
+        $("#name").text("Naam: " + zending.recipient.person);
+        $("#address").text("Adres: " + zending.recipient.street + " " + zending.recipient.number + " " + zending.recipient.city);
+      });
+      
+    }
   });
   request.end();
   
