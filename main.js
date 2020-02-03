@@ -91,7 +91,7 @@ function getMyParcelData(){
     });
     result.on("end", () => {
       console.log(JSON.parse(data).data.shipments);
-      fs.writeFile("zendingen.json", data, (e) => {
+      fs.writeFile("data/zendingen.json", data, (e) => {
         if(e) throw e;
         console.log("Data opgeslagen!");
       })
