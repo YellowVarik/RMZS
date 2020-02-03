@@ -1,5 +1,6 @@
 const https = require('https')
 const fs = require('fs')
+window.$ = window.jQuery = require('./js/jquery-3.4.1.min.js')
 
 var mpURL = "api.myparcel.nl";
 var mpKey = "914bb634d3cf4a01ba809dd4b121e33f9d2ea50a";
@@ -37,8 +38,8 @@ function getMyParcelData(){
     result.on("end", () => {
         let parsedData = JSON.parse(data);
         let zending = parsedData.data.shipments[0];
-        document.getElementById("name").innerHTML = "Naam: " + zending.recipient.person;
-        document.getElementById("address").innerHTML = "Adres: " + zending.recipient.street + " " + zending.recipient.number + " " + zending.recipient.city;
+        $("#name").text("Naam: " + zending.recipient.person);
+        $("#address").text("Adres: " + zending.recipient.street + " " + zending.recipient.number + " " + zending.recipient.city);
         fs.writeFile("data/zendingen.json", data, (e) => {
             if(e) throw e;
             console.log("Data opgeslagen!");
