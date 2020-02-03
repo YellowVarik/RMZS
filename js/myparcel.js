@@ -35,11 +35,14 @@ function getMyParcelData(){
       data += d;
     });
     result.on("end", () => {
-      console.log(JSON.parse(data).data.shipments);
-      fs.writeFile("data/zendingen.json", data, (e) => {
-        if(e) throw e;
-        console.log("Data opgeslagen!");
-      })
+        let parsedData = JSON.parse(data);
+        let zending = parsedData.data.shipments[0];
+        document.getElementById("name").innerHTML = "Naam: " + zending.recipient.person;
+        document.getElementById("address").innerHTML = "Adres: " + zending.recipient.street + " " + zending.recipient.number + " " + zending.recipient.city;
+        fs.writeFile("data/zendingen.json", data, (e) => {
+            if(e) throw e;
+            console.log("Data opgeslagen!");
+        })
     })
   })
   request.on('error', (e) => {
