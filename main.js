@@ -1,12 +1,8 @@
 const { app, BrowserWindow } = require('electron')
-const https = require('https')
-const fs = require('fs')
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let win
-var mpURL = "api.myparcel.nl";
-var mpKey = "914bb634d3cf4a01ba809dd4b121e33f9d2ea50a";
 
 function createWindow () {
   // Create the browser window.
@@ -59,48 +55,3 @@ app.on('activate', () => {
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
 
-getMyParcelData();
-
-function getMyParcelData(){
-  let keyBuffer = new Buffer.from(mpKey);
-  let base64Key = keyBuffer.toString("base64");
-
-  
-  var data = "";
-
-  var options = {
-    hostname: mpURL,
-    path: "/shipments",
-    method: "GET",
-    headers:{
-      "Host": "api.myparcel.nl",
-      "Authorization": "base " + base64Key,
-      "Content-Type": "application/json;charset=utf-8",
-      "Connection": "keep-alive",
-      "Pragma": "no-cache",
-      "Cache-Control": "no-cache",
-      "Upgrade-Insecure-Requests": 1,
-      "Accept-Encoding": "gzip, deflate, sdch, br",
-      "User-Agent": "CustomApiCall/2"
-    }
-  }
-
-  var request = https.request(options, function(result){
-    result.on('data', (d) => {
-      data += d;
-    });
-    result.on("end", () => {
-      console.log(JSON.parse(data).data.shipments);
-      fs.writeFile("data/zendingen.json", data, (e) => {
-        if(e) throw e;
-        console.log("Data opgeslagen!");
-      })
-    })
-  })
-  request.on('error', (e) => {
-    console.error(e);
-  });
-  request.end();
-  
-  
-}
