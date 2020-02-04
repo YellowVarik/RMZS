@@ -13,13 +13,14 @@ var mpKey = "914bb634d3cf4a01ba809dd4b121e33f9d2ea50a";
 getMyParcelData();
 
 function getMyParcelData(){
-  $("#myparcel").append("<div id='loader'></div>");
-
+  $("#myparcel").append("<p id='loading>De data wordt geladen...</p>");
+  
   //De key moet met base64 worden versleuteld
   let keyBuffer = new Buffer.from(mpKey);
   let base64Key = keyBuffer.toString("base64");
 
-  
+  let loaded = false;
+
   var data = "";
 
 
@@ -87,5 +88,6 @@ function displayMPInfo(data){
 
           $("#myparcel").append(name, adress);
         }
-        $("#loader").remove();
+        loaded = true;
+        $('#loading').remove();
 }
