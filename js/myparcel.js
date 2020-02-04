@@ -2,7 +2,7 @@ const https = require('https')
 const fs = require('fs')
 window.$ = window.jQuery = require('./js/jquery-3.4.1.min.js')
 
-var mpURL = "bruhapi.myparcel.nl";
+var mpURL = "api.myparcel.nl";
 var mpKey = "914bb634d3cf4a01ba809dd4b121e33f9d2ea50a";
 
 getMyParcelData();
