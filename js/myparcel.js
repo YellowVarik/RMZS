@@ -13,6 +13,8 @@ var mpKey = "914bb634d3cf4a01ba809dd4b121e33f9d2ea50a";
 getMyParcelData();
 
 function getMyParcelData(){
+  $("#myparcel").append("<div id='loader'></div>");
+
   //De key moet met base64 worden versleuteld
   let keyBuffer = new Buffer.from(mpKey);
   let base64Key = keyBuffer.toString("base64");
@@ -56,7 +58,7 @@ function getMyParcelData(){
           let adress = "<p>Adres: " + zending[i].recipient.street + " " + zending[i].recipient.number + " " + zending[i].recipient.city + "</p>";
           $("#myparcel").append(name, adress);
         }
-        
+        $("#loader").remove();
         //De data wordt opgeslagen in een bestand
         fs.writeFile("data/zendingen.json", data, (e) => {
             if(e) throw e;
@@ -79,6 +81,7 @@ function getMyParcelData(){
           let adress = "<p>Adres: " + zending[i].recipient.street + " " + zending[i].recipient.number + " " + zending[i].recipient.city + "</p>";
           $("#myparcel").append(name, adress);
         }
+        $("#loader").remove();
       });
       
     }
