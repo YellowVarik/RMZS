@@ -48,17 +48,7 @@ function getMyParcelData(){
     });
     result.on("end", () => {
         //De data wordt verwerkt
-        let parsedData = JSON.parse(data);
-        let count = parsedData.data.results;
-        let zending = parsedData.data.shipments;
-
-        //Elke zending wordt apart weergegeven
-        for(var i = 0; i < count; i++){
-          let name = "<p>Naam: " + zending[i].recipient.person + "</p>";
-          let adress = "<p>Adres: " + zending[i].recipient.street + " " + zending[i].recipient.number + " " + zending[i].recipient.city + "</p>";
-          $("#myparcel").append(name, adress);
-        }
-        $("#loader").remove();
+        displayMPInfo(data);
         //De data wordt opgeslagen in een bestand
         fs.writeFile("data/zendingen.json", data, (e) => {
             if(e) throw e;
@@ -72,21 +62,30 @@ function getMyParcelData(){
     //Als er geen data kon worden opgehaald wordt het uit een bestand gehaald
     if(fs.existsSync("./data/zendingen.json")){
       fs.readFile("data/zendingen.json", function(err, data){
-        let parsedData = JSON.parse(data);
-        let count = parsedData.data.results;
-        console.log(count);
-        let zending = parsedData.data.shipments;
-        for(var i = 0; i < count; i++){
-          let name = "<p>Naam: " + zending[i].recipient.person + "</p>";
-          let adress = "<p>Adres: " + zending[i].recipient.street + " " + zending[i].recipient.number + " " + zending[i].recipient.city + "</p>";
-          $("#myparcel").append(name, adress);
-        }
-        $("#loader").remove();
-      });
-      
+        displayMPInfo(data);
+      });      
+    }
+    else{
+      let error = "<p>Kon data niet vinden</p>";
+      $("#myparcel").append(error);
     }
   });
   request.end();
   
   
+}
+
+function displayMPInfo(data){
+  let parsedData = JSON.parse(data);
+        let count = parsedData.data.results;
+        let zending = parsedData.data.shipments;
+
+        //Elke zending wordt apart weergegeven
+        for(var i = 0; i < count; i++){
+          let name = "<p>Naam: " + zending[i].recipient.person + "</p>";
+          let adress = "<p>Adres: " + zending[i].recipient.street + " " + zending[i].recipient.number + " " + zending[i].recipient.postal_code + " " + zending[i].recipient.city + "</p>";
+
+          $("#myparcel").append(name, adress);
+        }
+        $("#loader").remove();
 }
