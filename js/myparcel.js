@@ -2,7 +2,7 @@ const https = require('https')
 const fs = require('fs')
 window.$ = window.jQuery = require('./js/jquery-3.4.1.min.js')
 
-var mpURL = "api.myparcel.nl";
+var mpURL = "bruhapi.myparcel.nl";
 var mpKey = "914bb634d3cf4a01ba809dd4b121e33f9d2ea50a";
 
 getMyParcelData();
@@ -37,9 +37,15 @@ function getMyParcelData(){
     });
     result.on("end", () => {
         let parsedData = JSON.parse(data);
-        let zending = parsedData.data.shipments[0];
-        $("#name").text("Naam: " + zending.recipient.person);
-        $("#address").text("Adres: " + zending.recipient.street + " " + zending.recipient.number + " " + zending.recipient.city);
+        let count = parsedData.data.results;
+        console.log(count);
+        let zending = parsedData.data.shipments;
+        for(var i = 0; i < count; i++){
+          let name = "<p>Naam: " + zending[i].recipient.person + "</p>";
+          let adress = "<p>Adres: " + zending[i].recipient.street + " " + zending[i].recipient.number + " " + zending[i].recipient.city + "</p>";
+          $("#myparcel").append(name, adress);
+        }
+        
         fs.writeFile("data/zendingen.json", data, (e) => {
             if(e) throw e;
             console.log("Data opgeslagen!");
@@ -51,9 +57,15 @@ function getMyParcelData(){
 
     if(fs.existsSync("./data/zendingen.json")){
       fs.readFile("data/zendingen.json", function(err, data){
-        let zending = JSON.parse(data).data.shipments[0];
-        $("#name").text("Naam: " + zending.recipient.person);
-        $("#address").text("Adres: " + zending.recipient.street + " " + zending.recipient.number + " " + zending.recipient.city);
+        let parsedData = JSON.parse(data);
+        let count = parsedData.data.results;
+        console.log(count);
+        let zending = parsedData.data.shipments;
+        for(var i = 0; i < count; i++){
+          let name = "<p>Naam: " + zending[i].recipient.person + "</p>";
+          let adress = "<p>Adres: " + zending[i].recipient.street + " " + zending[i].recipient.number + " " + zending[i].recipient.city + "</p>";
+          $("#myparcel").append(name, adress);
+        }
       });
       
     }
