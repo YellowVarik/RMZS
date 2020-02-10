@@ -88,8 +88,12 @@ function displayMPInfo(data){
           let row = document.createElement('tr');
           let name = document.createElement('td');
           name.innerHTML = zending[i].recipient.person;
+
+          let postcode = document.createElement('td');
+          postcode.innerHTML = zending[i].recipient.postal_code;
+
           let adress = document.createElement('td');
-          adress.innerHTML = zending[i].recipient.street + " " + zending[i].recipient.number + " " + zending[i].recipient.postal_code + " " + zending[i].recipient.city;
+          adress.innerHTML = zending[i].recipient.street + " " + zending[i].recipient.number + " " + zending[i].recipient.city;
 
           let email = document.createElement('td');
           email.innerHTML = (zending[i].recipient.email !== "") ? zending[i].recipient.email : "-";
@@ -99,7 +103,7 @@ function displayMPInfo(data){
 
 
           
-          row.append(name, adress, email, telefoon);
+          row.append(name, postcode, adress, email, telefoon);
           $("#myparcel").find("table")[0].append(row);
         }
         $('#loading').remove();
