@@ -8,7 +8,7 @@ window.$ = window.jQuery = require('./js/jquery-3.4.1.min.js')
 var mpURL = "api.myparcel.nl";
 
 //De key moet worden opgrvraagd door de gebruiker in hun MyParcel account
-var mpKey = "914bb634d3cf4a01ba809dd4b121e33f9d2ea50a";
+var mpKey = "18b49878b83c8fdfd1a67b75909eeedaacd17f13";
 
 var loadScreen = document.createElement('img');
 loadScreen.src = './img/loading.gif';
