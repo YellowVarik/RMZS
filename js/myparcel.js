@@ -119,6 +119,7 @@ function compareDatumGnK(a,b){
 }
 
 class Shipment{
+  
   constructor(naam, postcode, straat, huisnummer, stad, email, telefoon, datum){
     this.naam = naam;
     this.postcode = postcode;
@@ -147,9 +148,10 @@ class Shipment{
     let telefoon = document.createElement('td');
     telefoon.innerHTML = (this.telefoon !== "") ? this.telefoon : "-";
 
+    let datum = document.createElement('td');
+    datum.innerHTML = this.datum.getDate() + "/" + (this.datum.getMonth() + 1) + "/" + this.datum.getFullYear();
 
-
-    row.append(name, postcode, adress, email, telefoon);
+    row.append(name, postcode, adress, email, telefoon, datum);
     parent.append(row);
   }
 }
