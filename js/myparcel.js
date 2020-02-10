@@ -93,7 +93,7 @@ function displayMPInfo(data){
           postcode.innerHTML = zending[i].recipient.postal_code;
 
           let adress = document.createElement('td');
-          adress.innerHTML = zending[i].recipient.street + " " + zending[i].recipient.number + " " + zending[i].recipient.city;
+          adress.innerHTML = zending[i].recipient.street + " " + zending[i].recipient.number + ", " + zending[i].recipient.city;
 
           let email = document.createElement('td');
           email.innerHTML = (zending[i].recipient.email !== "") ? zending[i].recipient.email : "-";
