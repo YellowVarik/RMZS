@@ -86,7 +86,13 @@ function displayMPInfo(data){
           let name = "<p>Naam: " + zending[i].recipient.person + "</p>";
           let adress = "<p>Adres: " + zending[i].recipient.street + " " + zending[i].recipient.number + " " + zending[i].recipient.postal_code + " " + zending[i].recipient.city + "</p>";
 
-          $("#myparcel").append(name, adress);
+          let emailadress = (zending[i].recipient.email !== "") ? zending[i].recipient.email : "-";
+          let email = "<p>email: " + emailadress + '</p>';
+
+          let telefoonnummer = (zending[i].recipient.phone !== "") ? zending[i].recipient.phone : "-";
+          let telefoon = "<p>Telefoonnummer: " + telefoonnummer + "</p>";
+
+          $("#myparcel").append(name, adress, email, telefoon);
         }
         loaded = true;
         $('#loading').remove();
