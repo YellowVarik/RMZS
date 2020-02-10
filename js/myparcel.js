@@ -82,29 +82,74 @@ function displayMPInfo(data){
   let parsedData = JSON.parse(data);
         let count = parsedData.data.results;
         let zending = parsedData.data.shipments;
+        let zendingen = [];
 
         //Elke zending wordt apart weergegeven
         for(var i = 0; i < count; i++){
-          let row = document.createElement('tr');
-          let name = document.createElement('td');
-          name.innerHTML = zending[i].recipient.person;
+          let klant = zending[i].recipient
+          let shipment = new Shipment(klant.person, klant.postal_code, klant.street, klant.number, klant.city, klant.email, klant.phone, new Date(zending[i].modified));
 
-          let postcode = document.createElement('td');
-          postcode.innerHTML = zending[i].recipient.postal_code;
-
-          let adress = document.createElement('td');
-          adress.innerHTML = zending[i].recipient.street + " " + zending[i].recipient.number + ", " + zending[i].recipient.city;
-
-          let email = document.createElement('td');
-          email.innerHTML = (zending[i].recipient.email !== "") ? zending[i].recipient.email : "-";
-
-          let telefoon = document.createElement('td');
-          telefoon.innerHTML = (zending[i].recipient.phone !== "") ? zending[i].recipient.phone : "-";
-
-
-          
-          row.append(name, postcode, adress, email, telefoon);
-          $("#myparcel").find("table")[0].append(row);
+          zendingen[i] = shipment;
         }
+        zendingen.sort(compareDatumGnK);
+        zendingen.forEach(function (item){
+          item.show($('#zendingen'));
+        })
         $('#loading').remove();
+}
+
+function compareDatumKnG(a,b){
+  if(a.datum < b.datum){
+    return -1;
+  }
+  if(a.datum > b.datum){
+    return 1;
+  }
+  return 0;
+}
+
+function compareDatumGnK(a,b){
+  if(a.datum > b.datum){
+    return -1;
+  }
+  if(a.datum < b.datum){
+    return 1;
+  }
+  return 0;
+}
+
+class Shipment{
+  constructor(naam, postcode, straat, huisnummer, stad, email, telefoon, datum){
+    this.naam = naam;
+    this.postcode = postcode;
+    this.straat = straat;
+    this.huisnummer = huisnummer;
+    this.stad = stad;
+    this.email = email;
+    this.telefoon = telefoon;
+    this.datum = datum;
+  }
+
+  show(parent) {
+    let row = document.createElement('tr');
+    let name = document.createElement('td');
+    name.innerHTML = this.naam;
+
+    let postcode = document.createElement('td');
+    postcode.innerHTML = this.postcode;
+
+    let adress = document.createElement('td');
+    adress.innerHTML = this.straat + " " + this.huisnummer + ", " + this.stad;
+
+    let email = document.createElement('td');
+    email.innerHTML = (this.email !== "") ? this.email : "-";
+
+    let telefoon = document.createElement('td');
+    telefoon.innerHTML = (this.telefoon !== "") ? this.telefoon : "-";
+
+
+
+    row.append(name, postcode, adress, email, telefoon);
+    parent.append(row);
+  }
 }
