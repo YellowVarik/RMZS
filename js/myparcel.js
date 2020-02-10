@@ -10,16 +10,18 @@ var mpURL = "api.myparcel.nl";
 //De key moet worden opgrvraagd door de gebruiker in hun MyParcel account
 var mpKey = "914bb634d3cf4a01ba809dd4b121e33f9d2ea50a";
 
+var loadScreen = document.createElement('img');
+loadScreen.src = './img/loading.gif';
+loadScreen.id = 'loading';
+
 getMyParcelData();
 
 function getMyParcelData(){
-  $("#myparcel").append("<p id='loading>De data wordt geladen...</p>");
+  $("#myparcel").append(loadScreen);
   
   //De key moet met base64 worden versleuteld
   let keyBuffer = new Buffer.from(mpKey);
   let base64Key = keyBuffer.toString("base64");
-
-  let loaded = false;
 
   var data = "";
 
@@ -83,17 +85,22 @@ function displayMPInfo(data){
 
         //Elke zending wordt apart weergegeven
         for(var i = 0; i < count; i++){
-          let name = "<p>Naam: " + zending[i].recipient.person + "</p>";
-          let adress = "<p>Adres: " + zending[i].recipient.street + " " + zending[i].recipient.number + " " + zending[i].recipient.postal_code + " " + zending[i].recipient.city + "</p>";
+          let row = document.createElement('tr');
+          let name = document.createElement('td');
+          name.innerHTML = zending[i].recipient.person;
+          let adress = document.createElement('td');
+          adress.innerHTML = zending[i].recipient.street + " " + zending[i].recipient.number + " " + zending[i].recipient.postal_code + " " + zending[i].recipient.city;
 
-          let emailadress = (zending[i].recipient.email !== "") ? zending[i].recipient.email : "-";
-          let email = "<p>email: " + emailadress + '</p>';
+          let email = document.createElement('td');
+          email.innerHTML = (zending[i].recipient.email !== "") ? zending[i].recipient.email : "-";
 
-          let telefoonnummer = (zending[i].recipient.phone !== "") ? zending[i].recipient.phone : "-";
-          let telefoon = "<p>Telefoonnummer: " + telefoonnummer + "</p>";
+          let telefoon = document.createElement('td');
+          telefoon.innerHTML = (zending[i].recipient.phone !== "") ? zending[i].recipient.phone : "-";
 
-          $("#myparcel").append(name, adress, email, telefoon);
+
+          
+          row.append(name, adress, email, telefoon);
+          $("#myparcel").find("table")[0].append(row);
         }
-        loaded = true;
         $('#loading').remove();
 }
