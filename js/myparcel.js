@@ -79,6 +79,13 @@ function getMyParcelData(){
 }
 
 function displayMPInfo(data){
+  let tr = $('#zendingen').find('tr');
+  if(tr.length > 1){
+    for (let i = 1; i < tr.length; i++){
+      tr[i].remove();
+    }
+  }
+  
   let parsedData = JSON.parse(data);
         let count = parsedData.data.results;
         let zending = parsedData.data.shipments;
