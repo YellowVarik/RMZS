@@ -8,88 +8,48 @@
 
 <body>
   
+  <script src="https://kit.fontawesome.com/b99e675b6e.js"></script>
+
   <div class="wrapper">
-    <!-- Sidebar  -->
-    <nav id="sidebar">
-      <div class="sidebar-header">
-        <h3>Menu</h3>
-        <strong>Menu</strong>
+      <div class="sidebar">
+          <h2>Menu</h2>
+          <ul>
+              <li><a href="#"><i class="fas fa-home"></i>Home</a></li>
+              <li><a href="#"><i class="fas fa-user"></i>Profile</a></li>
+              <li><a href="#"><i class="fas fa-address-card"></i>About</a></li>
+              <li><a href="#"><i class="fas fa-project-diagram"></i>portfolio</a></li>
+              <li><a href="#"><i class="fas fa-blog"></i>Blogs</a></li>
+              <li><a href="#"><i class="fas fa-address-book"></i>Contact</a></li>
+              <li><a href="#"><i class="fas fa-map-pin"></i>Map</a></li>
+          </ul> 
+          <div class="social_media">
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+        </div>
       </div>
 
-      <ul class="list-unstyled components">
-        <li class="active">
-          <!-- <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
-            <i class="fas fa-home"></i>
-            Home
-          </a> -->
-          <ul class="collapse list-unstyled" id="homeSubmenu">
-            <li>
-              <a href="#">Home 1</a>
-            </li>
-            <li>
-              <a href="#">Home 2</a>
-            </li>
-            <li>
-              <a href="#">Home 3</a>
-            </li>
-          </ul>
-        </li>
-        <li>
-          <a href="#">
-            <i class="fas fa-briefcase"></i>
-            About
-          </a>
-          <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
-            <i class="fas fa-copy"></i>
-            Pages
-          </a>
-          <ul class="collapse list-unstyled" id="pageSubmenu">
-            <li>
-              <a href="#">Page 1</a>
-            </li>
-            <li>
-              <a href="#">Page 2</a>
-            </li>
-            <li>
-              <a href="#">Page 3</a>
-            </li>
-          </ul>
-        </li>
-      </ul>
 
-    </nav>
+      <div class="main_content">
+          <div class="header">Klantgegevens</div>  
 
-    <!-- Page Content  -->
-    <div id="content">
+          <div id='myparcel'>
+            <table id='zendingen' style='width: 100%;'>
+              <tr>
+                <th>Naam</th>
+                <th>Postcode</th>
+                <th>Adres</th>
+                <th>E-mail</th>
+                <th>Telefoonnummer</th>
+                <th>Datum</th>
+                <th><a onclick="getMyParcelData()"><i class="fas fa-sync"></i></a></th>
+              </tr>
+            </table>
+          </div>
 
-      <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container-fluid">
+      </div>
 
-          <button type="button" id="sidebarCollapse" class="btn btn-info">
-            <i class="fas fa-align-left"></i>
-            <span>Toggle Sidebar</span>
-          </button>
-        </div>
-      </nav>
-    </div>
-  </div>
 
-  
-
-  
-  <h1>Gegevens</h1>
-  <div id='myparcel'>
-    <table id='zendingen' style='width: 100%;'>
-      <tr>
-        <th>Naam</th>
-        <th>Postcode</th>
-        <th>Adres</th>
-        <th>E-mail</th>
-        <th>Telefoonnummer</th>
-        <th>Datum</th>
-        <th><a onclick="getMyParcelData()"><i class="fas fa-sync"></i></a></th>
-      </tr>
-    </table>
   </div>
 
   <script type="text/javascript" scr="js/jquery-3.4.1.min.js"></script>

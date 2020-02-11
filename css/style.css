@@ -50,116 +50,110 @@
     transform: translate(-50%, -50%);
 }
 
-/* Shrinking the sidebar from 250px to 80px and center aligining its content*/
-#sidebar.active {
-    min-width: 80px;
-    max-width: 80px;
-    text-align: center;
+@import url('https://fonts.googleapis.com/css?family=Josefin+Sans&display=swap');
+
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  list-style: none;
+  text-decoration: none;
+  font-family: 'Josefin Sans', sans-serif;
 }
 
-/* Toggling the sidebar header content, hide the big heading [h3] and showing the small heading [strong] and vice versa*/
-#sidebar .sidebar-header strong {
-    display: none;
-}
-#sidebar.active .sidebar-header h3 {
-    display: none;
-}
-#sidebar.active .sidebar-header strong {
-    display: block;
+body{
+   background-color: #f3f5f9;
 }
 
-#sidebar ul li a {
-    text-align: left;
+.wrapper{
+  display: flex;
+  position: relative;
 }
 
-#sidebar.active ul li a {
-    padding: 20px 10px;
-    text-align: center;
-    font-size: 0.85em;
+.wrapper .sidebar{
+  width: 200px;
+  height: 100%;
+  background: #4b4276;
+  padding: 30px 0px;
+  position: fixed;
 }
 
-#sidebar.active ul li a i {
-    margin-right:  0;
-    display: block;
-    font-size: 1.8em;
-    margin-bottom: 5px;
+.wrapper .sidebar h2{
+  color: #fff;
+  text-transform: uppercase;
+  text-align: center;
+  margin-bottom: 30px;
 }
 
-/* Same dropdown links padding*/
-#sidebar.active ul ul a {
-    padding: 10px !important;
+.wrapper .sidebar ul li{
+  padding: 15px;
+  border-bottom: 1px solid #bdb8d7;
+  border-bottom: 1px solid rgba(0,0,0,0.05);
+  border-top: 1px solid rgba(255,255,255,0.05);
+}    
+
+.wrapper .sidebar ul li a{
+  color: #bdb8d7;
+  display: block;
 }
 
-/* Changing the arrow position to bottom center position, 
-   translateX(50%) works with right: 50% 
-   to accurately  center the arrow */
-#sidebar.active .dropdown-toggle::after {
-    top: auto;
-    bottom: 10px;
-    right: 50%;
-    -webkit-transform: translateX(50%);
-    -ms-transform: translateX(50%);
-    transform: translateX(50%);
+.wrapper .sidebar ul li a .fas{
+  width: 25px;
 }
 
-@media (max-width: 768px) {
-    /* 80px and its content aligned to centre. Pushing it off the screen with the
-       negative left margin
-    */
-    #sidebar.active {
-        min-width: 80px;
-        max-width: 80px;
-        text-align: center;
-        margin-left: -80px !important;
-    }
+.wrapper .sidebar ul li:hover{
+  background-color: #594f8d;
+}
+    
+.wrapper .sidebar ul li:hover a{
+  color: #fff;
+}
+ 
+.wrapper .sidebar .social_media{
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+}
 
+.wrapper .sidebar .social_media a{
+  display: block;
+  width: 40px;
+  background: #594f8d;
+  height: 40px;
+  line-height: 45px;
+  text-align: center;
+  margin: 0 5px;
+  color: #bdb8d7;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
 
-    /* Reappearing the sidebar on toggle button click */
-    #sidebar {
-        margin-left: 0; 
-    }
+.wrapper .main_content{
+  width: 100%;
+  margin-left: 200px;
+}
 
+.wrapper .main_content .header{
+  padding: 20px;
+  background: #fff;
+  color: #717171;
+  border-bottom: 1px solid #e0e4e8;
+}
 
-    /* Toggling the sidebar header content, 
-       hide the big heading [h3] and showing the small heading [strong] and vice versa
-    */
-    #sidebar .sidebar-header strong {
-        display: none;
-    }
-    #sidebar.active .sidebar-header h3 {
-        display: none;
-    }
-    #sidebar.active .sidebar-header strong {
-        display: block;
-    }
+.wrapper .main_content .info{
+  margin: 20px;
+  color: #717171;
+  line-height: 25px;
+}
 
-    /* Downsize the navigation links font size */
-    #sidebar.active ul li a {
-        padding: 20px 10px;
-        font-size: 0.85em;
-    }
+.wrapper .main_content .info div{
+  margin-bottom: 20px;
+}
 
-    #sidebar.active ul li a i {
-        margin-right:  0;
-        display: block;
-        font-size: 1.8em;
-        margin-bottom: 5px;
-    }
-
-    /* Adjust the dropdown links padding*/
-    #sidebar.active ul ul a {
-        padding: 10px !important;
-    }
-
-    /* Changing the arrow position to bottom center position, 
-      translateX(50%) works with right: 50% 
-      to accurately  center the arrow */
-    .dropdown-toggle::after {
-        top: auto;
-        bottom: 10px;
-        right: 50%;
-        -webkit-transform: translateX(50%);
-        -ms-transform: translateX(50%);
-        transform: translateX(50%);
-    }
+@media (max-height: 500px){
+  .social_media{
+    display: none !important;
+  }
 }
