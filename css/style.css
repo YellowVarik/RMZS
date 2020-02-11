@@ -1,3 +1,20 @@
+#zendingen{
+    width: 100%;
+    color: white;
+}
+
+#zendingen th{
+    background-color: #9fda34;
+    cursor: pointer;
+}
+#zendingen tr{
+    background-color: #707070;
+}
+
+#zendingen tr:nth-child(even){
+    background-color: #414141;
+}
+
 #loading{
     display: block;
     width : 100px;

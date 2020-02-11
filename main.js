@@ -18,6 +18,8 @@ function createWindow () {
 
   win.setTitle('Rood met Zwarte Stippen')
 
+  win.maximize();
+
   // and load the index.html of the app.
   win.loadFile('index.html')
   
