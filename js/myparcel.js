@@ -17,7 +17,7 @@ loadScreen.id = 'loading';
 getMyParcelData();
 
 function getMyParcelData(){
-  $("#myparcel").append(loadScreen);
+  $(".main_content")[0].append(loadScreen);
   
   //De key moet met base64 worden versleuteld
   let keyBuffer = new Buffer.from(mpKey);
@@ -158,7 +158,10 @@ class Shipment{
     let datum = document.createElement('td');
     datum.innerHTML = this.datum.getDate() + "/" + (this.datum.getMonth() + 1) + "/" + this.datum.getFullYear();
 
-    row.append(name, postcode, adress, email, telefoon, datum);
+    let pdf = document.createElement('td');
+    pdf.innerHTML = "<span><a onclick='printPDF()'><i class='fas fa-file-pdf fa-lg'></i></a></span>";
+
+    row.append(name, postcode, adress, email, telefoon, datum, pdf);
     parent.append(row);
   }
 }

@@ -1,3 +1,7 @@
+a{
+  cursor: pointer;
+}
+
 #zendingen{
     margin-left: auto;
     margin-right: auto;
@@ -7,10 +11,11 @@
 
 #zendingen th{
     background-color: #9fda34;
-    cursor: pointer;
 }
 #zendingen tr{
     background-color: #707070;
+    height: 50px;
+    vertical-align: middle;
 }
 
 #zendingen tr:nth-child(even){
@@ -21,9 +26,9 @@
     display: block;
     width : 100px;
     height : 100px;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 150px;
+    position: absolute;
+    left: 50%;
+    top: 500px;
 }
 
 .blur{
