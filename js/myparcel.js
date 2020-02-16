@@ -48,9 +48,11 @@ function getPDF(id){
     });
 
     result.on("end", () => {
-        fs.writeFile("data/label" + id + ".pdf", data, (e) => {
+      fs.writeFile("data/label" + id + ".pdf", data, (e) => {
           if(e) throw e;
           console.log("label" + id + ".pdf opgeslagen!");
+
+          window.open("data/label" + id + ".pdf");
       })
     })
   })
