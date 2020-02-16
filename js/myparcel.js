@@ -9,6 +9,8 @@ var mpURL = "api.myparcel.nl";
 
 //De key moet worden opgrvraagd door de gebruiker in hun MyParcel account
 var mpKey = "18b49878b83c8fdfd1a67b75909eeedaacd17f13";
+var keyBuffer = new Buffer.from(mpKey);
+var base64Key = keyBuffer.toString("base64");
 
 var loadScreen = document.createElement('img');
 loadScreen.src = './img/loading.gif';
@@ -21,12 +23,46 @@ var arrowDown = String.fromCharCode(9660);
 
 getMyParcelData();
 
+function getPDF(id){
+  let data = '';
+
+  var options = {
+    hostname: mpURL,
+    path: "/shipment_labels/" + id,
+    method: "GET",
+    headers:{
+      "Host": mpURL,
+      "Authorization": "base " + base64Key,
+      "Content-Type": "application/pdf",
+      "Connection": "keep-alive",
+      "Pragma": "no-cache",
+      "Cache-Control": "no-cache",
+      "Upgrade-Insecure-Requests": 1,
+      "User-Agent": "CustomApiCall/2"
+    }
+  }
+
+  var request = https.request(options, function(result){
+    result.on('data', (d) => {
+      data += d;
+    });
+
+    result.on("end", () => {
+        fs.writeFile("data/label" + id + ".pdf", data, (e) => {
+          if(e) throw e;
+          console.log("label" + id + ".pdf opgeslagen!");
+      })
+    })
+  })
+
+  request.on('error', (e) => {
+    console.error("KON DATA VAN MYPARCEL NIET OPHALEN \n" + e);
+  });
+  request.end();
+}
+
 function getMyParcelData(){
   $(".main_content")[0].append(loadScreen);
-  
-  //De key moet met base64 worden versleuteld
-  let keyBuffer = new Buffer.from(mpKey);
-  let base64Key = keyBuffer.toString("base64");
 
   var data = "";
 
@@ -103,7 +139,7 @@ function displayMPInfo(data){
   //Elke zending wordt apart weergegeven
   for(var i = 0; i < count; i++){
     let klant = zending[i].recipient;
-    let shipment = new Shipment(klant.person, klant.postal_code, klant.street, klant.number, klant.city, klant.email, klant.phone, new Date(zending[i].modified));
+    let shipment = new Shipment(zending[i].id, klant.person, klant.postal_code, klant.street, klant.number, klant.city, klant.email, klant.phone, new Date(zending[i].modified));
   zendingen[i] = shipment;
   }
   zendingen.forEach(function (item){
@@ -206,7 +242,8 @@ function naamOmgekeerd(a,b){
 
 class Shipment{
   
-  constructor(naam, postcode, straat, huisnummer, stad, email, telefoon, datum){
+  constructor(id, naam, postcode, straat, huisnummer, stad, email, telefoon, datum){
+    this.id = id;
     this.naam = naam;
     this.postcode = postcode;
     this.straat = straat;
@@ -238,7 +275,7 @@ class Shipment{
     datum.innerHTML = this.datum.getDate() + "/" + (this.datum.getMonth() + 1) + "/" + this.datum.getFullYear();
 
     let pdf = document.createElement('td');
-    pdf.innerHTML = "<span><a onclick='printPDF()'><i class='fas fa-file-pdf fa-lg'></i></a></span>";
+    pdf.innerHTML = "<span><a onclick='getPDF(" + this.id + ")'><i class='fas fa-file-pdf fa-lg'></i></a></span>";
 
     row.append(name, postcode, adress, email, telefoon, datum, pdf);
     parent.append(row);
