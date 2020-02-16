@@ -13,6 +13,11 @@ var mpKey = "18b49878b83c8fdfd1a67b75909eeedaacd17f13";
 var loadScreen = document.createElement('img');
 loadScreen.src = './img/loading.gif';
 loadScreen.id = 'loading';
+var gesorteerd = null;
+var zendingen = [];
+
+var arrowUp = String.fromCharCode(9650);
+var arrowDown = String.fromCharCode(9660);
 
 getMyParcelData();
 
@@ -87,25 +92,74 @@ function displayMPInfo(data){
   }
   
   let parsedData = JSON.parse(data);
-        let count = parsedData.data.results;
-        let zending = parsedData.data.shipments;
-        let zendingen = [];
+  let count = parsedData.data.results;
+  let zending = parsedData.data.shipments;
 
-        //Elke zending wordt apart weergegeven
-        for(var i = 0; i < count; i++){
-          let klant = zending[i].recipient
-          let shipment = new Shipment(klant.person, klant.postal_code, klant.street, klant.number, klant.city, klant.email, klant.phone, new Date(zending[i].modified));
-
-          zendingen[i] = shipment;
-        }
-        zendingen.sort(compareDatumGnK);
-        zendingen.forEach(function (item){
-          item.show($('#zendingen'));
-        })
-        $('#loading').remove();
+  //Elke zending wordt apart weergegeven
+  for(var i = 0; i < count; i++){
+    let klant = zending[i].recipient;
+    let shipment = new Shipment(klant.person, klant.postal_code, klant.street, klant.number, klant.city, klant.email, klant.phone, new Date(zending[i].modified));
+  zendingen[i] = shipment;
+  }
+  zendingen.forEach(function (item){
+    item.show($('#zendingen'));
+  })
+  $('#loading').remove();
 }
 
-function compareDatumKnG(a,b){
+function redisplayMPInfo(sortingMethod){
+
+  $('.sortBtn').each(function(){
+    $(this).text($(this).text().replace(arrowUp, ''))
+    $(this).text($(this).text().replace(arrowDown, ''))
+  });
+
+  let tr = $('#zendingen').find('tr');
+  if(tr.length > 1){
+    for (let i = 1; i < tr.length; i++){
+      tr[i].remove();
+    }
+  }
+
+  zendingen.sort(sortingMethod);
+  for(let i = 0; i < zendingen.length; i++){
+    zendingen[i].show($('#zendingen'));
+  }
+}
+
+function sortDatum(){
+  let btn = $('#datumButton');
+
+
+  if(gesorteerd == "DNO"){
+    redisplayMPInfo(datumOudNaarNieuw);
+    btn.text(btn.text() + arrowUp);
+    gesorteerd = "DON";
+  }
+  else{
+    redisplayMPInfo(datumNieuwNaarOud);
+    btn.text(btn.text() + arrowDown);
+    gesorteerd = "DNO";
+  }
+}
+
+function sortNaam(){
+  let btn = $('#naamButton');
+
+
+  if(gesorteerd == "NAL"){
+    redisplayMPInfo(naamOmgekeerd);
+    btn.text(btn.text() + arrowUp);
+    gesorteerd = "NOM";
+  }
+  else{
+    redisplayMPInfo(naamAlfabetisch);
+    btn.text(btn.text() + arrowDown);
+    gesorteerd = "NAL";
+  }
+}
+
+function datumOudNaarNieuw(a,b){
   if(a.datum < b.datum){
     return -1;
   }
@@ -115,11 +169,31 @@ function compareDatumKnG(a,b){
   return 0;
 }
 
-function compareDatumGnK(a,b){
+function datumNieuwNaarOud(a,b){
   if(a.datum > b.datum){
     return -1;
   }
   if(a.datum < b.datum){
+    return 1;
+  }
+  return 0;
+}
+
+function naamAlfabetisch(a,b){
+  if(a.naam < b.naam){
+    return -1;
+  }
+  if(a.naam > b.naam){
+    return 1;
+  }
+  return 0;
+}
+
+function naamOmgekeerd(a,b){
+  if(a.naam > b.naam){
+    return -1;
+  }
+  if(a.naam < b.naam){
     return 1;
   }
   return 0;

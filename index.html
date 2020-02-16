@@ -36,12 +36,12 @@
           <div id='myparcel'>
             <table id='zendingen' style='width: 100%;'>
               <tr>
-                <th>Naam</th>
+                <th><a onclick='sortNaam()' class='sortBtn' id="naamButton">Naam</a></th>
                 <th>Postcode</th>
                 <th>Adres</th>
                 <th>E-mail</th>
                 <th>Telefoonnummer</th>
-                <th>Datum</th>
+                <th><a onclick="sortDatum()" class='sortBtn' id="datumButton">Datum</a></th>
                 <th><a onclick="getMyParcelData()"><i class="fas fa-sync"></i></a></th>
               </tr>
             </table>
