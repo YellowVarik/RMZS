@@ -84,6 +84,11 @@ function getMyParcelData(){
 }
 
 function displayMPInfo(data){
+  $('.sortBtn').each(function(){
+    $(this).text($(this).text().replace(arrowUp, ''))
+    $(this).text($(this).text().replace(arrowDown, ''))
+  });
+  gesorteerd = null;
   let tr = $('#zendingen').find('tr');
   if(tr.length > 1){
     for (let i = 1; i < tr.length; i++){
