@@ -4,6 +4,6 @@ Dit administratieprogramma is specifiek ontworpen voor het bedrijf [Rood met Zwa
 ## Installatie
 Pak het zip bestand ergens uit en open de command line in de folder.
 Run dit command:
-```bash
+```nodejs
 npm start
 ```
