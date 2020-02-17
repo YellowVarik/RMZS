@@ -1,6 +1,5 @@
 const https = require('https')
 const fs = require('fs')
-const printJS = require('print-js')
 
 //jQuery moet op een andere manier worden toegevoegd
 window.$ = window.jQuery = require('./js/jquery-3.4.1.min.js')
@@ -200,6 +199,22 @@ function sortNaam(){
   }
 }
 
+function sortStad(){
+  let btn = $('#stadButton');
+
+
+  if(gesorteerd == "SAL"){
+    redisplayMPInfo(stadOmgekeerd);
+    btn.text(btn.text() + arrowUp);
+    gesorteerd = "SOM";
+  }
+  else{
+    redisplayMPInfo(stadAlfabetisch);
+    btn.text(btn.text() + arrowDown);
+    gesorteerd = "SAL";
+  }
+}
+
 function datumOudNaarNieuw(a,b){
   if(a.datum < b.datum){
     return -1;
@@ -240,6 +255,26 @@ function naamOmgekeerd(a,b){
   return 0;
 }
 
+function stadAlfabetisch(a,b){
+  if(a.stad < b.stad){
+    return -1;
+  }
+  if(a.stad > b.stad){
+    return 1;
+  }
+  return 0;
+}
+
+function stadOmgekeerd(a,b){
+  if(a.stad > b.stad){
+    return -1;
+  }
+  if(a.stad < b.stad){
+    return 1;
+  }
+  return 0;
+}
+
 class Shipment{
   
   constructor(id, naam, postcode, straat, huisnummer, stad, email, telefoon, datum){
@@ -263,7 +298,10 @@ class Shipment{
     postcode.innerHTML = this.postcode;
 
     let adress = document.createElement('td');
-    adress.innerHTML = this.straat + " " + this.huisnummer + ", " + this.stad;
+    adress.innerHTML = this.straat + " " + this.huisnummer;
+
+    let stad = document.createElement('td');
+    stad.innerHTML = this.stad;
 
     let email = document.createElement('td');
     email.innerHTML = (this.email !== "") ? this.email : "-";
@@ -277,7 +315,7 @@ class Shipment{
     let pdf = document.createElement('td');
     pdf.innerHTML = "<span><a onclick='getPDF(" + this.id + ")'><i class='fas fa-file-pdf fa-lg'></i></a></span>";
 
-    row.append(name, postcode, adress, email, telefoon, datum, pdf);
+    row.append(name, postcode, adress, stad, email, telefoon, datum, pdf);
     parent.append(row);
   }
 }
