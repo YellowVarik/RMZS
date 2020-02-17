@@ -1,5 +1,6 @@
 const https = require('https')
 const fs = require('fs')
+const printJS = require('print-js')
 
 //jQuery moet op een andere manier worden toegevoegd
 window.$ = window.jQuery = require('./js/jquery-3.4.1.min.js')
@@ -49,7 +50,6 @@ function getPDF(id){
       fs.writeFile("data/label" + id + ".pdf", data, (e) => {
           if(e) throw e;
           console.log("label" + id + ".pdf opgeslagen!");
-          window.open("data/label" + id + ".pdf");
           console.log(request);
       })
     })
