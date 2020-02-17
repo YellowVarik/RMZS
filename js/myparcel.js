@@ -34,11 +34,9 @@ function getPDF(id){
       "Host": mpURL,
       "Authorization": "base " + base64Key,
       "Content-Type": "application/pdf",
-      "Connection": "keep-alive",
-      "Pragma": "no-cache",
-      "Cache-Control": "no-cache",
       "Upgrade-Insecure-Requests": 1,
-      "User-Agent": "CustomApiCall/2"
+      "User-Agent": "CustomApiCall/2",
+      "Accept": "application/pdf"
     }
   }
 
@@ -51,8 +49,8 @@ function getPDF(id){
       fs.writeFile("data/label" + id + ".pdf", data, (e) => {
           if(e) throw e;
           console.log("label" + id + ".pdf opgeslagen!");
-
           window.open("data/label" + id + ".pdf");
+          console.log(request);
       })
     })
   })
