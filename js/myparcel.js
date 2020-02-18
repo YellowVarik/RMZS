@@ -28,34 +28,33 @@ function getPDF(id){
 
   var options = {
     hostname: mpURL,
-    path: "/shipment_labels/" + id,
+    path: `/shipment_labels/${id}`,
     method: "GET",
+    encoding: null,
     headers:{
       "Host": mpURL,
-      "Authorization": "base " + base64Key,
+      "Authorization": `base ${base64Key}`,
       "Content-Type": "application/pdf",
       "Upgrade-Insecure-Requests": 1,
       "User-Agent": "CustomApiCall/2",
-      "Accept": "application/pdf"
+      "Accept": "application/pdf",
     }
   }
-
+  var pdfFile = fs.createWriteStream(`data/label${id}.pdf`)
   var request = https.request(options, function(result){
     result.on('data', (d) => {
       data += d;
-    });
+      pdfFile.write(d);
+    })
 
     result.on("end", () => {
-      fs.writeFile("data/label" + id + ".pdf", data, (e) => {
-          if(e) throw e;
-          console.log("label" + id + ".pdf opgeslagen!");
-          console.log(request);
-      })
+      pdfFile.end();
+      console.log(`label opgeslagen in data/label${id}.pdf`)
     })
   })
 
   request.on('error', (e) => {
-    console.error("KON DATA VAN MYPARCEL NIET OPHALEN \n" + e);
+    console.error("KON LABEL NIET OPHALEN \n" + e);
   });
   request.end();
 }
@@ -73,7 +72,7 @@ function getMyParcelData(){
     method: "GET",
     headers:{
       "Host": mpURL,
-      "Authorization": "base " + base64Key,
+      "Authorization": `base ${base64Key}`,
       "Content-Type": "application/json;charset=utf-8",
       "Connection": "keep-alive",
       "Pragma": "no-cache",
@@ -298,7 +297,7 @@ class Shipment{
     postcode.innerHTML = this.postcode;
 
     let adress = document.createElement('td');
-    adress.innerHTML = this.straat + " " + this.huisnummer;
+    adress.innerHTML = `${this.straat} ${this.huisnummer}`;
 
     let stad = document.createElement('td');
     stad.innerHTML = this.stad;
@@ -310,10 +309,10 @@ class Shipment{
     telefoon.innerHTML = (this.telefoon !== "") ? this.telefoon : "-";
 
     let datum = document.createElement('td');
-    datum.innerHTML = this.datum.getDate() + "/" + (this.datum.getMonth() + 1) + "/" + this.datum.getFullYear();
+    datum.innerHTML = `${this.datum.getDate()}/${this.datum.getMonth() + 1}/${this.datum.getFullYear()}`;
 
     let pdf = document.createElement('td');
-    pdf.innerHTML = "<span><a onclick='getPDF(" + this.id + ")'><i class='fas fa-file-pdf fa-lg'></i></a></span>";
+    pdf.innerHTML = `<span><a onclick='getPDF(${this.id})'><i class='fas fa-file-pdf fa-lg'></i></a></span>`;
 
     row.append(name, postcode, adress, stad, email, telefoon, datum, pdf);
     parent.append(row);
