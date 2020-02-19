@@ -36,6 +36,7 @@
           <div id='myparcel'>
             <table id='zendingen' style='width: 100%;'>
               <tr>
+                <th><span><a onclick='selectAllParcels()'><i id="selectAllIcon" class="fas fa-square checkmark"></i></a></span></th>
                 <th><a onclick='sortNaam()' class='sortBtn' id="naamButton">Naam</a></th>
                 <th>Postcode</th>
                 <th>Adres</th>
@@ -43,7 +44,7 @@
                 <th>E-mail</th>
                 <th>Telefoonnummer</th>
                 <th><a onclick="sortDatum()" class='sortBtn' id="datumButton">Datum</a></th>
-                <th><a onclick="getMyParcelData()"><i class="fas fa-sync"></i></a></th>
+                <th><a onclick="getMyParcelData()"><i class="fas fa-sync"></i></a>  <a onclick='getPDF(selectedParcels)'><i class="fas fa-print"></i></a></th>
               </tr>
             </table>
           </div>

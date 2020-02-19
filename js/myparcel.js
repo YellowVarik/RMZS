@@ -19,6 +19,7 @@ loadScreen.src = './img/loading.gif';
 loadScreen.id = 'loading';
 var gesorteerd = null;
 var zendingen = [];
+var selectedParcels = [];
 
 var arrowUp = String.fromCharCode(9650);
 var arrowDown = String.fromCharCode(9660);
@@ -27,10 +28,25 @@ getMyParcelData();
 
 function getPDF(id){
   let data = '';
+  let requestId = id;
+  let fileName = id;
+  console.log(id instanceof Array);
+  if(id instanceof Array){
+    fileName = `${id[0]} - ${id[id.length-1]}`
+
+    for(let i = 0; i < id.length; i++){
+      if(i == 0){
+        requestId = id[i];
+      }
+      else{
+        requestId += `;${id[i]}`;
+      }
+    }
+  }
 
   var options = {
     hostname: mpURL,
-    path: `/shipment_labels/${id}`,
+    path: `/shipment_labels/${requestId}`,
     method: "GET",
     encoding: null,
     headers:{
@@ -42,7 +58,7 @@ function getPDF(id){
       "Accept": "application/pdf",
     }
   }
-  var pdfFile = fs.createWriteStream(`data/label${id}.pdf`)
+  var pdfFile = fs.createWriteStream(`data/label${fileName}.pdf`)
   var request = https.request(options, function(result){
     result.on('data', (d) => {
       data += d;
@@ -51,8 +67,8 @@ function getPDF(id){
 
     result.on("end", () => {
       pdfFile.end();
-      console.log(`label opgeslagen in data/label${id}.pdf`)
-      openPDF(__dirname + `/data/label${id}.pdf`);
+      console.log(`label opgeslagen in data/label${fileName}.pdf`)
+      openPDF(__dirname + `/data/label${fileName}.pdf`);
     })
   })
 
@@ -125,6 +141,12 @@ function displayMPInfo(data){
     $(this).text($(this).text().replace(arrowUp, ''))
     $(this).text($(this).text().replace(arrowDown, ''))
   });
+
+  
+
+  selectedParcels = [];
+  $('#myparcel').find(".checkmark").eq(0).removeClass('fa-check-square').addClass("fa-square");
+  
   gesorteerd = null;
   let tr = $('#zendingen').find('tr');
   if(tr.length > 1){
@@ -166,6 +188,9 @@ function redisplayMPInfo(sortingMethod){
   zendingen.sort(sortingMethod);
   for(let i = 0; i < zendingen.length; i++){
     zendingen[i].show($('#zendingen'));
+    if(selectedParcels.includes(zendingen[i].id)){
+      $('#myparcel').find('.checkmark').eq(i + 1).removeClass("fa-square").addClass("fa-check-square");
+    }
   }
 }
 
@@ -176,6 +201,57 @@ function openPDF(filePath){
   })
   pdfWindow.addSupport(win);
   win.loadURL(filePath)
+}
+
+function selectParcel(id){
+  let selected = false;
+  let i = null;
+  selectedParcels.forEach((parcel, index) => {
+    if(parcel==id){
+      selected = true;
+      i = index;
+    }
+    
+  })
+
+  if(selected){
+    if($('#myparcel').find('tr').length - 1 == selectedParcels.length){
+      $('#myparcel').find(".checkmark").eq(0).removeClass('fa-check-square').addClass("fa-square");
+    }
+    selectedParcels.splice(i, 1);
+    $(`.checkmark${id}`).removeClass("fa-check-square").addClass("fa-square");
+  }
+  else{
+    selectedParcels.push(id);
+    $(`.checkmark${id}`).removeClass("fa-square").addClass("fa-check-square");
+    if($('#myparcel').find('tr').length - 1 == selectedParcels.length){
+      $('#myparcel').find(".checkmark").eq(0).removeClass('fa-square').addClass("fa-check-square");
+    }
+  }
+}
+
+function selectAllParcels(){
+  let rows = $('#myparcel').find('tr');
+  parcelLength = selectedParcels.length;
+  selectedParcels = [];
+
+  console.log(rows.length);
+
+  if(rows.length - 1 > parcelLength){
+    for(let i = 0; i < rows.length; i++){
+      if(rows[i].getAttribute('data-id') != null){
+        selectedParcels.push(rows[i].getAttribute("data-id"));
+      }
+    }
+
+    $('#myparcel').find(".checkmark").removeClass('fa-square').addClass("fa-check-square");
+  }
+  else{
+    $('#myparcel').find(".checkmark").removeClass('fa-check-square').addClass("fa-square");
+  }
+
+  
+  console.log(selectedParcels);
 }
 
 function sortDatum(){
@@ -302,6 +378,11 @@ class Shipment{
 
   show(parent) {
     let row = document.createElement('tr');
+    row.setAttribute('data-id', this.id);
+
+    let checkMark = $(`<td><span><a onclick="selectParcel(${this.id})"><i class="fas fa-square checkmark checkmark${this.id}"></i></a></span></td>`);
+    checkMark.appendTo(row);
+
     let name = document.createElement('td');
     name.innerHTML = this.naam;
 
