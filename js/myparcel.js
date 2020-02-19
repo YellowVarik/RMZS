@@ -30,8 +30,12 @@ function getPDF(id){
   let data = '';
   let requestId = id;
   let fileName = id;
-  console.log(id instanceof Array);
   if(id instanceof Array){
+    if(id.length == 0){
+      console.error('GEEN ZENDINGEN GESELECTEERD');
+      return;
+    }
+
     fileName = `${id[0]} - ${id[id.length-1]}`
 
     for(let i = 0; i < id.length; i++){
@@ -235,8 +239,6 @@ function selectAllParcels(){
   parcelLength = selectedParcels.length;
   selectedParcels = [];
 
-  console.log(rows.length);
-
   if(rows.length - 1 > parcelLength){
     for(let i = 0; i < rows.length; i++){
       if(rows[i].getAttribute('data-id') != null){
@@ -249,9 +251,6 @@ function selectAllParcels(){
   else{
     $('#myparcel').find(".checkmark").removeClass('fa-check-square').addClass("fa-square");
   }
-
-  
-  console.log(selectedParcels);
 }
 
 function sortDatum(){
