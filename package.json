@@ -9,7 +9,8 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "electron": "^7.1.11"
+    "electron": "^7.1.11",
+    "electron-pdf-window": "^1.0.12"
   },
   "dependencies": {}
 }

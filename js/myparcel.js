@@ -1,5 +1,7 @@
 const https = require('https')
 const fs = require('fs')
+const electron = require('electron')
+const pdfWindow = require('electron-pdf-window')
 
 //jQuery moet op een andere manier worden toegevoegd
 window.$ = window.jQuery = require('./js/jquery-3.4.1.min.js')
@@ -50,6 +52,7 @@ function getPDF(id){
     result.on("end", () => {
       pdfFile.end();
       console.log(`label opgeslagen in data/label${id}.pdf`)
+      openPDF(__dirname + `/data/label${id}.pdf`);
     })
   })
 
@@ -164,6 +167,15 @@ function redisplayMPInfo(sortingMethod){
   for(let i = 0; i < zendingen.length; i++){
     zendingen[i].show($('#zendingen'));
   }
+}
+
+function openPDF(filePath){
+  let win = new electron.remote.BrowserWindow({
+    width: 1200,
+    height: 800
+  })
+  pdfWindow.addSupport(win);
+  win.loadURL(filePath)
 }
 
 function sortDatum(){

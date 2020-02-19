@@ -12,7 +12,8 @@ function createWindow () {
     autoHideMenuBar: true,
     icon: './img/icon.png',
     webPreferences: {
-      nodeIntegration: true
+      nodeIntegration: true,
+      plugins: true
     }
   })
 
