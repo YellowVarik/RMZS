@@ -62,6 +62,9 @@ function getPDF(id){
       "Accept": "application/pdf",
     }
   }
+  if(!fs.existsSync("./data")){
+    fs.mkdirSync("./data");
+  }
   var pdfFile = fs.createWriteStream(`data/label${fileName}.pdf`)
   var request = https.request(options, function(result){
     result.on('data', (d) => {
@@ -115,6 +118,9 @@ function getMyParcelData(){
         //De data wordt verwerkt
         displayMPInfo(data);
         //De data wordt opgeslagen in een bestand
+        if(!fs.existsSync("./data")){
+          fs.mkdirSync("./data");
+        }
         fs.writeFile("data/zendingen.json", data, (e) => {
             if(e) throw e;
             console.log("Data opgeslagen!");
