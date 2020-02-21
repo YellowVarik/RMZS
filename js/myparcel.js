@@ -172,7 +172,7 @@ function displayMPInfo(data){
   //Elke zending wordt apart weergegeven
   for(var i = 0; i < count; i++){
     let klant = zending[i].recipient;
-    let shipment = new Shipment(zending[i].id, klant.person, klant.postal_code, klant.street, klant.number, klant.city, klant.email, klant.phone, new Date(zending[i].modified));
+    let shipment = new Shipment(zending[i].id, zending[i].options.package_type, zending[i].status, klant.person, klant.postal_code, klant.street, klant.number + klant.number_suffix, klant.city, klant.email, klant.phone, new Date(zending[i].modified));
   zendingen[i] = shipment;
   }
   zendingen.forEach(function (item){
@@ -369,8 +369,10 @@ function stadOmgekeerd(a,b){
 
 class Shipment{
   
-  constructor(id, naam, postcode, straat, huisnummer, stad, email, telefoon, datum){
+  constructor(id, type, status, naam, postcode, straat, huisnummer, stad, email, telefoon, datum){
     this.id = id;
+    this.type = type;
+    this.status = status;
     this.naam = naam;
     this.postcode = postcode;
     this.straat = straat;
@@ -388,23 +390,43 @@ class Shipment{
     let checkMark = $(`<td><span><a onclick="selectParcel(${this.id})"><i class="fas fa-square checkmark checkmark${this.id}"></i></a></span></td>`);
     checkMark.appendTo(row);
 
+    let type = document.createElement('td');
+    switch(this.type){
+      case 1:
+        type.innerHTML = 'Standaard pakket';
+        break;
+      case 2:
+        type.innerHTML = 'Brievenbus pakket';
+        break;
+      case 3:
+        type.innerHTML = 'Brief';
+        break;
+      case 4:
+        type.innerHTML = 'Digitale postzegel'
+        break;
+      default:
+        type.innerHTML = 'Standaard pakket';
+        break;
+    }
+
+    let status = document.createElement('td');
+    switch(this.status){
+      case 1:
+        status.innerHTML = 'Concept';
+        break;
+      case 2:
+        status.innerHTML = 'Voorgemeld';
+        break;
+    }
+
     let name = document.createElement('td');
     name.innerHTML = this.naam;
 
-    let postcode = document.createElement('td');
-    postcode.innerHTML = this.postcode;
+    let adres = document.createElement('td');
+    adres.innerHTML = `${this.straat} ${this.huisnummer} <br> ${this.postcode}, ${this.stad}`;
 
-    let adress = document.createElement('td');
-    adress.innerHTML = `${this.straat} ${this.huisnummer}`;
-
-    let stad = document.createElement('td');
-    stad.innerHTML = this.stad;
-
-    let email = document.createElement('td');
-    email.innerHTML = (this.email !== "") ? this.email : "-";
-
-    let telefoon = document.createElement('td');
-    telefoon.innerHTML = (this.telefoon !== "") ? this.telefoon : "-";
+    let contact = document.createElement('td');
+    contact.innerHTML = `<span><i class="fas fa-envelope"></i></span> ${(this.email !== "") ? this.email : "/"}<br><span><i class="fas fa-phone-alt"></i></span> ${(this.telefoon != '')?this.telefoon:'/'}`;
 
     let datum = document.createElement('td');
     datum.innerHTML = `${this.datum.getDate()}/${this.datum.getMonth() + 1}/${this.datum.getFullYear()}`;
@@ -412,7 +434,7 @@ class Shipment{
     let pdf = document.createElement('td');
     pdf.innerHTML = `<span><a onclick='getPDF(${this.id})'><i class='fas fa-file-pdf fa-lg'></i></a></span>`;
 
-    row.append(name, postcode, adress, stad, email, telefoon, datum, pdf);
+    row.append(type, status, name, adres, contact, datum, pdf);
     parent.append(row);
   }
 }

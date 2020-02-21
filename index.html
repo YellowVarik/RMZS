@@ -37,12 +37,11 @@
             <table id='zendingen' style='width: 100%;'>
               <tr>
                 <th><span><a onclick='selectAllParcels()'><i id="selectAllIcon" class="fas fa-square checkmark"></i></a></span></th>
+                <th>Type</th>
+                <th>Status</th>
                 <th><a onclick='sortNaam()' class='sortBtn' id="naamButton">Naam</a></th>
-                <th>Postcode</th>
-                <th>Adres</th>
-                <th><a onclick="sortStad()" class="sortBtn" id="stadButton">Stad</a></th>
-                <th>E-mail</th>
-                <th>Telefoonnummer</th>
+                <th><a onclick="sortStad()" class='sortBtn' id='stadButton'>Adres</a></th>
+                <th>Contact</th>
                 <th><a onclick="sortDatum()" class='sortBtn' id="datumButton">Datum</a></th>
                 <th><a onclick="getMyParcelData()"><i class="fas fa-sync"></i></a>  <a onclick='getPDF(selectedParcels)'><i class="fas fa-print"></i></a></th>
               </tr>
