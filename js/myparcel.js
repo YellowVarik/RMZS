@@ -14,9 +14,22 @@ var mpKey = "18b49878b83c8fdfd1a67b75909eeedaacd17f13";
 var keyBuffer = new Buffer.from(mpKey);
 var base64Key = keyBuffer.toString("base64");
 
-var loadScreen = document.createElement('img');
-loadScreen.src = './img/loading.gif';
-loadScreen.id = 'loading';
+var loadScreen = $(`
+<div id='loading' class="sk-circle">
+<div class="sk-circle1 sk-child"></div>
+<div class="sk-circle2 sk-child"></div>
+<div class="sk-circle3 sk-child"></div>
+<div class="sk-circle4 sk-child"></div>
+<div class="sk-circle5 sk-child"></div>
+<div class="sk-circle6 sk-child"></div>
+<div class="sk-circle7 sk-child"></div>
+<div class="sk-circle8 sk-child"></div>
+<div class="sk-circle9 sk-child"></div>
+<div class="sk-circle10 sk-child"></div>
+<div class="sk-circle11 sk-child"></div>
+<div class="sk-circle12 sk-child"></div>
+</div>`)
+
 var gesorteerd = null;
 var zendingen = [];
 var selectedParcels = [];
@@ -83,10 +96,13 @@ function getPDF(id){
     console.error("KON LABEL NIET OPHALEN \n" + e);
   });
   request.end();
+
+  getMyParcelData();
 }
 
 function getMyParcelData(){
-  $(".main_content")[0].append(loadScreen);
+
+  loadScreen.appendTo($('.main_content')[0]);
 
   var data = "";
 
@@ -431,10 +447,10 @@ class Shipment{
     let datum = document.createElement('td');
     datum.innerHTML = `${this.datum.getDate()}/${this.datum.getMonth() + 1}/${this.datum.getFullYear()}`;
 
-    let pdf = document.createElement('td');
-    pdf.innerHTML = `<span><a onclick='getPDF(${this.id})'><i class='fas fa-file-pdf fa-lg'></i></a></span>`;
+    let buttons = document.createElement('td');
+    buttons.innerHTML = `<span><a onclick='getPDF(${this.id})'><i class='fas fa-file-pdf fa-lg'></i></a><a><i class='fas fa-truck-moving fa-lg'></a></span>`;
 
-    row.append(type, status, name, adres, contact, datum, pdf);
+    row.append(type, status, name, adres, contact, datum, buttons);
     parent.append(row);
   }
 }
