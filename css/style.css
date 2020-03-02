@@ -4,7 +4,24 @@
 }
 
 .reload:hover i{
+  transform: rotate(90deg);
+}
+
+.spin i{
   transform: rotate(180deg);
+}
+
+.spin:hover i{
+  transform: rotate(270deg);
+}
+
+
+
+.notransition i{
+  -webkit-transition: none !important;
+  -moz-transition: none !important;
+  -o-transition: none !important;
+  transition: none !important;
 }
 
 a{
