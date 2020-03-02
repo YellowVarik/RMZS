@@ -98,7 +98,7 @@ input[type=text]:focus{
 }
 
 .sortBtn:hover{
-  color: #707070;
+  color: #707070 !important;
 }
 
 #zendingen tr:nth-child(even){
