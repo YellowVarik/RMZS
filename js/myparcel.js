@@ -238,6 +238,8 @@ function redisplayMPInfo(sortingMethod){
       $('#myparcel').find('.checkmark').eq(i + 1).removeClass("fa-square").addClass("fa-check-square");
     }
   }
+
+  search();
 }
 
 function openPDF(filePath){
