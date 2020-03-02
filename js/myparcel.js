@@ -189,7 +189,7 @@ function displayMPInfo(data){
   //Elke zending wordt apart weergegeven
   for(var i = 0; i < count; i++){
     let klant = zending[i].recipient;
-    let shipment = new Shipment(zending[i].id, zending[i].options.package_type, zending[i].status, zending[i].barcode, klant.person, klant.postal_code, klant.street, klant.number + klant.number_suffix, klant.city, klant.email, klant.phone, new Date(zending[i].modified));
+    let shipment = new Shipment(zending[i].id, zending[i].options.package_type, (zending[i].options.label_description.includes('retour'))?5:zending[i].status, zending[i].barcode, klant.person, klant.postal_code, klant.street, klant.number + klant.number_suffix, klant.city, klant.email, klant.phone, new Date(zending[i].modified));
   zendingen[i] = shipment;
   }
   zendingen.forEach(function (item){
@@ -384,6 +384,38 @@ function sortStad(){
   }
 }
 
+function sortStatus(){
+  let btn = $('#statusButton');
+
+
+  if(gesorteerd == "SGK"){
+    redisplayMPInfo(statusKleinGroot);
+    btn.text(btn.text() + arrowUp);
+    gesorteerd = "SKG";
+  }
+  else{
+    redisplayMPInfo(statusGrootKlein);
+    btn.text(btn.text() + arrowDown);
+    gesorteerd = "SGK";
+  }
+}
+
+function sortType(){
+  let btn = $('#typeButton');
+
+
+  if(gesorteerd == "TGK"){
+    redisplayMPInfo(typeKleinGroot);
+    btn.text(btn.text() + arrowUp);
+    gesorteerd = "TKG";
+  }
+  else{
+    redisplayMPInfo(typeGrootKlein);
+    btn.text(btn.text() + arrowDown);
+    gesorteerd = "TGK";
+  }
+}
+
 function datumOudNaarNieuw(a,b){
   if(a.datum < b.datum){
     return -1;
@@ -405,20 +437,20 @@ function datumNieuwNaarOud(a,b){
 }
 
 function naamAlfabetisch(a,b){
-  if(a.naam < b.naam){
+  if(a.naam.split(" ")[a.naam.split(" ").length - 1] < b.naam.split(" ")[b.naam.split(" ").length - 1]){
     return -1;
   }
-  if(a.naam > b.naam){
+  if(a.naam.split(" ")[a.naam.split(" ").length - 1]  > b.naam.split(" ")[b.naam.split(" ").length - 1]){
     return 1;
   }
   return 0;
 }
 
 function naamOmgekeerd(a,b){
-  if(a.naam > b.naam){
+  if(a.naam.split(" ")[a.naam.split(" ").length - 1] > b.naam.split(" ")[b.naam.split(" ").length - 1]){
     return -1;
   }
-  if(a.naam < b.naam){
+  if(a.naam.split(" ")[a.naam.split(" ").length - 1] < b.naam.split(" ")[b.naam.split(" ").length - 1]){
     return 1;
   }
   return 0;
@@ -444,6 +476,45 @@ function stadOmgekeerd(a,b){
   return 0;
 }
 
+function statusGrootKlein(a,b){
+  if(a.status < b.status){
+    return -1;
+  }
+  if(a.status > b.status){
+    return 1;
+  }
+  return 0;
+}
+
+function statusKleinGroot(a,b){
+  if(a.status > b.status){
+    return -1;
+  }
+  if(a.status < b.status){
+    return 1;
+  }
+  return 0;
+}
+
+function typeGrootKlein(a,b){
+  if(a.type < b.type){
+    return -1;
+  }
+  if(a.type > b.type){
+    return 1;
+  }
+  return 0;
+}
+
+function typeKleinGroot(a,b){
+  if(a.type > b.type){
+    return -1;
+  }
+  if(a.type < b.type){
+    return 1;
+  }
+  return 0;
+}
 class Shipment{
   
   constructor(id, type, status, barcode, naam, postcode, straat, huisnummer, stad, email, telefoon, datum){
@@ -520,7 +591,7 @@ class Shipment{
     adres.innerHTML = `${this.straat} ${this.huisnummer} <br> ${this.postcode}, ${this.stad}`;
 
     let contact = document.createElement('td');
-    contact.innerHTML = `<span><i class="fas fa-envelope"></i></span> ${(this.email !== "") ? this.email : "/"}<br><span><i class="fas fa-phone-alt"></i></span> ${(this.telefoon != '')?this.telefoon:'/'}`;
+    contact.innerHTML = `<span><i class="fas fa-envelope"></i></span> ${(this.email !== "") ? `<a style=\"color: #9fda34;\" href=\"mailto:${this.email}\">${this.email}</a>` : "/"}<br><span><i class="fas fa-phone-alt"></i></span> ${(this.telefoon != '')?this.telefoon:'/'}`;
 
     let datum = document.createElement('td');
     datum.innerHTML = `${this.datum.getDate()}/${this.datum.getMonth() + 1}/${this.datum.getFullYear()}`;
