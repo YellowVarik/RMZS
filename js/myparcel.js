@@ -98,7 +98,7 @@ function getPDF(id){
   });
   request.end();
 
-  getMyParcelData();
+  setTimeout(getMyParcelData(), 500);
 }
 
 function getMyParcelData(){
@@ -189,7 +189,7 @@ function displayMPInfo(data){
   //Elke zending wordt apart weergegeven
   for(var i = 0; i < count; i++){
     let klant = zending[i].recipient;
-    let shipment = new Shipment(zending[i].id, zending[i].options.package_type, zending[i].status, klant.person, klant.postal_code, klant.street, klant.number + klant.number_suffix, klant.city, klant.email, klant.phone, new Date(zending[i].modified));
+    let shipment = new Shipment(zending[i].id, zending[i].options.package_type, zending[i].status, zending[i].barcode, klant.person, klant.postal_code, klant.street, klant.number + klant.number_suffix, klant.city, klant.email, klant.phone, new Date(zending[i].modified));
   zendingen[i] = shipment;
   }
   zendingen.forEach(function (item){
@@ -310,7 +310,17 @@ function deleteShipment(id){
   });
   request.end();
 
-  setTimeout(getMyParcelData, 1000);
+  setTimeout(getMyParcelData, 500);
+}
+
+function getTrackTrace(barcode, postcode){
+  let win = new electron.remote.BrowserWindow({
+    width: 1200,
+    height: 800,
+    autoHideMenuBar: true,
+    icon: './img/icon.png',
+  })
+  win.loadURL(`https://jouw.postnl.nl/track-and-trace/${barcode}-NL-${postcode}`);
 }
 
 function showPopup(header, message){
@@ -436,10 +446,11 @@ function stadOmgekeerd(a,b){
 
 class Shipment{
   
-  constructor(id, type, status, naam, postcode, straat, huisnummer, stad, email, telefoon, datum){
+  constructor(id, type, status, barcode, naam, postcode, straat, huisnummer, stad, email, telefoon, datum){
     this.id = id;
     this.type = type;
     this.status = status;
+    this.barcode = barcode;
     this.naam = naam;
     this.postcode = postcode;
     this.straat = straat;
@@ -499,6 +510,9 @@ class Shipment{
         break;
     }
 
+    let barcode = document.createElement('td');
+    barcode.innerHTML = (this.barcode != '')?`<a class='barcode' onclick = 'getTrackTrace(\"${this.barcode}\", \"${this.postcode}\")'>${this.barcode}</a>`:'/';
+
     let name = document.createElement('td');
     name.innerHTML = this.naam;
 
@@ -512,9 +526,9 @@ class Shipment{
     datum.innerHTML = `${this.datum.getDate()}/${this.datum.getMonth() + 1}/${this.datum.getFullYear()}`;
 
     let buttons = document.createElement('td');
-    buttons.innerHTML = `<span><a onclick='getPDF(${this.id})'><i class='fas fa-file-pdf fa-lg'></i></a><a><i class='fas fa-truck-moving fa-lg'></i></a><a onclick='deleteShipment(${this.id})'><i class='fas fa-trash fa-lg' style='color: red'></i></a></span>`;
+    buttons.innerHTML = `<span><a onclick='getPDF(${this.id})'><i class='fas fa-file-pdf fa-lg'></i>${(this.status == 1)? `<a onclick='deleteShipment(${this.id})'><i class='fas fa-trash fa-lg' style='color: red'></i></a>`: ''}</span>`;
 
-    row.append(type, status, name, adres, contact, datum, buttons);
+    row.append(type, status, barcode, name, adres, contact, datum, buttons);
     parent.append(row);
   }
 }

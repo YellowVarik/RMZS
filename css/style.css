@@ -91,6 +91,13 @@ th{
     top: 500px;
 }
 
+
+
+.barcode{
+  text-decoration: underline !important;
+  color: #9fda34 !important;
+}
+
 .sk-circle {
   width: 40px;
   height: 40px;
