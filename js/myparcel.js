@@ -33,6 +33,7 @@ var loadScreen = $(`
 var gesorteerd = null;
 var zendingen = [];
 var selectedParcels = [];
+var parcelsToDelete = [];
 
 var arrowUp = String.fromCharCode(9650);
 var arrowDown = String.fromCharCode(9660);
@@ -275,6 +276,56 @@ function selectAllParcels(){
   }
 }
 
+function deleteShipment(id){
+  var data = '';
+  console.log(mpURL + `/shipments/${id}`)
+  var options = {
+    hostname: mpURL,
+    path: `/shipments/${id}`,
+    method: "DELETE",
+    headers:{
+      "Host": mpURL,
+      "Authorization": `base ${base64Key}`,
+      "Content-Type": "application/json;charset=utf-8",
+      "Connection": "keep-alive",
+      "Pragma": "no-cache",
+      "Cache-Control": "no-cache",
+      "Upgrade-Insecure-Requests": 1,
+      "Accept-Encoding": "gzip, deflate, sdch, br",
+      "User-Agent": "CustomApiCall/2"
+    }
+  }
+
+  var request = https.request(options, function(result){
+    result.on('data', (d) => {
+      //De tussentijdse data wordt toegevoegd aan een variabele
+      data += d;
+    });
+    result.on("end", () => {
+      console.log(data);
+    })
+  })
+  request.on('error', (e) => {
+    console.error(`KON ZENDING MET ID ${id} NIET VERWIJDEREN\n` + e);
+  });
+  request.end();
+
+  setTimeout(getMyParcelData, 1000);
+}
+
+function showPopup(header, message){
+  var popup = $(`
+                <div class='popup'>
+                  <div class='popup-content'>
+                    <h1>${header}</h1>
+                    <p>${message}</p>
+                    <a>Ok</a>
+                    <a>Cancel</a>
+                  </div>
+                </div>`)
+  popup.appendTo($('body'));
+}
+
 function sortDatum(){
   let btn = $('#datumButton');
 
@@ -433,6 +484,19 @@ class Shipment{
       case 2:
         status.innerHTML = 'Voorgemeld';
         break;
+      case 3:
+        status.innerHTML = 'Onderweg';
+        break;
+      case 4:
+        status.innerHTML = 'Afgeleverd';
+        break;
+      case 5:
+        status.innerHTML = 'Retour';
+        break;
+      default:
+        status.innerHTML = 'Kon status niet ophalen';
+        status.style = 'color: red;';
+        break;
     }
 
     let name = document.createElement('td');
@@ -448,7 +512,7 @@ class Shipment{
     datum.innerHTML = `${this.datum.getDate()}/${this.datum.getMonth() + 1}/${this.datum.getFullYear()}`;
 
     let buttons = document.createElement('td');
-    buttons.innerHTML = `<span><a onclick='getPDF(${this.id})'><i class='fas fa-file-pdf fa-lg'></i></a><a><i class='fas fa-truck-moving fa-lg'></a></span>`;
+    buttons.innerHTML = `<span><a onclick='getPDF(${this.id})'><i class='fas fa-file-pdf fa-lg'></i></a><a><i class='fas fa-truck-moving fa-lg'></i></a><a onclick='deleteShipment(${this.id})'><i class='fas fa-trash fa-lg' style='color: red'></i></a></span>`;
 
     row.append(type, status, name, adres, contact, datum, buttons);
     parent.append(row);
