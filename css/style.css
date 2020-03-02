@@ -29,12 +29,35 @@ a{
   transition: color 0.3s ease;
 }
 
-i{
+th{
+  user-select: none;
   padding: 5px;
 }
 
-th{
-  user-select: none;
+td{
+  padding: 5px;
+}
+
+input[type=text]{
+  border-radius: 5px;
+  border-color: #707070;
+  border-width: 2px;
+  border-style: solid;
+  height: 30px;
+  width: 25%;
+
+  transition: border-color 0.2s ease;
+  padding: 5px;
+  box-sizing: border-box;
+  float: right;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+
+input[type=text]:focus{
+  border-color:#9fda34;
+  outline: none;
 }
 
 .popup{

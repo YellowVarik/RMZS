@@ -607,7 +607,7 @@ class Shipment{
     name.innerHTML = this.naam;
 
     let adres = document.createElement('td');
-    adres.innerHTML = `${this.straat} ${this.huisnummer} <br> ${this.postcode}, ${this.stad}`;
+    adres.innerHTML = `${this.straat} ${this.huisnummer}<br>${this.postcode}<br>${this.stad}`;
 
     let contact = document.createElement('td');
     contact.innerHTML = `<span><i class="fas fa-envelope"></i></span> ${(this.email !== "") ? `<a style=\"color: #9fda34;\" href=\"mailto:${this.email}\">${this.email}</a>` : "/"}<br><span><i class="fas fa-phone-alt"></i></span> ${(this.telefoon != '')?this.telefoon:'/'}`;
