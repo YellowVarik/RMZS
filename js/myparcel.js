@@ -40,6 +40,25 @@ var arrowDown = String.fromCharCode(9660);
 
 getMyParcelData();
 
+function search(){
+  var input = document.getElementById("searchBox");
+  var query = input.value.toLowerCase();
+
+  let tr = $('#zendingen').find('tr');
+  if(tr.length > 1){
+    for (let i = 1; i < tr.length; i++){
+      tr[i].remove();
+    }
+  }
+
+  for(let i = 0; i < zendingen.length; i++){
+    console.log(zendingen[i]);
+    if(zendingen[i].naam.toLowerCase().includes(query) || zendingen[i].stad.toLowerCase().includes(query) || zendingen[i].straat.toLowerCase().includes(query) || zendingen[i].postcode.toLowerCase().includes(query) || zendingen[i].email.toLowerCase().includes(query)){
+      zendingen[i].show($('#zendingen'));
+    }
+  }
+}
+
 function getPDF(id){
   let data = '';
   let requestId = id;
