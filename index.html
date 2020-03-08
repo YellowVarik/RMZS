@@ -32,29 +32,31 @@
 
       <div class="main_content">
           <div class="header">Klantgegevens</div>  
-          <input type='text' onkeyup="search()" id="searchBox" placeholder="Zoek een zending...">
 
-          <div class='filter' id='statusFilter'>
-            <ul class='filterList'>
+          <div class='filterContainer'>
+            <div class='filter' id='statusFilter'>
               <li class='filterTitle'>Status</li>
-              <li class='filterOption'><a onclick='filter("Status", "Status", this)'>Geen filter</a></li>
-              <li class='filterOption'><a onclick='filter("Status", 1, this)'>Concept</a></li>
-              <li class='filterOption'><a onclick='filter("Status", 2, this)'>Voorgemeld</a></li>
-              <li class='filterOption'><a onclick='filter("Status", 3, this)'>Onderweg</a></li>
-              <li class='filterOption'><a onclick='filter("Status", 4, this)'>Afgeleverd</a></li>
-              <li class='filterOption'><a onclick='filter("Status", 5, this)'>Retour</a></li>
-            </ul>
-          </div>
+              <ul class='filterList'>
+                <li class='filterOption'><a onclick='filter("Status", "Status", this)'>-</a></li>
+                <li class='filterOption'><a onclick='filter("Status", 1, this)'>Concept</a></li>
+                <li class='filterOption'><a onclick='filter("Status", 2, this)'>Voorgemeld</a></li>
+                <li class='filterOption'><a onclick='filter("Status", 3, this)'>Onderweg</a></li>
+                <li class='filterOption'><a onclick='filter("Status", 4, this)'>Afgeleverd</a></li>
+                <li class='filterOption'><a onclick='filter("Status", 5, this)'>Retour</a></li>
+              </ul>
+            </div>
 
-          <div class='filter' id='typeFilter'>
-            <ul class='filterList'>
+            <div class='filter' id='typeFilter'>
               <li class='filterTitle'>Type</li>
-              <li class='filterOption'><a onclick='filter("Type", "Type", this)'>Geen filter</a></li>
-              <li class='filterOption'><a onclick='filter("Type", 1, this)'>Standaard pakket</a></li>
-              <li class='filterOption'><a onclick='filter("Type", 2, this)'>Brievenbus pakket</a></li>
-              <li class='filterOption'><a onclick='filter("Type", 3, this)'>Brief</a></li>
-              <li class='filterOption'><a onclick='filter("Type", 4, this)'>Digitale postzegel</a></li>
-            </ul>
+              <ul class='filterList'>
+                <li class='filterOption'><a onclick='filter("Type", "Type", this)'>-</a></li>
+                <li class='filterOption'><a onclick='filter("Type", 1, this)'>Standaard pakket</a></li>
+                <li class='filterOption'><a onclick='filter("Type", 2, this)'>Brievenbus pakket</a></li>
+                <li class='filterOption'><a onclick='filter("Type", 3, this)'>Brief</a></li>
+                <li class='filterOption'><a onclick='filter("Type", 4, this)'>Digitale postzegel</a></li>
+              </ul>
+            </div>
+            <input type='text' onkeyup="search()" id="searchBox" placeholder="Zoek een zending...">
           </div>
 
           

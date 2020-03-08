@@ -1,24 +1,49 @@
+.filterContainer{
+  display: flex;
+  margin-bottom: 10px;
+  margin-top: 10px;
+  padding: 10px;
+}
+
 .filter{
   width: 150px;
+  margin-left: 20px;
+  position: relative;
+  display: inline-block;
+  text-align: center;
 }
+
+.filterOption a{
+  display: block;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  padding: 12px 16px;
+  z-index: 1000;
+  transition: background-color 0.2s ease;
+}
+
+.filterOption a:hover{
+  background-color: #717171;
+}
+
+.filterList{
+  position: absolute;
+  display: none;
+}
+
+.filter:hover .filterList{
+  display: block;
+}
+
+
 
 .filterTitle{
   background-color: #9fda34;
   color: white;
   text-align: center;
   width: 100%;
-}
-
-.filterOption{
-  display: none;
-  background-color: #414141;
-  color: white;
-  width: 100%;
-  text-align: center;
-}
-
-.filter:hover .filterOption{
   display: block;
+  min-width: 160px;
 }
 
 .reload i{
@@ -72,10 +97,8 @@ input[type=text]{
   transition: border-color 0.2s ease;
   padding: 5px;
   box-sizing: border-box;
-  float: right;
   margin-right: 10px;
-  margin-bottom: 10px;
-  margin-top: 10px;
+  margin-left: auto;
 }
 
 input[type=text]:focus{
