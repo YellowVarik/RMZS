@@ -1,3 +1,26 @@
+.filter{
+  width: 150px;
+}
+
+.filterTitle{
+  background-color: #9fda34;
+  color: white;
+  text-align: center;
+  width: 100%;
+}
+
+.filterOption{
+  display: none;
+  background-color: #414141;
+  color: white;
+  width: 100%;
+  text-align: center;
+}
+
+.filter:hover .filterOption{
+  display: block;
+}
+
 .reload i{
   transform: rotate(0deg);
   transition: transform 0.3s;

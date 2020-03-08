@@ -31,6 +31,8 @@ var loadScreen = $(`
 </div>`)
 
 var gesorteerd = null;
+var typeFilter = null;
+var statusFilter = null;
 var zendingen = [];
 var selectedParcels = [];
 var parcelsToDelete = [];
@@ -52,11 +54,81 @@ function search(){
   }
 
   for(let i = 0; i < zendingen.length; i++){
-    console.log(zendingen[i]);
     if(zendingen[i].naam.toLowerCase().includes(query) || zendingen[i].stad.toLowerCase().includes(query) || zendingen[i].straat.toLowerCase().includes(query) || zendingen[i].postcode.toLowerCase().includes(query) || zendingen[i].email.toLowerCase().includes(query)){
       zendingen[i].show($('#zendingen'));
     }
   }
+}
+
+function filter(category, value, element){
+  console.log(`Statusfilter: ${statusFilter}`);
+  console.log(`Typefilter: ${typeFilter}`);
+
+  let tr = $('#zendingen').find('tr');
+  if(tr.length > 1){
+    for (let i = 1; i < tr.length; i++){
+      tr[i].remove();
+    }
+  }
+
+  switch(category){
+    case 'Status':
+      for(let i = 0; i < zendingen.length; i++){
+        if(category == value){
+          zendingen[i].show($('#zendingen'));
+        }
+        else if(typeFilter !== null){
+          if(zendingen[i].status == value && zendingen[i].type == typeFilter){
+            zendingen[i].show($('#zendingen'));
+          }
+        }
+        else{
+          if(zendingen[i].status == value){
+            zendingen[i].show($('#zendingen'));
+          }
+        }
+      }
+
+      if(category == value){
+        $('#statusFilter').find('.filterTitle').eq(0).text('Status')
+        statusFilter = null;
+      }
+      else if(element !== null){
+        $('#statusFilter').find('.filterTitle').eq(0).text(element.innerHTML);
+        statusFilter = value;
+      }
+      
+      break;
+    case 'Type':
+      for(let i = 0; i < zendingen.length; i++){
+        if(category == value){
+          zendingen[i].show($('#zendingen'));
+        }
+        else if(statusFilter !== null){
+          if(zendingen[i].type == value && zendingen[i].status == statusFilter){
+            zendingen[i].show($('#zendingen'));
+          }
+        }
+        else{
+          if(zendingen[i].type == value){
+            zendingen[i].show($('#zendingen'));
+          }
+        }
+      }
+
+      if(category == value){
+        $('#typeFilter').find('.filterTitle').eq(0).text('Type')
+        typeFilter = null;
+      }
+      else if(element !== null){
+        $('#typeFilter').find('.filterTitle').eq(0).text(element.innerHTML);
+        typeFilter = value;
+      }
+      break;
+      
+  }
+
+
 }
 
 function getPDF(id){
@@ -240,6 +312,12 @@ function redisplayMPInfo(sortingMethod){
   }
 
   search();
+  if(statusFilter !== null){
+    filter('Status', statusFilter, null);
+  }
+  else if(typeFilter !== null){
+    filter('Type', typeFilter, null);
+  }
 }
 
 function openPDF(filePath){
