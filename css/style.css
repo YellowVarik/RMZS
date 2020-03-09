@@ -45,6 +45,13 @@
   width: 100%;
   display: block;
   min-width: 160px;
+  border-right: 2px solid white;
+  cursor: pointer;
+}
+
+.filterLabel{
+  font-size: 18px;
+  color: white;
 }
 
 .reload i{
@@ -317,70 +324,64 @@ body{
   width: 50px;
   height: 100%;
   background: #414141;
-  padding: 30px 0px;
   color: white;
   position: fixed;
   transition: width 0.2s ease;
-  z-index: 10000000000;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
 }
 
 .wrapper .sidebar.extended{
   width: 200px;
 }
 
-.wrapper .sidebar ul a{
-  
+.wrapper .sidebar a{
+  font-size: 0;
   display: block;
   width: 100%;
   height: 50px;
-  visibility: hidden;
   float: left;
-  transition: display 0.2s ease;
+  transition: background-color 0.2s ease;
   color: white !important; 
   overflow: hidden;
-  margin: 0;
-  padding: 0;
-  line-height: 100%;
+  line-height: 50px;
+  text-align: center;
 }
 
-.wrapper .sidebar ul a i{
+.wrapper .sidebar a:hover{
+  background-color: #717171;
+}
+
+.wrapper .sidebar a i{
+  text-indent: 0px;
   visibility: visible;
-  float: left;
   overflow: visible;
+  font-size: 20px;
 }
 
-.wrapper .sidebar.extended ul a{
-  visibility: visible;
+.wrapper .sidebar.extended a{
+  font-size: 15px;
 }
 
 .wrapper .sidebar .fa-arrow-right{
   transform: rotate(0deg);
-  position: absolute;
-  top: 5px;
-  left: 5px;
   transition: transform 0.2s;
-  font-size: 30px;
 }
 
 .wrapper .sidebar.extended .fa-arrow-right{
   transform: rotate(180deg);
 }
 
-.wrapper .sidebar ul{
-  margin-top: 50px;
+.wrapper .sidebar .extendButton{
+  border-bottom: 2px solid white;
+  visibility: visible;
+  padding: 30px 0px;
+  height: auto;
 }
 
-.wrapper .sidebar ul li{
-  padding: 15px;
-  border-bottom: 1px solid #bdb8d7;
-  border-bottom: 1px solid rgba(0,0,0,0.05);
-  border-top: 1px solid rgba(255,255,255,0.05);
-  height: 50px;
-  text-align: center;
-}  
-
-.wrapper .sidebar ul li:hover{
-  background-color: #594f8d;
+.wrapper .sidebar a:last-of-type{
+  margin-top: auto;
 }
 
 .wrapper .main_content{
