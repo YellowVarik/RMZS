@@ -61,8 +61,6 @@ function search(){
 }
 
 function filter(category, value, element){
-  console.log(`Statusfilter: ${statusFilter}`);
-  console.log(`Typefilter: ${typeFilter}`);
 
   let tr = $('#zendingen').find('tr');
   if(tr.length > 1){

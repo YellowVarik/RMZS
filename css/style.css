@@ -157,14 +157,17 @@ input[type=text]:focus{
     height : 100px;
     position: absolute;
     left: 50%;
-    top: 500px;
+    top: 50vh;
 }
 
 
 
 .barcode{
-  text-decoration: underline !important;
   color: #9fda34 !important;
+}
+
+.barcode:hover{
+  text-decoration: underline !important;
 }
 
 .sk-circle {
