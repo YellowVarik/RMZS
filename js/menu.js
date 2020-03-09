@@ -5,10 +5,12 @@ var extended = false;
 function extendMenu(){
     if(extended){
         $('.sidebar').eq(0).removeClass("extended")
+        $('.main_content').eq(0).removeClass("extended")
         extended = false;
     }
     else{
         $('.sidebar').eq(0).addClass("extended")
+        $('.main_content').eq(0).addClass("extended")
         extended = true;
     }
 }
