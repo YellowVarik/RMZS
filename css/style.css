@@ -130,7 +130,7 @@ input[type=text]:focus{
 #zendingen{
     margin-left: auto;
     margin-right: auto;
-    width: 80%;
+    width: 100%;
     color: white;
     padding: 5px 5px;
 }
@@ -321,30 +321,42 @@ body{
   color: white;
   position: fixed;
   transition: width 0.2s ease;
+  z-index: 10000000000;
 }
 
-.wrapper .sidebar:hover{
+.wrapper .extended{
   width: 200px;
 }
 
-.wrapper .sidebar a{
+.wrapper .sidebar ul a{
   display: none;
   float: left;
 }
 
 .wrapper .sidebar i{
   float: left;
+  padding: 5px 5px;
 }
 
-.wrapper .sidebar:hover a{
+.wrapper .extended ul a{
   display: block;
 }
 
-.wrapper .sidebar h2{
-  color: #fff;
-  text-transform: uppercase;
-  text-align: center;
-  margin-bottom: 30px;
+.wrapper .sidebar .fa-arrow-right{
+  transform: rotate(0deg);
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  transition: transform 0.2s;
+  font-size: 30px;
+}
+
+.wrapper .extended .fa-arrow-right{
+  transform: rotate(180deg);
+}
+
+.wrapper .sidebar ul{
+  margin-top: 50px;
 }
 
 .wrapper .sidebar ul li{
@@ -352,21 +364,9 @@ body{
   border-bottom: 1px solid #bdb8d7;
   border-bottom: 1px solid rgba(0,0,0,0.05);
   border-top: 1px solid rgba(255,255,255,0.05);
-<<<<<<< HEAD
-}    
-
-.wrapper .sidebar ul li a{
-  color: white;
-  display: block;
-}
-
-.wrapper .sidebar ul li a .fas{
-  width: 25px;
-}
-=======
   height: 50px;
+  color: white;
 }  
->>>>>>> 7a127157a8ef07a65a485e0370b9b67802f816b5
 
 .wrapper .sidebar ul li:hover{
   background-color: #594f8d;
@@ -377,8 +377,8 @@ body{
 }
 
 .wrapper .main_content{
-  width: 100%;
-  margin-left: 200px;
+  width: calc(100% - 50px);
+  margin-left: 50px;
 }
 
 .wrapper .main_content .header{

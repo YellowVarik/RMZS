@@ -12,7 +12,7 @@
 
   <div class="wrapper">
       <div class="sidebar">
-          <h2>Menu</h2>
+        <a onclick='extendMenu()'><i class="fas fa-arrow-right"></i></a>
           <ul>
               <li><span><i class="fas fa-home"></i><a href="#"> Home</a></span></li>
               <li><i class="fas fa-user"></i><a href="#">Profile</a></li>
@@ -56,7 +56,7 @@
           
 
           <div id='myparcel'>
-            <table id='zendingen' style='width: 100%;'>
+            <table id='zendingen'>
               <tr>
                 <th><span><a onclick='selectAllParcels()'><i id="selectAllIcon" class="fas fa-square checkmark"></i></a></span></th>
                 <th><a onclick='sortType()' class='sortBtn' id='typeButton'>Type</a></th>
