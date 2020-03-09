@@ -314,11 +314,30 @@ body{
 }
 
 .wrapper .sidebar{
-  width: 200px;
+  width: 50px;
   height: 100%;
   background: #414141;
   padding: 30px 0px;
+  color: white;
   position: fixed;
+  transition: width 0.2s ease;
+}
+
+.wrapper .sidebar:hover{
+  width: 200px;
+}
+
+.wrapper .sidebar a{
+  display: none;
+  float: left;
+}
+
+.wrapper .sidebar i{
+  float: left;
+}
+
+.wrapper .sidebar:hover a{
+  display: block;
 }
 
 .wrapper .sidebar h2{
@@ -333,6 +352,7 @@ body{
   border-bottom: 1px solid #bdb8d7;
   border-bottom: 1px solid rgba(0,0,0,0.05);
   border-top: 1px solid rgba(255,255,255,0.05);
+<<<<<<< HEAD
 }    
 
 .wrapper .sidebar ul li a{
@@ -343,6 +363,10 @@ body{
 .wrapper .sidebar ul li a .fas{
   width: 25px;
 }
+=======
+  height: 50px;
+}  
+>>>>>>> 7a127157a8ef07a65a485e0370b9b67802f816b5
 
 .wrapper .sidebar ul li:hover{
   background-color: #594f8d;
@@ -350,27 +374,6 @@ body{
     
 .wrapper .sidebar ul li:hover a{
   color: #fff;
-}
- 
-.wrapper .sidebar .social_media{
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-}
-
-.wrapper .sidebar .social_media a{
-  display: block;
-  width: 40px;
-  background: #594f8d;
-  height: 40px;
-  line-height: 45px;
-  text-align: center;
-  margin: 0 5px;
-  color: #bdb8d7;
-  border-top-left-radius: 5px;
-  border-top-right-radius: 5px;
 }
 
 .wrapper .main_content{
@@ -393,10 +396,4 @@ body{
 
 .wrapper .main_content .info div{
   margin-bottom: 20px;
-}
-
-@media (max-height: 500px){
-  .social_media{
-    display: none !important;
-  }
 }
