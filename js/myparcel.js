@@ -304,9 +304,6 @@ function redisplayMPInfo(sortingMethod){
   zendingen.sort(sortingMethod);
   for(let i = 0; i < zendingen.length; i++){
     zendingen[i].show($('#zendingen'));
-    if(selectedParcels.includes(zendingen[i].id)){
-      $('#myparcel').find('.checkmark').eq(i + 1).removeClass("fa-square").addClass("fa-check-square");
-    }
   }
 
   search();
@@ -666,7 +663,7 @@ class Shipment{
     let row = document.createElement('tr');
     row.setAttribute('data-id', this.id);
 
-    let checkMark = $(`<td><span><a onclick="selectParcel(${this.id})"><i class="fas fa-square checkmark checkmark${this.id}"></i></a></span></td>`);
+    let checkMark = $(`<td><span><a onclick="selectParcel(${this.id})"><i class="fas ${(selectedParcels.includes(this.id))?'fa-check-square':'fa-square'} checkmark checkmark${this.id}"></i></a></span></td>`);
     checkMark.appendTo(row);
 
     let type = document.createElement('td');
