@@ -358,6 +358,7 @@ body{
   visibility: visible;
   overflow: visible;
   font-size: 20px;
+  line-height: 50px;
 }
 
 .wrapper .sidebar.extended a{
