@@ -154,6 +154,10 @@ input[type=text]:focus{
     vertical-align: middle;
 }
 
+#zendingen tr i{
+  padding: 0 10px;
+}
+
 .sortBtn:hover{
   color: #707070 !important;
 }
