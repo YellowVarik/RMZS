@@ -278,7 +278,7 @@ function displayMPInfo(data){
   //Elke zending wordt apart weergegeven
   for(var i = 0; i < count; i++){
     let klant = zending[i].recipient;
-    let shipment = new Shipment(zending[i].id, zending[i].options.package_type, (zending[i].options.label_description.includes('retour'))?5:zending[i].status, zending[i].barcode, klant.person, klant.postal_code, klant.street, klant.number + klant.number_suffix, klant.city, klant.email, klant.phone, new Date(zending[i].modified));
+    let shipment = new Shipment(zending[i].id, zending[i].options.package_type, (zending[i].options.label_description.includes('retour'))?5:zending[i].status, zending[i].barcode, klant.person, klant.postal_code, klant.street, klant.number + klant.number_suffix, klant.city, klant.cc, klant.email, klant.phone, new Date(zending[i].modified));
   zendingen[i] = shipment;
   }
   zendingen.forEach(function (item){
@@ -352,6 +352,38 @@ function selectParcel(id){
       $('#myparcel').find(".checkmark").eq(0).removeClass('fa-square').addClass("fa-check-square");
     }
   }
+}
+
+function TrackTrace(id){
+  let data = '';
+  var options = {
+    hostname: mpURL,
+    path: `/tracktraces/${id}`,
+    method: "GET",
+    headers:{
+      "Host": mpURL,
+      "Authorization": `base ${base64Key}`,
+      "Content-Type": "application/json;charset=utf-8",
+      "Connection": "keep-alive",
+      "Pragma": "no-cache",
+      "Cache-Control": "no-cache",
+      "Upgrade-Insecure-Requests": 1,
+      "Accept-Encoding": "gzip, deflate, sdch, br",
+      "User-Agent": "CustomApiCall/2"
+    }
+  }
+
+  var request = https.request(options, (response)=>{
+    response.on('data', (d) => {
+      data += d;
+    })
+
+    response.on('end', ()=>{
+      console.log(data);
+    })
+  })
+
+  request.end();
 }
 
 function selectAllParcels(){
@@ -614,7 +646,7 @@ function typeKleinGroot(a,b){
 }
 class Shipment{
   
-  constructor(id, type, status, barcode, naam, postcode, straat, huisnummer, stad, email, telefoon, datum){
+  constructor(id, type, status, barcode, naam, postcode, straat, huisnummer, stad, land, email, telefoon, datum){
     this.id = id;
     this.type = type;
     this.status = status;
@@ -624,6 +656,7 @@ class Shipment{
     this.straat = straat;
     this.huisnummer = huisnummer;
     this.stad = stad;
+    this.land = land;
     this.email = email;
     this.telefoon = telefoon;
     this.datum = datum;
@@ -685,7 +718,7 @@ class Shipment{
     name.innerHTML = this.naam;
 
     let adres = document.createElement('td');
-    adres.innerHTML = `${this.straat} ${this.huisnummer}<br>${this.postcode}<br>${this.stad}`;
+    adres.innerHTML = `${this.straat} ${this.huisnummer}<br>${this.postcode}<br>${this.stad}, ${this.land}`;
 
     let contact = document.createElement('td');
     contact.innerHTML = `<span><i class="fas fa-envelope"></i></span> ${(this.email !== "") ? `<a style=\"color: #9fda34;\" href=\"mailto:${this.email}\">${this.email}</a>` : "/"}<br><span><i class="fas fa-phone-alt"></i></span> ${(this.telefoon != '')?this.telefoon:'/'}`;
