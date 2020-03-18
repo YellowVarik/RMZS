@@ -29,10 +29,9 @@ async function makePDF(){
     const regular = await doc.embedFont(fs.readFileSync(fontRegular));
     const code39 = await doc.embedFont(fs.readFileSync(fontBarcode));
     const bold = await doc.embedFont(fs.readFileSync(fontBold))
-    const banner = await doc.embedPng(fs.readFileSync('./img/banner.png'));
     const logo = await doc.embedPng(fs.readFileSync('./img/logo.png'));
 
-    const bannerDims = banner.scale(0.25);
+    
     const logoDims = logo.scale(0.3);
 
     const page = doc.addPage();
@@ -227,14 +226,218 @@ async function makePDF(){
         color: rgb(0,0,0)
     })
 
+    //----TabelHeader----
+    page.drawRectangle({
+        x: 20,
+        y: height - 3*pakbonTextHeight - 2*boldTextHeight - 4*regularTextHeight - 3*gapSize - 55,
+        width: width - 40,
+        height: regularTextHeight + 5,
+        color: rgb(0.4, 0.4, 0.4)
+    })
+
+    var omschrijvingTitelText = 'Omschrijving';
+    page.drawText(omschrijvingTitelText, {
+        x: 22,
+        y: height - 3*pakbonTextHeight - 2*boldTextHeight - 4*regularTextHeight - 3*gapSize - 50,
+        size: textSize,
+        font: regular,
+        color: rgb(1, 1, 1)
+    })
+
+    var ArtikelCodeTitelText = 'Artikelcode';
+    page.drawText(ArtikelCodeTitelText, {
+        x: width / 2 + 20,
+        y: height - 3*pakbonTextHeight - 2*boldTextHeight - 4*regularTextHeight - 3*gapSize - 50,
+        size: textSize,
+        font: regular,
+        color: rgb(1, 1, 1)
+    })
+
+    var SKUTitelText = 'SKU';
+    page.drawText(SKUTitelText, {
+        x: width / 2 + 100,
+        y: height - 3*pakbonTextHeight - 2*boldTextHeight - 4*regularTextHeight - 3*gapSize - 50,
+        size: textSize,
+        font: regular,
+        color: rgb(1, 1, 1)
+    })
+
+    var HSTitelText = 'HS';
+    page.drawText(HSTitelText, {
+        x: width / 2 + 150,
+        y: height - 3*pakbonTextHeight - 2*boldTextHeight - 4*regularTextHeight - 3*gapSize - 50,
+        size: textSize,
+        font: regular,
+        color: rgb(1, 1, 1)
+    })
+
+    var aantalTitelText = 'Aantal';
+    page.drawText(aantalTitelText, {
+        x: width / 2 + 200,
+        y: height - 3*pakbonTextHeight - 2*boldTextHeight - 4*regularTextHeight - 3*gapSize - 50,
+        size: textSize,
+        font: regular,
+        color: rgb(1, 1, 1)
+    })
+
+    //----TabelContent----
+    page.drawRectangle({
+        x: 20,
+        y: height - 3*pakbonTextHeight - 2*boldTextHeight - 4*regularTextHeight - 3*gapSize - 55 - regularTextHeight - 5,
+        width: width - 40,
+        height: regularTextHeight + 5,
+        color: rgb(0.9, 0.9, 0.9)
+    })
+
+    page.drawRectangle({
+        x: 22,
+        y: height - 3*pakbonTextHeight - 2*boldTextHeight - 5*regularTextHeight - 3*gapSize - 50 - 7,
+        width: boldTextHeight,
+        height: boldTextHeight,
+        color: rgb(1,1,1),
+        borderColor: rgb(0,0,0),
+        borderWidth: 1
+    })
+
+    var omschrijvingText = 'Grijze Trui';
+    page.drawText(omschrijvingText, {
+        x: 25 + boldTextHeight,
+        y: height - 3*pakbonTextHeight - 2*boldTextHeight - 5*regularTextHeight - 3*gapSize - 50 - 5,
+        size: textSize,
+        font: bold,
+        color: rgb(0, 0, 0)
+    })
+
+    var ArtikelCodetext = 'FY04';
+    page.drawText(ArtikelCodetext, {
+        x: width / 2 + 20,
+        y: height - 3*pakbonTextHeight - 2*boldTextHeight - 5*regularTextHeight - 3*gapSize - 50 - 5,
+        size: textSize,
+        font: regular,
+        color: rgb(0, 0, 0)
+    })
+
+    var aantalText = '1x';
+    page.drawText(aantalText, {
+        x: width / 2 + 200,
+        y: height - 3*pakbonTextHeight - 2*boldTextHeight - 5*regularTextHeight - 3*gapSize - 50 - 5,
+        size: textSize,
+        font: regular,
+        color: rgb(0, 0, 0)
+    })
+
+    //----Klantgegevens----
+    //----VerzendAdres----
+    var verzendAdresTitelText = 'Verzendadres:'
+    page.drawText(verzendAdresTitelText, {
+        x: 20,
+        y: height - 3*pakbonTextHeight - 3*boldTextHeight - 5*regularTextHeight - 5*gapSize - 50 - 5,
+        size: textSize,
+        font: bold,
+        color: rgb(0, 0, 0)
+    })
+
+    var verzendAdresNaamText = 'Youri Gooijer';
+    page.drawText(verzendAdresNaamText, {
+        x: 20,
+        y: height - 3*pakbonTextHeight - 4*boldTextHeight - 5*regularTextHeight - 5*gapSize - 50 - 5,
+        size: textSize,
+        font: regular,
+        color: rgb(0, 0, 0)
+    })
+
+    var verzendAdresStraatText = 'Doctor D.M. van Londenstraat';
+    page.drawText(verzendAdresStraatText, {
+        x: 20,
+        y: height - 3*pakbonTextHeight - 4*boldTextHeight - 6*regularTextHeight - 5*gapSize - 50 - 5,
+        size: textSize,
+        font: regular,
+        color: rgb(0, 0, 0)
+    })
+
+    var verzendAdresHuisnummerText = '56';
+    page.drawText(verzendAdresHuisnummerText, {
+        x: 20,
+        y: height - 3*pakbonTextHeight - 4*boldTextHeight - 7*regularTextHeight - 5*gapSize - 50 - 5,
+        size: textSize,
+        font: regular,
+        color: rgb(0, 0, 0)
+    })
+
+    var verzendAdresPostcodeText = '4064 EM Varik';
+    page.drawText(verzendAdresPostcodeText, {
+        x: 20,
+        y: height - 3*pakbonTextHeight - 4*boldTextHeight - 8*regularTextHeight - 5*gapSize - 50 - 5,
+        size: textSize,
+        font: regular,
+        color: rgb(0, 0, 0)
+    })
+
+    var verzendAdresLandText = 'Nederland';
+    page.drawText(verzendAdresLandText, {
+        x: 20,
+        y: height - 3*pakbonTextHeight - 4*boldTextHeight - 9*regularTextHeight - 5*gapSize - 50 - 5,
+        size: textSize,
+        font: regular,
+        color: rgb(0, 0, 0)
+    })
+
+    //----FactuurAdres----
+    var FactuurAdresTitelText = 'Factuuradres';
+    page.drawText(FactuurAdresTitelText, {
+        x: (width-40)/2,
+        y: height - 3*pakbonTextHeight - 3*boldTextHeight - 5*regularTextHeight - 5*gapSize - 50 - 5,
+        size: textSize,
+        font: bold,
+        color: rgb(0,0,0)
+    })
+
+    var factuurAdresNaamText = 'Youri Gooijer';
+    page.drawText(factuurAdresNaamText, {
+        x: (width-40)/2,
+        y: height - 3*pakbonTextHeight - 4*boldTextHeight - 5*regularTextHeight - 5*gapSize - 50 - 5,
+        size: textSize,
+        font: regular,
+        color: rgb(0, 0, 0)
+    })
+
+    var factuurAdresStraatText = 'Doctor D.M. van Londenstraat';
+    page.drawText(verzendAdresStraatText, {
+        x: (width-40)/2,
+        y: height - 3*pakbonTextHeight - 4*boldTextHeight - 6*regularTextHeight - 5*gapSize - 50 - 5,
+        size: textSize,
+        font: regular,
+        color: rgb(0, 0, 0)
+    })
+
+    var factuurAdresHuisnummerText = '56';
+    page.drawText(factuurAdresHuisnummerText, {
+        x: (width-40)/2,
+        y: height - 3*pakbonTextHeight - 4*boldTextHeight - 7*regularTextHeight - 5*gapSize - 50 - 5,
+        size: textSize,
+        font: regular,
+        color: rgb(0, 0, 0)
+    })
+
+    var factuurAdresPostcodeText = '4064 EM Varik';
+    page.drawText(factuurAdresPostcodeText, {
+        x: (width-40)/2,
+        y: height - 3*pakbonTextHeight - 4*boldTextHeight - 8*regularTextHeight - 5*gapSize - 50 - 5,
+        size: textSize,
+        font: regular,
+        color: rgb(0, 0, 0)
+    })
+
+    var factuurAdresLandText = 'Nederland';
+    page.drawText(factuurAdresLandText, {
+        x: (width-40)/2,
+        y: height - 3*pakbonTextHeight - 4*boldTextHeight - 9*regularTextHeight - 5*gapSize - 50 - 5,
+        size: textSize,
+        font: regular,
+        color: rgb(0, 0, 0)
+    })
 
     //----Plaatjes----
-    page.drawImage(banner, {
-        x: 0,
-        y: 0,
-        width: bannerDims.width,
-        height: bannerDims.height
-    })
 
     page.drawImage(logo, {
         x: 10,
