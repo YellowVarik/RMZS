@@ -278,7 +278,7 @@ function displayMPInfo(data){
   //Elke zending wordt apart weergegeven
   for(var i = 0; i < count; i++){
     let klant = zending[i].recipient;
-    let shipment = new Shipment(zending[i].id, zending[i].options.package_type, (zending[i].options.label_description.includes('retour'))?5:zending[i].status, zending[i].barcode, klant.person, klant.postal_code, klant.street, klant.number + klant.number_suffix, klant.city, klant.cc, klant.email, klant.phone, new Date(zending[i].modified));
+    let shipment = new Shipment(zending[i].id, zending[i].options.package_type, (zending[i].options.label_description.includes('retour'))?5:zending[i].status, zending[i].options.label_description, zending[i].barcode, klant.person, klant.postal_code, klant.street, klant.number + klant.number_suffix, klant.city, klant.cc, klant.email, klant.phone, new Date(zending[i].modified));
   zendingen[i] = shipment;
   }
   zendingen.forEach(function (item){
@@ -643,10 +643,11 @@ function typeKleinGroot(a,b){
 }
 class Shipment{
   
-  constructor(id, type, status, barcode, naam, postcode, straat, huisnummer, stad, land, email, telefoon, datum){
+  constructor(id, type, status, kenmerk, barcode, naam, postcode, straat, huisnummer, stad, land, email, telefoon, datum){
     this.id = id;
     this.type = type;
     this.status = status;
+    this.kenmerk = kenmerk;
     this.barcode = barcode;
     this.naam = naam;
     this.postcode = postcode;
@@ -708,6 +709,9 @@ class Shipment{
         break;
     }
 
+    let kenmerk = document.createElement('td');
+    kenmerk.innerHTML = this.kenmerk;
+
     let barcode = document.createElement('td');
     barcode.innerHTML = (this.barcode != '')?`<a class='barcode' onclick = 'getTrackTrace(\"${this.barcode}\", \"${this.postcode}\")'>${this.barcode}</a>`:'/';
 
@@ -726,7 +730,7 @@ class Shipment{
     let buttons = document.createElement('td');
     buttons.innerHTML = `<span><a onclick='getPDF(${this.id})'><i class='fas fa-file-pdf fa-lg'></i>${(this.status == 1)? `<a onclick='deleteShipment(${this.id})'><i class='fas fa-trash fa-lg' style='color: red'></i></a>`: ''}</span>`;
 
-    row.append(type, status, barcode, name, adres, contact, datum, buttons);
+    row.append(type, status, kenmerk, barcode, name, adres, contact, datum, buttons);
     parent.append(row);
   }
 }
