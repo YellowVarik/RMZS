@@ -55,8 +55,38 @@
           
 
           <div id='myparcel'>
-            <table id='zendingen'>
-              <tr class='myParcelHeader'>
+
+            <table class="tableFixHead" style="width: 100%;">
+
+              <thead>
+                <!-- <th><span><a onclick='selectAllParcels()'><i id="selectAllIcon" class="fas fa-square checkmark"></i></a></span></th>
+                <th>Type</th>
+                <th>Status</th>
+                <th>Kenmerk</th>
+                <th>Barcode</th>
+                <th>Naam</th>
+                <th>Adres</th>
+                <th>Contact</th>
+                <th>Datum</th>
+              <th><a class='reload' onclick="getMyParcelData(); $(this).addClass('spin'); $(this).on('transitionend MSTransitionEnd webkitTransitionEnd oTransitionEnd', ()=>{$(this).addClass('notransition');$(this).removeClass('spin');$(this)[0].offsetHeight; $(this).removeClass('notransition')})"><i class="fas fa-sync"></i></a>  <a onclick='getPDF(selectedParcels)'><i class="fas fa-print"></i></a></th> -->
+              
+              <th><span><a onclick='selectAllParcels()'><i id="selectAllIcon" class="fas fa-square checkmark"></i></a></span></th>
+                <th><a onclick='sortType()' class='sortBtn' id='typeButton'>Type</a></th>
+                <th><a onclick='sortStatus()' class='sortBtn' id='statusButton'>Status</a></th>
+                <th>Kenmerk</th>
+                <th>Barcode</th>
+                <th><a onclick='sortNaam()' class='sortBtn' id="naamButton">Naam</a></th>
+                <th><a onclick="sortStad()" class='sortBtn' id='stadButton'>Adres</a></th>
+                <th>Contact</th>
+                <th><a onclick="sortDatum()" class='sortBtn' id="datumButton">Datum</a></th>
+              <th><a class='reload' onclick="getMyParcelData(); $(this).addClass('spin'); $(this).on('transitionend MSTransitionEnd webkitTransitionEnd oTransitionEnd', ()=>{$(this).addClass('notransition');$(this).removeClass('spin');$(this)[0].offsetHeight; $(this).removeClass('notransition')})"><i class="fas fa-sync"></i></a>  <a onclick='getPDF(selectedParcels)'><i class="fas fa-print"></i></a></th>
+            
+            </thead>
+
+              <tbody id='zendingen'>
+              </tbody>
+            
+              <!-- <tr class='myParcelHeader'>
                 <th><span><a onclick='selectAllParcels()'><i id="selectAllIcon" class="fas fa-square checkmark"></i></a></span></th>
                 <th><a onclick='sortType()' class='sortBtn' id='typeButton'>Type</a></th>
                 <th><a onclick='sortStatus()' class='sortBtn' id='statusButton'>Status</a></th>
@@ -67,8 +97,9 @@
                 <th>Contact</th>
                 <th><a onclick="sortDatum()" class='sortBtn' id="datumButton">Datum</a></th>
               <th><a class='reload' onclick="getMyParcelData(); $(this).addClass('spin'); $(this).on('transitionend MSTransitionEnd webkitTransitionEnd oTransitionEnd', ()=>{$(this).addClass('notransition');$(this).removeClass('spin');$(this)[0].offsetHeight; $(this).removeClass('notransition')})"><i class="fas fa-sync"></i></a>  <a onclick='getPDF(selectedParcels)'><i class="fas fa-print"></i></a></th>
-              </tr>
+              </tr> -->
             </table>
+
           </div>
 
       </div>
