@@ -9,8 +9,8 @@
   z-index: 20;
 }
 
-.tableFixHead          { overflow-y: auto; height: 100px; }
-.tableFixHead thead th { position: sticky; top: 20px; }
+.tableFixHead          { overflow-y: auto; height: 100px; color: white;}
+.tableFixHead thead th { position: sticky; background: #9fda34; top: 50px; }
 
 
 .filter{

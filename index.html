@@ -13,13 +13,13 @@
   <div class="wrapper">
       <div class="sidebar">
         <a onclick='extendMenu()' class='extendButton'><i class="fas fa-arrow-right"></i></a>
-        <a href="#"><i class="fas fa-home"></i> Home</a>
-        <a href="#"><i class="fas fa-user"></i> Profiel</a>
-        <a href='#'><i class="fas fa-rocket"></i> Lightspeed</a>
+        <a href="home.html"><i class="fas fa-home"></i> Home</a>
+        <a href="index.html"><i class="fas fa-box-open"></i> Orders</a>
+        <!-- <a href='#'><i class="fas fa-rocket"></i> Lightspeed</a>
         <a href="#"><i class="fas fa-project-diagram"></i> portfolio</a>
         <a href="#"><i class="fas fa-blog"></i> Blogs</a>
-        <a href="#"><i class="fas fa-address-book"></i> Contact</a>
-        <a href="#"><i class="fas fa-cog"></i> Instellingen</a>
+        <a href="#"><i class="fas fa-address-book"></i> Contact</a> -->
+        <a href="settings.html"><i class="fas fa-cog"></i> Instellingen</a>
       </div>
 
 
@@ -49,7 +49,7 @@
                 <li class='filterOption'><a onclick='filter("Type", 4, this)'>Digitale postzegel</a></li>
               </ul>
             </div>
-            <input type='text' onkeyup="search()" id="searchBox" placeholder="Zoek een zending...">
+            <input type='text' onkeyup="search()" id="searchBox" placeholder="Zoek een zending..."><a class='reload' onclick="getMyParcelData(); $(this).addClass('spin'); $(this).on('transitionend MSTransitionEnd webkitTransitionEnd oTransitionEnd', ()=>{$(this).addClass('notransition');$(this).removeClass('spin');$(this)[0].offsetHeight; $(this).removeClass('notransition')})"><i class="fas fa-sync"></i></a>
           </div>
 
           
@@ -70,7 +70,7 @@
                 <th>Datum</th>
               <th><a class='reload' onclick="getMyParcelData(); $(this).addClass('spin'); $(this).on('transitionend MSTransitionEnd webkitTransitionEnd oTransitionEnd', ()=>{$(this).addClass('notransition');$(this).removeClass('spin');$(this)[0].offsetHeight; $(this).removeClass('notransition')})"><i class="fas fa-sync"></i></a>  <a onclick='getPDF(selectedParcels)'><i class="fas fa-print"></i></a></th> -->
               
-              <th><span><a onclick='selectAllParcels()'><i id="selectAllIcon" class="fas fa-square checkmark"></i></a></span></th>
+              <th><span><a onclick='selectAllParcels()'><i id="selectAllIcon" class="fas fa-square checkmark" style="padding-left: 23.5%;"></i></a></span></th>
                 <th><a onclick='sortType()' class='sortBtn' id='typeButton'>Type</a></th>
                 <th><a onclick='sortStatus()' class='sortBtn' id='statusButton'>Status</a></th>
                 <th>Kenmerk</th>
@@ -79,7 +79,7 @@
                 <th><a onclick="sortStad()" class='sortBtn' id='stadButton'>Adres</a></th>
                 <th>Contact</th>
                 <th><a onclick="sortDatum()" class='sortBtn' id="datumButton">Datum</a></th>
-              <th><a class='reload' onclick="getMyParcelData(); $(this).addClass('spin'); $(this).on('transitionend MSTransitionEnd webkitTransitionEnd oTransitionEnd', ()=>{$(this).addClass('notransition');$(this).removeClass('spin');$(this)[0].offsetHeight; $(this).removeClass('notransition')})"><i class="fas fa-sync"></i></a>  <a onclick='getPDF(selectedParcels)'><i class="fas fa-print"></i></a></th>
+              <th><a style="margin-right: 1vw; padding-left: 14%;" onclick='getPDF(selectedParcels)'><i class="fas fa-print"></i></a></th>
             
             </thead>
 
