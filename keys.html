@@ -10,27 +10,22 @@
     <form class="login-form">
       <img src="img/logo.png">
       <h3>Inloggegevens</h3>
-      <input class="namecreate" type="name" placeholder="Naam"/>
-      <input class="usernamecreate" type="username" placeholder="Gebruikersnaam"/>
-      <input class="passwordcreate" type="password" placeholder="Wachtwoord"/>
+      <input class="namecreate" type="name" id='naamInput' placeholder="Naam"/>
+      <input class="usernamecreate" type="username" id='usernameInput' placeholder="Gebruikersnaam"/>
+      <input class="passwordcreate" type="password" id='passwordInput' placeholder="Wachtwoord"/>
       <br>
       <h3>API Keys</h3>
-      <input class="myparcelkey"  type="myparcelkey" placeholder="MyParcel API Key"/>
-      <input class="lightspeedkey" type="lightspeedkey" placeholder="Lightspeed API Key"/>
-      <input class="lightspeedsecret" type="lightspeedsecret" placeholder="Lightspeed Secret"/>
-      <button>Account aanmaken</button>
+      <input class="myparcelkey"  type="myparcelkey" id='mpKeyInput' placeholder="MyParcel API Key"/>
+      <input class="lightspeedkey" type="lightspeedkey" id='lsKeyInput' placeholder="Lightspeed API Key"/>
+      <input class="lightspeedsecret" type="lightspeedsecret" id='lsSecretInput' placeholder="Lightspeed Secret"/>
+      <button onclick='makeAccount()'>Account aanmaken</button>
     </form>
   </div>
 </div>
 
-<script>
-  $('.message a').click(function(){
-   $('form').animate({height: "toggle", opacity: "toggle"}, "slow");
-});  
-</script>
-
 <script type="text/javascript" scr="js/jquery-3.4.1.min.js"></script>
 <script type="text/javascript" scr="js/bootstrap.min.js"></script>
+<script type='text/javascript' src='js/account.js'></script>
 
  </body>
 </html>
