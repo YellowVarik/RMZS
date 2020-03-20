@@ -6,7 +6,7 @@ if(!fs.existsSync('./config/config.json') && window.location.pathname.split('/')
 
 if(window.location.pathname.split('/').pop() == 'home.html'){
     let config = JSON.parse(fs.readFileSync("./config/config.json"));
-    document.getElementById('welkom').innerHTML = 'Welkom, ' + config.name;
+    document.getElementById('welkom').innerHTML = 'Welkom, ' + config.name + "!";
 }
 
 function makeAccount(){
