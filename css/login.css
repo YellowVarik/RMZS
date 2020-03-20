@@ -31,8 +31,11 @@ img {
   box-sizing: border-box;
   font-size: 14px;
 }
-.form input.username {
+.form input.name {
   margin-top: 1vw;
+ }
+.form input.username {
+  margin-top: 0.5vw;
  }
  .form input.password {
   margin-top: 0.5vw;
