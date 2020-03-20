@@ -54,7 +54,7 @@ function search(){
   }
 
   for(let i = 0; i < zendingen.length; i++){
-    if(zendingen[i].naam.toLowerCase().includes(query) || zendingen[i].stad.toLowerCase().includes(query) || zendingen[i].straat.toLowerCase().includes(query) || zendingen[i].postcode.toLowerCase().includes(query) || zendingen[i].email.toLowerCase().includes(query)){
+    if(zendingen[i].kenmerk.toLowerCase().includes(query) || zendingen[i].naam.toLowerCase().includes(query) || zendingen[i].stad.toLowerCase().includes(query) || zendingen[i].straat.toLowerCase().includes(query) || zendingen[i].postcode.toLowerCase().includes(query) || zendingen[i].email.toLowerCase().includes(query)){
       zendingen[i].show($('#zendingen'));
     }
   }
