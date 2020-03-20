@@ -83,11 +83,11 @@ function login(){
 
     if(username != configData.username){
         error = true;
-        errormsg += "Gebruikersnaam komt niet overeen!<br>";
+        errormsg += "Gebruikersnaam komt niet overeen!<br><br>";
     }
     if(password != configData.password){
         error = true;
-        errormsg += "Wachtwoord komt niet overeen!<br>";
+        errormsg += "Wachtwoord komt niet overeen!<br><br>";
     }
 
     if(error){
