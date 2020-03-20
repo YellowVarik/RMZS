@@ -98,3 +98,11 @@ function login(){
 
     window.location.href = './home.html';
 }
+
+function deleteAccount(){
+    fs.unlinkSync('./config/config.json', (e)=>{
+        if(e)throw e;
+    })
+
+    window.location.href = './keys.html';
+}

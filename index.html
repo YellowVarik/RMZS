@@ -12,7 +12,7 @@
       <input class="username" type="username" id="username" placeholder="Gebruikersnaam"/>
       <input class="password" type="password" id="password" placeholder="Wachtwoord"/>
     </form>
-      <a style="cursor:pointer; display: block; padding-bottom: 1vw; color: red;">Account verwijderen</a>
+      <a style="cursor:pointer; display: block; padding-bottom: 1vw; color: red;" onclick="document.getElementById('popup2').classList.add('visible')">Account verwijderen</a>
     <button onclick='login()'>Inloggen</button>
   </div>
 </div>
@@ -32,8 +32,8 @@
     <h2>Account verwijderen</h2>
     <p><b>Weet u zeker dat u dit account wilt verwijderen?</b></p>
       <div style="display: flex;">
-        <button class="ja" style="background: green; width: 50%; margin: 2%;">Ja</button>
-        <button class="nee" style="background: red; width: 50%; margin: 2%;">Nee</button>
+        <button class="ja" onclick = 'deleteAccount()' style="background: green; width: 50%; margin: 2%;">Ja</button>
+        <button class="nee" onclick="document.getElementById('popup2').classList.remove('visible')" style="background: red; width: 50%; margin: 2%;">Nee</button>
       </div>
 		<div class="content">
 		</div>
