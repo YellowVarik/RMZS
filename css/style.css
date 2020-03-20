@@ -392,9 +392,9 @@ body{
   height: auto;
 }
 
-.wrapper .sidebar a:last-of-type{
+/* .wrapper .sidebar a:last-of-type{
   margin-top: auto;
-}
+} */
 
 .wrapper .main_content{
   width: calc(100% - 50px);

@@ -18,25 +18,20 @@
       <input class="myparcelkey"  type="myparcelkey" id='mpKeyInput' placeholder="MyParcel API Key"/>
       <input class="lightspeedkey" type="lightspeedkey" id='lsKeyInput' placeholder="Lightspeed API Key"/>
       <input class="lightspeedsecret" type="lightspeedsecret" id='lsSecretInput' placeholder="Lightspeed Secret"/>
-      <button onclick='makeAccount()'>Account aanmaken</button>
     </form>
+    <button onclick='makeAccount()'>Account aanmaken</button>
   </div>
 </div>
 
 <div id="popup1" class="overlay">
 	<div class="popup">
-		<h2>Uw account kan niet worden geregistreerd!</h2>
-		<a class="close" href="#">&times;</a>
+    <h2>Uw account kan niet worden geregistreerd!</h2>
+    <p class='errormsg'></p>
+		<a class="close" onclick = 'document.getElementById("popup1").classList.remove("visible")'>&times;</a>
 		<div class="content">
 		</div>
 	</div>
 </div>
-
-<script>
-  $('.message a').click(function(){
-   $('form').animate({height: "toggle", opacity: "toggle"}, "slow");
-});  
-</script>
 
 <script type="text/javascript" scr="js/jquery-3.4.1.min.js"></script>
 <script type="text/javascript" scr="js/bootstrap.min.js"></script>
