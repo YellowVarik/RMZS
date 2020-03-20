@@ -12,6 +12,7 @@
       <input class="username" type="username" id="username" placeholder="Gebruikersnaam"/>
       <input class="password" type="password" id="password" placeholder="Wachtwoord"/>
     </form>
+      <a style="cursor:pointer; display: block; padding-bottom: 1vw; color: red;">Account verwijderen</a>
     <button onclick='login()'>Inloggen</button>
   </div>
 </div>
@@ -21,6 +22,19 @@
     <h2>Inloggen mislukt!</h2>
     <p class='errormsg'></p>
 		<a class="close" onclick = 'document.getElementById("popup1").classList.remove("visible")'>&times;</a>
+		<div class="content">
+		</div>
+	</div>
+</div>
+
+<div id="popup2" class="overlay">
+	<div class="popup" style="text-align: center;">
+    <h2>Account verwijderen</h2>
+    <p><b>Weet u zeker dat u dit account wilt verwijderen?</b></p>
+      <div style="display: flex;">
+        <button class="ja" style="background: green; width: 50%; margin: 2%;">Ja</button>
+        <button class="nee" style="background: red; width: 50%; margin: 2%;">Nee</button>
+      </div>
 		<div class="content">
 		</div>
 	</div>
