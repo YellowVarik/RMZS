@@ -31,13 +31,20 @@ img {
   box-sizing: border-box;
   font-size: 14px;
 }
-.form input.name {
+.form input.username {
   margin-top: 1vw;
  }
-.form input.username {
+ .form input.password {
+  margin-top: 0.5vw;
+  margin-bottom: 2vw;
+ }
+.form input.namecreate {
+  margin-top: 1vw;
+ }
+.form input.usernamecreate {
   margin-top: 0.5vw;
  }
- .form input.password {
+ .form input.passwordcreate {
   margin-top: 0.5vw;
   margin-bottom: 2vw;
  }
