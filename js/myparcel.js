@@ -2,6 +2,7 @@ const https = require('https')
 const fs = require('fs')
 const electron = require('electron')
 const pdfWindow = require('electron-pdf-window')
+const lightspeed = require(__dirname + '/js/lightspeed')
 
 //jQuery moet op een andere manier worden toegevoegd
 window.$ = window.jQuery = require('./js/jquery-3.4.1.min.js')
@@ -35,7 +36,6 @@ var typeFilter = null;
 var statusFilter = null;
 var zendingen = [];
 var selectedParcels = [];
-var parcelsToDelete = [];
 
 var arrowUp = String.fromCharCode(9650);
 var arrowDown = String.fromCharCode(9660);
@@ -190,11 +190,11 @@ function getPDF(id){
   setTimeout(getMyParcelData(), 500);
 }
 
-function getMyParcelData(){
-
+async function getMyParcelData(){
   loadScreen.appendTo($('.main_content')[0]);
-
   var data = "";
+
+  zendingen = [];
 
 
   //Deze opties zijn standaard voor de API en komen van de documentatie op https://myparcelnl.github.io/api
@@ -252,7 +252,7 @@ function getMyParcelData(){
   
 }
 
-function displayMPInfo(data){
+async function displayMPInfo(data){
   $('.sortBtn').each(function(){
     $(this).text($(this).text().replace(arrowUp, ''))
     $(this).text($(this).text().replace(arrowDown, ''))
@@ -275,11 +275,22 @@ function displayMPInfo(data){
   let count = parsedData.data.results;
   let zending = parsedData.data.shipments;
 
+  var {shipments, orders, products} = await lightspeed.getLightspeedData();
+  console.log({orders, shipments, products});
   //Elke zending wordt apart weergegeven
   for(var i = 0; i < count; i++){
+    let lightspeedOrder, lightspeedShipment = null;
     let klant = zending[i].recipient;
-    let shipment = new Shipment(zending[i].id, zending[i].options.package_type, (zending[i].options.label_description.includes('retour'))?5:zending[i].status, zending[i].options.label_description, zending[i].barcode, klant.person, klant.postal_code, klant.street, klant.number + klant.number_suffix, klant.city, klant.cc, klant.email, klant.phone, new Date(zending[i].modified));
-  zendingen[i] = shipment;
+    if(zending[i].options.label_description.includes('ORD')){
+      for(var x = 0; x < orders.length; x++){
+        if(zending[x].options.label_description == orders[x].number){
+          lightspeedOrder = orders[x];
+          lightspeedShipment = shipments[x];
+        }
+      }
+    }
+    let shipment = new Shipment(zending[i].id, zending[i].options.package_type, (zending[i].options.label_description.includes('retour'))?5:zending[i].status, zending[i].options.label_description, zending[i].barcode, klant.person, klant.postal_code, klant.street, klant.number + ((klant.number_suffix != null) ? klant.number_suffix : ''), klant.city, klant.cc, klant.email, klant.phone, new Date(zending[i].modified), lightspeedOrder, lightspeedShipment);
+    zendingen[i] = shipment;
   }
   zendingen.forEach(function (item){
     item.show($('#zendingen'));
@@ -447,19 +458,6 @@ function getTrackTrace(barcode, postcode){
     icon: './img/icon.png',
   })
   win.loadURL(`https://jouw.postnl.nl/track-and-trace/${barcode}-NL-${postcode}`);
-}
-
-function showPopup(header, message){
-  var popup = $(`
-                <div class='popup'>
-                  <div class='popup-content'>
-                    <h1>${header}</h1>
-                    <p>${message}</p>
-                    <a>Ok</a>
-                    <a>Cancel</a>
-                  </div>
-                </div>`)
-  popup.appendTo($('body'));
 }
 
 function sortDatum(){
@@ -643,7 +641,7 @@ function typeKleinGroot(a,b){
 }
 class Shipment{
   
-  constructor(id, type, status, kenmerk, barcode, naam, postcode, straat, huisnummer, stad, land, email, telefoon, datum){
+  constructor(id, type, status, kenmerk, barcode, naam, postcode, straat, huisnummer, stad, land, email, telefoon, datum, lightspeedOrder, lightspeedShipment){
     this.id = id;
     this.type = type;
     this.status = status;
@@ -658,6 +656,8 @@ class Shipment{
     this.email = email;
     this.telefoon = telefoon;
     this.datum = datum;
+    this.lightspeedOrder = lightspeedOrder;
+    this.lightspeedShipment = lightspeedShipment;
   }
 
   show(parent) {
@@ -728,9 +728,19 @@ class Shipment{
     datum.innerHTML = `${this.datum.getDate()}/${this.datum.getMonth() + 1}/${this.datum.getFullYear()}`;
 
     let buttons = document.createElement('td');
-    buttons.innerHTML = `<span><a onclick='getPDF(${this.id})'><i class='fas fa-file-pdf fa-lg'></i>${(this.status == 1)? `<a onclick='deleteShipment(${this.id})'><i class='fas fa-trash fa-lg' style='color: red'></i></a>`: ''}</span>`;
+    buttons.innerHTML = `<span><a id='print${this.id}'><i class='fas fa-file-pdf fa-lg'></i>${(this.status == 1)? `<a onclick='deleteShipment(${this.id})'><i class='fas fa-trash fa-lg' style='color: red'></i></a>`: ''}</span>`;
 
     row.append(type, status, kenmerk, barcode, name, adres, contact, datum, buttons);
     parent.append(row);
+    
+    if(this.lightspeedOrder != null){
+      document.getElementById(`print${this.id}`).addEventListener('click', () => {
+        lightspeed.getOrderVerzendLabel(this.lightspeedOrder, this.lightspeedShipment);
+      });
+    }else{
+      document.getElementById(`print${this.id}`).addEventListener('click', () => {
+        getPDF(this.id);
+      });
+    }
   }
 }
