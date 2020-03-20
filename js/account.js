@@ -52,7 +52,7 @@ function makeAccount(){
     }
 
     if(error){
-        document.getElementsByClassName('errormsg')[0].innerHTML = errormsg;
+        document.getElementsByClassName('errormsg')[0].innerHTML = errormsg + "<font style='font-size: 10px;'><b>Klopt dit niet? Neem contact op met de systeembeheerder!</b></font>";
         document.getElementById("popup1").classList.add("visible")
         return
     }
@@ -83,11 +83,11 @@ function login(){
 
     if(username != configData.username){
         error = true;
-        errormsg = "Gebruikersnaam of wachtwoord komt niet overeen!<br><br>";
+        errormsg = "Gebruikersnaam en/of wachtwoord komt niet overeen!<br><br>";
     }
     if(password != configData.password){
         error = true;
-        errormsg = "Gebruikersnaam of wachtwoord komt niet overeen!<br><br>";
+        errormsg = "Gebruikersnaam en/of wachtwoord komt niet overeen!<br><br>";
     }
 
     if(error){
