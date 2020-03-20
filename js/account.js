@@ -4,6 +4,11 @@ if(!fs.existsSync('./config/config.json') && window.location.pathname.split('/')
     window.location.href = "./keys.html";
 }
 
+if(window.location.pathname.split('/').pop() == 'home.html'){
+    let config = JSON.parse(fs.readFileSync("./config/config.json"));
+    document.getElementById('welkom').innerHTML = 'Welkom, ' + config.name;
+}
+
 function makeAccount(){
     let name = document.getElementById('naamInput').value;
     let uname = document.getElementById('usernameInput').value;
@@ -56,6 +61,9 @@ function makeAccount(){
     let account = {"name" : name, "username" : uname, "password" : password, "mpKey" : mpKey, "lsKey" : lsKey, "lsSecret" : lsSecret};
 
     try{
+        if(!fs.existsSync("./config")){
+            fs.mkdirSync("./config");
+          }
         fs.writeFileSync('./config/config.json', JSON.stringify(account));
         window.location.href = "./home.html";
     } catch(error){
