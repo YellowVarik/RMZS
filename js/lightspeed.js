@@ -11,33 +11,80 @@ var fontBold = './fonts/Roboto-Bold.ttf'
 var shipments, orders, products;
 
 var lsUrl = `https://${api_key}:${api_secret}@api.webshopapp.com/nl`
-var mpURL = "https://api.myparcel.nl";
 
-getLightspeedData()
+module.exports = {
+    getLightspeedData: async function () {
+        await axios.get(`${lsUrl}/orders.json`).then(response => {
+            orders = response.data.orders
+        }).catch(error => {
+            console.log(error);
+        });
 
-async function getLightspeedData() {
-    await axios.get(`${lsUrl}/orders.json`).then(response => {
-        orders = response.data.orders
-    }).catch(error => {
-        console.log(error);
-    });
+        await axios.get(`${lsUrl}/shipments.json`).then(response => {
+            shipments = response.data.shipments
+        }).catch(error => {
+            console.log(error);
+        });
 
-    await axios.get(`${lsUrl}/shipments.json`).then(response => {
-        shipments = response.data.shipments
-    }).catch(error => {
-        console.log(error);
-    });
+        await axios.get(`${lsUrl}/products.json`).then(response => {
+            products = response.data.products
+        }).catch(error => {
+            console.log(error);
+        });
+        return {shipments, orders, products};
+    },
 
-    await axios.get(`${lsUrl}/products.json`).then(response => {
-        products = response.data.products
-    }).catch(error => {
-        console.log(error);
-    });
+    getOrderVerzendLabel: async function (order, shipment) {
+        var shipmentId;
+        await axios.get(`https://api.myparcel.nl/shipments?q=${order.number}`, {
+            headers: {
+                "Authorization": `base ${base64Key}`,
+                "Content-Type": "application/json;charset=utf-8",
+                "Pragma": "no-cache",
+                "Cache-Control": "no-cache",
+                "Upgrade-Insecure-Requests": 1,
+            }
+        }).then(response => {
+            shipmentId = response.data.data.shipments[0].id
+        })
 
-    getOrderVerzendLabel(orders[2].number)
+        var options = {
+            hostname: 'api.myparcel.nl',
+            path: `/shipment_labels/${shipmentId}`,
+            method: "GET",
+            encoding: null,
+            headers: {
+                "Host": 'api.myparcel.nl',
+                "Authorization": `base ${base64Key}`,
+                "Content-Type": "application/pdf",
+                "Upgrade-Insecure-Requests": 1,
+                "User-Agent": "CustomApiCall/2",
+                "Accept": "application/pdf",
+            }
+        }
+        if (!fs.existsSync("./data")) {
+            fs.mkdirSync("./data");
+        }
+        var pdfFile = fs.createWriteStream(__dirname + `/../data/pakbon${order.number}.pdf`)
+        var data = '';
+        var request = await https.request(options, function (result) {
+            result.on('data', (d) => {
+                data += d;
+                pdfFile.write(d);
+            })
 
-    console.log({ shipments, orders, products });
-    return (shipments, orders, products);
+            result.on("end", () => {
+                pdfFile.end();
+                makePakbon(order, shipment, __dirname + `/../data/verzendLabel${order.number}.pdf`);
+                return __dirname + `/../data/pakbon${order.number}.pdf`
+            })
+        })
+
+        request.on('error', (e) => {
+            console.error("KON LABEL NIET OPHALEN \n" + e);
+        });
+        request.end();
+    }
 }
 
 async function makePakbon(order, shipment, verzendLabelUrl) {
@@ -84,7 +131,7 @@ async function makePakbon(order, shipment, verzendLabelUrl) {
         color: rgb(0, 0, 0)
     })
 
-    var verzendMethodeText = `${order.shipmentTitle}${(order.shipmentPriceIncl !== '') ? "- \u20AC " + order.shipmentPriceIncl : ''}`;
+    var verzendMethodeText = `${order.shipmentTitle}${(order.shipmentPriceIncl != '0') ? " - \u20AC " + order.shipmentPriceIncl : ''}`;
     page.drawText(verzendMethodeText, {
         x: 20,
         y: height - 3 * pakbonTextHeight - boldTextHeight - 50,
@@ -574,60 +621,8 @@ async function makePakbon(order, shipment, verzendLabelUrl) {
         height: logoDims.height
     })
 
-    file = fs.createWriteStream(__dirname + '/data/test.pdf');
+    file = fs.createWriteStream(__dirname + `/../data/pakbon${order.number}.pdf`);
     buffer = await doc.save();
     file.write(buffer);
-    openPDF(__dirname + '/data/test.pdf')
-}
-
-async function getOrderVerzendLabel(orderNumber){
-    var shipmentId;
-    await axios.get(mpURL + `/shipments?q=${orderNumber}`, {
-        headers: {
-            "Authorization": `base ${base64Key}`,
-            "Content-Type": "application/json;charset=utf-8",
-            "Pragma": "no-cache",
-            "Cache-Control": "no-cache",
-            "Upgrade-Insecure-Requests": 1,
-        }
-    }).then(response => {
-        console.log(response.data)
-        shipmentId = response.data.data.shipments[0].id
-    })
-
-    var options = {
-        hostname: 'api.myparcel.nl',
-        path: `/shipment_labels/${shipmentId}`,
-        method: "GET",
-        encoding: null,
-        headers: {
-            "Host": 'api.myparcel.nl',
-            "Authorization": `base ${base64Key}`,
-            "Content-Type": "application/pdf",
-            "Upgrade-Insecure-Requests": 1,
-            "User-Agent": "CustomApiCall/2",
-            "Accept": "application/pdf",
-        }
-    }
-    if (!fs.existsSync("./data")) {
-        fs.mkdirSync("./data");
-    }
-    var pdfFile = fs.createWriteStream(`./data/verzendLabel${orderNumber}.pdf`)
-    var data = '';
-    var request = await https.request(options, function (result) {
-        result.on('data', (d) => {
-            data += d;
-            pdfFile.write(d);
-        })
-
-        result.on("end", () => {
-            pdfFile.end();
-            makePakbon(orders[2], shipments[2], `./data/verzendLabel${orderNumber}.pdf`);
-        })
-    })
-
-    request.on('error', (e) => {
-        console.error("KON LABEL NIET OPHALEN \n" + e);
-    });
-    request.end();
+    openPDF(__dirname + `/../data/pakbon${order.number}.pdf`)
 }
