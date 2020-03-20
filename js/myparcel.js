@@ -47,8 +47,8 @@ function search(){
   var query = input.value.toLowerCase();
 
   let tr = $('#zendingen').find('tr');
-  if(tr.length > 1){
-    for (let i = 1; i < tr.length; i++){
+  if(tr.length > 0){
+    for (let i = 0; i < tr.length; i++){
       tr[i].remove();
     }
   }
@@ -63,8 +63,8 @@ function search(){
 function filter(category, value, element){
 
   let tr = $('#zendingen').find('tr');
-  if(tr.length > 1){
-    for (let i = 1; i < tr.length; i++){
+  if(tr.length > 0){
+    for (let i = 0; i < tr.length; i++){
       tr[i].remove();
     }
   }
@@ -265,8 +265,8 @@ async function displayMPInfo(data){
   
   gesorteerd = null;
   let tr = $('#zendingen').find('tr');
-  if(tr.length > 1){
-    for (let i = 1; i < tr.length; i++){
+  if(tr.length > 0){
+    for (let i = 0; i < tr.length; i++){
       tr[i].remove();
     }
   }
@@ -282,8 +282,8 @@ async function displayMPInfo(data){
     let lightspeedOrder, lightspeedShipment = null;
     let klant = zending[i].recipient;
     if(zending[i].options.label_description.includes('ORD')){
-      for(var x = 0; x < orders.length; x++){
-        if(zending[x].options.label_description == orders[x].number){
+      for(let x = 0; x < orders.length; x++){
+        if(zending[i].options.label_description == orders[x].number){
           lightspeedOrder = orders[x];
           lightspeedShipment = shipments[x];
         }
@@ -306,8 +306,8 @@ function redisplayMPInfo(sortingMethod){
   });
 
   let tr = $('#zendingen').find('tr');
-  if(tr.length > 1){
-    for (let i = 1; i < tr.length; i++){
+  if(tr.length > 0){
+    for (let i = 0; i < tr.length; i++){
       tr[i].remove();
     }
   }
