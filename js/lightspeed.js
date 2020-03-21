@@ -95,9 +95,7 @@ module.exports = {
             
                 
 
-            setTimeout(() => {
-                makePakbon(ordersArr, shipmentsArr, labelsArr);
-            }, 500);
+            setTimeout(() => {makePakbon(ordersArr, shipmentsArr, labelsArr);}, 100);
         } else {
             await axios.get(`https://api.myparcel.nl/shipments?q=${order.number}`, {
                 headers: {
