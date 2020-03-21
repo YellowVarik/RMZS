@@ -21,32 +21,32 @@ function makeAccount(){
     var errormsg = "<br>";
 
     if(name.length < 1){
-        errormsg += "De naam moet minstens 1 teken lang zijn<br><br>"
+        errormsg += "De naam moet minstens 1 teken lang zijn!<br><br>"
         document.getElementById('naamInput').value = "";
         error = true;
     }
     if(uname.length < 1){
-        errormsg += "De gebruikersnaam moet minstens 1 teken lang zijn<br><br>"
+        errormsg += "De gebruikersnaam moet minstens 1 teken lang zijn!<br><br>"
         document.getElementById('usernameInput').value = "";
         error = true;
     }
     if(password.length < 1){
-        errormsg += "Het wachtwoord moet minstens 1 teken lang zijn<br><br>"
+        errormsg += "Het wachtwoord moet minstens 1 teken lang zijn!<br><br>"
         document.getElementById('passwordInput').value = "";
         error = true;
     }
     if(mpKey.length < 40){
-        errormsg += "De MyParcel API key moet minstens 40 tekens lang zijn<br><br>"
+        errormsg += "De MyParcel API key moet minstens 40 tekens lang zijn!<br><br>"
         document.getElementById('mpKeyInput').value = "";
         error = true;
     }
     if(lsKey.length < 32){
-        errormsg += "De Lightspeed API key moet minstens 32 teken lang zijn<br><br>"
+        errormsg += "De Lightspeed API key moet minstens 32 tekens lang zijn!<br><br>"
         document.getElementById('lsKeyInput').value = "";
         error = true;
     }
     if(lsSecret.length < 32){
-        errormsg += "De Lightspeed API Secret moet minstens 32 teken lang zijn<br><br>"
+        errormsg += "De Lightspeed API Secret moet minstens 32 tekens lang zijn!<br><br>"
         document.getElementById('lsSecretInput').value = "";
         error = true;
     }
