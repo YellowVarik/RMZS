@@ -16,7 +16,7 @@
       <a href="home.html"><i class="fas fa-home"></i> Home</a>
       <a href="orders.html"><i class="fas fa-box-open"></i> Orders</a>
       <a href="settings.html" style='margin-top: auto;'><i class="fas fa-cog"></i> Instellingen</a>
-      <a href="index.html"><i class="fas fa-sign-out-alt"></i> Uitloggen</a>
+      <a onclick = 'document.getElementById("popuplogout").classList.add("visible")'><i class="fas fa-sign-out-alt"></i> Uitloggen</a>
     </div>
 
 
@@ -76,7 +76,7 @@
                 <th><a onclick="sortStad()" class='sortBtn' id='stadButton'>Adres</a></th>
                 <th>Contact</th>
                 <th><a onclick="sortDatum()" class='sortBtn' id="datumButton">Datum</a></th>
-              <th><a style="margin-right: 1vw; padding-left: 14%;" onclick='getPDF(selectedParcels)'><i class="fas fa-print"></i></a><a class='reload' onclick="getMyParcelData(); $(this).addClass('spin'); $(this).on('transitionend MSTransitionEnd webkitTransitionEnd oTransitionEnd', ()=>{$(this).addClass('notransition');$(this).removeClass('spin');$(this)[0].offsetHeight; $(this).removeClass('notransition')})"><i class="fas fa-sync"></i></a></th>
+                <th><a style="margin-right: 1vw; padding-left: 14%;" onclick='printSelected(selectedParcels); setTimeout(() => {getMyParcelData()}, 500);'><i class="fas fa-print"></i></a><a class='reload' onclick="getMyParcelData(); $(this).addClass('spin'); $(this).on('transitionend MSTransitionEnd webkitTransitionEnd oTransitionEnd', ()=>{$(this).addClass('notransition');$(this).removeClass('spin');$(this)[0].offsetHeight; $(this).removeClass('notransition')})"><i class="fas fa-sync"></i></a></th>
             
             </thead>
 
@@ -103,6 +103,20 @@
 
 
   </div>
+
+  
+<div id="popuplogout" class="overlay">
+	<div class="popup" style="text-align: center;">
+    <h2>Account verwijderen</h2>
+    <p><b>Weet u zeker dat u wilt uitloggen?</b></p>
+      <div style="display: flex;">
+        <button class="ja" onclick = 'window.location.href="./index.html"' style="background: green; width: 50%; margin: 2%;">Ja</button>
+        <button class="nee" onclick="document.getElementById('popuplogout').classList.remove('visible')" style="background: red; width: 50%; margin: 2%;">Nee</button>
+      </div>
+		<div class="content">
+		</div>
+	</div>
+</div>
 
   <script type="text/javascript" scr="js/jquery-3.4.1.min.js"></script>
   <script type="text/javascript" scr="js/bootstrap.min.js"></script>
