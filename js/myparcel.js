@@ -212,8 +212,6 @@ function getPDF(id){
     console.error("KON LABEL NIET OPHALEN \n" + e);
   });
   request.end();
-
-  setTimeout(() => {getMyParcelData()}, 500);
 }
 
 async function getMyParcelData(){
@@ -302,7 +300,6 @@ async function displayMPInfo(data){
   let zending = parsedData.data.shipments;
 
   var {shipments, orders, products} = await lightspeed.getLightspeedData();
-  console.log({orders, shipments, products});
   //Elke zending wordt apart weergegeven
   for(var i = 0; i < count; i++){
     let lightspeedOrder, lightspeedShipment = null;
@@ -761,12 +758,13 @@ class Shipment{
     
     if(this.lightspeedOrder != null){
       document.getElementById(`print${this.id}`).addEventListener('click', () => {
-        console.log(this.lightspeedOrder, this.lightspeedShipment)
         lightspeed.getOrderVerzendLabel(this.lightspeedOrder, this.lightspeedShipment);
+        setTimeout(() => {getMyParcelData()}, 500);
       });
     }else{
       document.getElementById(`print${this.id}`).addEventListener('click', () => {
         getPDF(this.id);
+        setTimeout(() => {getMyParcelData()}, 500);
       });
     }
   }

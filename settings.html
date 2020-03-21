@@ -14,7 +14,7 @@
             <a href="home.html"><i class="fas fa-home"></i> Home</a>
             <a href="orders.html"><i class="fas fa-box-open"></i> Orders</a>
             <a href="settings.html" style='margin-top: auto;'><i class="fas fa-cog"></i> Instellingen</a>
-            <a href="index.html"><i class="fas fa-sign-out-alt"></i> Uitloggen</a>
+            <a onclick = 'document.getElementById("popuplogout").classList.add("visible")'><i class="fas fa-sign-out-alt"></i> Uitloggen</a>
           </div>
 
            <div class="main_content">
@@ -25,6 +25,21 @@
                 </div>
             </div>
     </div>
+    
+
+  
+<div id="popuplogout" class="overlay">
+	<div class="popup" style="text-align: center;">
+    <h2>Account verwijderen</h2>
+    <p><b>Weet u zeker dat u wilt uitloggen?</b></p>
+      <div style="display: flex;">
+        <button class="ja" onclick = 'window.location.href="./index.html"' style="background: green; width: 50%; margin: 2%;">Ja</button>
+        <button class="nee" onclick="document.getElementById('popuplogout').classList.remove('visible')" style="background: red; width: 50%; margin: 2%;">Nee</button>
+      </div>
+		<div class="content">
+		</div>
+	</div>
+</div>
 
 <script type="text/javascript" scr="js/jquery-3.4.1.min.js"></script>
 <script type="text/javascript" scr="js/bootstrap.min.js"></script>

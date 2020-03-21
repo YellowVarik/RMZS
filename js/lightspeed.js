@@ -502,7 +502,7 @@ async function makePakbon(orders, shipments, verzendLabelUrls) {
 
             page.drawRectangle({
                 x: 22,
-                y: height - 3 * pakbonTextHeight - 2 * boldTextHeight - 4 * regularTextHeight - 3 * gapSize - 50 - 1 * (x + 1) * (regularTextHeight + 7),
+                y: height - 3 * pakbonTextHeight - 2 * boldTextHeight - 4 * regularTextHeight - 3 * gapSize - 50 - 2 - 1 * (x + 1) * (regularTextHeight + 5),
                 width: boldTextHeight,
                 height: boldTextHeight,
                 color: rgb(1, 1, 1),
@@ -581,7 +581,7 @@ async function makePakbon(orders, shipments, verzendLabelUrls) {
             color: rgb(0, 0, 0)
         })
 
-        var verzendAdresPostcodeText = orders[i].addressShippingZipcode + ' ' + orders[i].adressShippingCity;
+        var verzendAdresPostcodeText = orders[i].addressShippingZipcode + ' ' + orders[i].addressShippingCity;
         page.drawText(verzendAdresPostcodeText, {
             x: 20,
             y: height - 3 * pakbonTextHeight - 4 * boldTextHeight - 8 * regularTextHeight - 3 * gapSize - 50 - 1 * offset * (2 * gapSize + 5),
@@ -602,7 +602,7 @@ async function makePakbon(orders, shipments, verzendLabelUrls) {
         //----FactuurAdres----
         var FactuurAdresTitelText = 'Factuuradres';
         page.drawText(FactuurAdresTitelText, {
-            x: (width - 40) / 2,
+            x: (width - 40) / 3,
             y: height - 3 * pakbonTextHeight - 3 * boldTextHeight - 5 * regularTextHeight - 3 * gapSize - 50 - 1 * offset * (2 * gapSize + 5),
             size: textSize,
             font: bold,
@@ -611,7 +611,7 @@ async function makePakbon(orders, shipments, verzendLabelUrls) {
 
         var factuurAdresNaamText = orders[i].addressBillingName;
         page.drawText(factuurAdresNaamText, {
-            x: (width - 40) / 2,
+            x: (width - 40) / 3,
             y: height - 3 * pakbonTextHeight - 4 * boldTextHeight - 5 * regularTextHeight - 3 * gapSize - 50 - 1 * offset * (2 * gapSize + 5),
             size: textSize,
             font: regular,
@@ -620,7 +620,7 @@ async function makePakbon(orders, shipments, verzendLabelUrls) {
 
         var factuurAdresStraatText = orders[i].addressBillingStreet;
         page.drawText(verzendAdresStraatText, {
-            x: (width - 40) / 2,
+            x: (width - 40) / 3,
             y: height - 3 * pakbonTextHeight - 4 * boldTextHeight - 6 * regularTextHeight - 3 * gapSize - 50 - 1 * offset * (2 * gapSize + 5),
             size: textSize,
             font: regular,
@@ -629,7 +629,7 @@ async function makePakbon(orders, shipments, verzendLabelUrls) {
 
         var factuurAdresHuisnummerText = orders[i].addressBillingNumber;
         page.drawText(factuurAdresHuisnummerText, {
-            x: (width - 40) / 2,
+            x: (width - 40) / 3,
             y: height - 3 * pakbonTextHeight - 4 * boldTextHeight - 7 * regularTextHeight - 3 * gapSize - 50 - 1 * offset * (2 * gapSize + 5),
             size: textSize,
             font: regular,
@@ -638,7 +638,7 @@ async function makePakbon(orders, shipments, verzendLabelUrls) {
 
         var factuurAdresPostcodeText = orders[i].addressBillingZipcode + ' ' + orders[i].addressBillingCity;
         page.drawText(factuurAdresPostcodeText, {
-            x: (width - 40) / 2,
+            x: (width - 40) / 3,
             y: height - 3 * pakbonTextHeight - 4 * boldTextHeight - 8 * regularTextHeight - 3 * gapSize - 50 - 1 * offset * (2 * gapSize + 5),
             size: textSize,
             font: regular,
@@ -647,13 +647,37 @@ async function makePakbon(orders, shipments, verzendLabelUrls) {
 
         var factuurAdresLandText = orders[i].addressBillingCountry.title;
         page.drawText(factuurAdresLandText, {
-            x: (width - 40) / 2,
+            x: (width - 40) / 3,
             y: height - 3 * pakbonTextHeight - 4 * boldTextHeight - 9 * regularTextHeight - 3 * gapSize - 50 - 1 * offset * (2 * gapSize + 5),
             size: textSize,
             font: regular,
             color: rgb(0, 0, 0)
         })
 
+        //----Opmerkingen----
+        var opmerkingenTitelText = 'Opmerkingen';
+        page.drawText(opmerkingenTitelText, {
+            x: (width - 40) / 3 * 2,
+            y: height - 3 * pakbonTextHeight - 3 * boldTextHeight - 5 * regularTextHeight - 3 * gapSize - 50 - 1 * offset * (2 * gapSize + 5),
+            size: textSize,
+            font: bold,
+            color: rgb(0, 0, 0)
+        })
+
+        var opmerkingenText = (orders[i].comment != "")?orders[i].comment:"Geen opmerkingen";
+        opmerkingenTextArray =  opmerkingenText.match(/.{1,35}/g);
+        opmerkingenText = "";
+        for(var y = 0; y < opmerkingenTextArray.length; y++){
+            opmerkingenText += opmerkingenTextArray[y] + '\n'
+        }
+        page.drawText(opmerkingenText, {
+            x: (width - 40) / 3 * 2,
+            y: height - 3 * pakbonTextHeight - 4 * boldTextHeight - 5 * regularTextHeight - 3 * gapSize - 50 - 1 * offset * (2 * gapSize + 5),
+            size: textSize,
+            font: regular,
+            color: rgb(0, 0, 0),
+            lineHeight: 10
+        })
         //----Sticker----
         page.drawRectangle({
             x: 28.3466,
