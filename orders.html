@@ -76,7 +76,7 @@
                 <th><a onclick="sortStad()" class='sortBtn' id='stadButton'>Adres</a></th>
                 <th>Contact</th>
                 <th><a onclick="sortDatum()" class='sortBtn' id="datumButton">Datum</a></th>
-              <th><a style="margin-right: 1vw; padding-left: 14%;" onclick='getPDF(selectedParcels)'><i class="fas fa-print"></i></a><a class='reload' onclick="getMyParcelData(); $(this).addClass('spin'); $(this).on('transitionend MSTransitionEnd webkitTransitionEnd oTransitionEnd', ()=>{$(this).addClass('notransition');$(this).removeClass('spin');$(this)[0].offsetHeight; $(this).removeClass('notransition')})"><i class="fas fa-sync"></i></a></th>
+                <th><a style="margin-right: 1vw; padding-left: 14%;" onclick='printSelected(selectedParcels); console.log(selectedParcels)'><i class="fas fa-print"></i></a><a class='reload' onclick="getMyParcelData(); $(this).addClass('spin'); $(this).on('transitionend MSTransitionEnd webkitTransitionEnd oTransitionEnd', ()=>{$(this).addClass('notransition');$(this).removeClass('spin');$(this)[0].offsetHeight; $(this).removeClass('notransition')})"><i class="fas fa-sync"></i></a></th>
             
             </thead>
 

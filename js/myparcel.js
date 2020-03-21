@@ -129,6 +129,32 @@ function filter(category, value, element){
 
 }
 
+function printSelected(parcels){
+  var selectedOrders = [];
+  var selectedShipments = [];
+  var verzendLabels = [];
+  for(var i = 0; i < parcels.length; i++){
+    for(x = 0; x < zendingen.length; x++){
+      if(zendingen[x].id == parcels[i]){
+        if(zendingen[x].lightspeedOrder != null){
+          selectedOrders.push(zendingen[x].lightspeedOrder);
+          selectedShipments.push(zendingen[x].lightspeedShipment);
+        } else{
+          verzendLabels.push(zendingen[x].id);
+        }
+      }
+    }
+  }
+
+  console.log({selectedOrders, selectedShipments, verzendLabels})
+  if(selectedOrders.length > 0){
+    lightspeed.getOrderVerzendLabel(selectedOrders, selectedShipments);
+  }
+  if(verzendLabels.length > 0){
+    getPDF(verzendLabels);
+  }
+}
+
 function getPDF(id){
   let data = '';
   let requestId = id;
@@ -187,7 +213,7 @@ function getPDF(id){
   });
   request.end();
 
-  setTimeout(getMyParcelData(), 500);
+  setTimeout(() => {getMyParcelData()}, 500);
 }
 
 async function getMyParcelData(){
@@ -735,6 +761,7 @@ class Shipment{
     
     if(this.lightspeedOrder != null){
       document.getElementById(`print${this.id}`).addEventListener('click', () => {
+        console.log(this.lightspeedOrder, this.lightspeedShipment)
         lightspeed.getOrderVerzendLabel(this.lightspeedOrder, this.lightspeedShipment);
       });
     }else{
