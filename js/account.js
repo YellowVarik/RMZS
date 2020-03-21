@@ -1,77 +1,114 @@
 const fs = require('fs');
+const https = require('https');
+const axios = require('axios').default
 
-if(!fs.existsSync('./config/config.json') && window.location.pathname.split('/').pop() !== 'keys.html'){
+if (!fs.existsSync('./config/config.json') && window.location.pathname.split('/').pop() !== 'keys.html') {
     window.location.href = "./keys.html";
 }
 
-if(window.location.pathname.split('/').pop() == 'home.html'){
+if (window.location.pathname.split('/').pop() == 'home.html') {
     let config = JSON.parse(fs.readFileSync("./config/config.json"));
     document.getElementById('welkom').innerHTML = 'Welkom, ' + config.name + "!";
 }
 
-function makeAccount(){
+async function makeAccount() {
     let name = document.getElementById('naamInput').value;
     let uname = document.getElementById('usernameInput').value;
-    let password = document.getElementById('passwordInput').value;;
-    let mpKey = document.getElementById('mpKeyInput').value;
+    let password = document.getElementById('passwordInput').value;
+
+    var keyBuffer = new Buffer.from(document.getElementById('mpKeyInput').value);
+    var mpKey = keyBuffer.toString("base64");
     let lsKey = document.getElementById('lsKeyInput').value;
     let lsSecret = document.getElementById('lsSecretInput').value;
 
     var error = false;
     var errormsg = "<br>";
 
-    if(name.length < 1){
+    if (name.length < 1) {
         errormsg += "De naam moet minstens 1 teken lang zijn!<br><br>"
         document.getElementById('naamInput').value = "";
         error = true;
     }
-    if(uname.length < 1){
+    if (uname.length < 1) {
         errormsg += "De gebruikersnaam moet minstens 1 teken lang zijn!<br><br>"
         document.getElementById('usernameInput').value = "";
         error = true;
     }
-    if(password.length < 1){
+    if (password.length < 1) {
         errormsg += "Het wachtwoord moet minstens 1 teken lang zijn!<br><br>"
         document.getElementById('passwordInput').value = "";
         error = true;
     }
-    if(mpKey.length < 40){
-        errormsg += "De MyParcel API key moet minstens 40 tekens lang zijn!<br><br>"
+
+    if (document.getElementById('mpKeyInput').value.length != 40) {
+        errormsg += "De MyParcel API key moet 40 tekens lang zijn!<br><br>"
         document.getElementById('mpKeyInput').value = "";
         error = true;
-    }
-    if(lsKey.length < 32){
-        errormsg += "De Lightspeed API key moet minstens 32 tekens lang zijn!<br><br>"
-        document.getElementById('lsKeyInput').value = "";
-        error = true;
-    }
-    if(lsSecret.length < 32){
-        errormsg += "De Lightspeed API Secret moet minstens 32 tekens lang zijn!<br><br>"
-        document.getElementById('lsSecretInput').value = "";
-        error = true;
+    } else {
+        await axios.get("https://api.myparcel.nl/shipments", {
+            headers: {
+                "Authorization": `base ${mpKey}`,
+                "Content-Type": "application/json;charset=utf-8",
+                "Pragma": "no-cache",
+                "Cache-Control": "no-cache",
+                "Upgrade-Insecure-Requests": 1
+            }
+        }).catch(() => {
+            errormsg += 'De MyParcel API Key is onjuist!<br><br>';
+            error = true;
+            document.getElementById('mpKeyInput').value = '';
+        })
     }
 
-    if(error){
+    lsKeyChecked = false;
+
+    if (lsKey.length != 32) {
+        errormsg += "De Lightspeed API key moet 32 tekens lang zijn!<br><br>"
+        document.getElementById('lsKeyInput').value = "";
+        error = true;
+    } else{
+        await axios.get(`https://${lsKey}:${lsSecret}@api.webshopapp.com/nl/orders.json`).catch(() => {
+            errormsg += 'De Lightspeed API Key of secret is onjuist!<br><br>';
+            error = true;
+        });
+        
+        lsKeyChecked = true;
+    }
+
+    if (lsSecret.length != 32) {
+        errormsg += "De Lightspeed API Secret moet 32 tekens lang zijn!<br><br>"
+        document.getElementById('lsSecretInput').value = "";
+        error = true;
+    } else if (!lsKeyChecked){
+        await axios.get(`https://${lsKey}:${lsSecret}@api.webshopapp.com/nl/orders.json`).catch(() => {
+            errormsg += 'De Lightspeed API Key of secret is onjuist!<br><br>';
+            error = true;
+        });
+    }
+
+    
+
+    if (error) {
         document.getElementsByClassName('errormsg')[0].innerHTML = errormsg + "<font style='font-size: 10px;'><b>Klopt dit niet? Neem contact op met de systeembeheerder!</b></font>";
         document.getElementById("popup1").classList.add("visible")
         return
     }
-    
 
-    let account = {"name" : name, "username" : uname, "password" : password, "mpKey" : mpKey, "lsKey" : lsKey, "lsSecret" : lsSecret};
 
-    try{
-        if(!fs.existsSync("./config")){
+    let account = { "name": name, "username": uname, "password": password, "mpKey": mpKey, "lsKey": lsKey, "lsSecret": lsSecret };
+
+    try {
+        if (!fs.existsSync("./config")) {
             fs.mkdirSync("./config");
-          }
+        }
         fs.writeFileSync('./config/config.json', JSON.stringify(account));
         window.location.href = "./home.html";
-    } catch(error){
+    } catch (error) {
         console.error(error);
     }
 }
 
-function login(){
+function login() {
     let username = document.getElementById("username").value;
     let password = document.getElementById("password").value;
 
@@ -81,16 +118,16 @@ function login(){
     let error = false;
     let errormsg = '<br>';
 
-    if(username != configData.username){
+    if (username != configData.username) {
         error = true;
         errormsg = "Gebruikersnaam en/of wachtwoord komt niet overeen!<br><br>";
     }
-    if(password != configData.password){
+    if (password != configData.password) {
         error = true;
         errormsg = "Gebruikersnaam en/of wachtwoord komt niet overeen!<br><br>";
     }
 
-    if(error){
+    if (error) {
         document.getElementsByClassName('errormsg')[0].innerHTML = errormsg + "<font style='font-size: 10px;'><b>Klopt dit niet? Neem contact op met de systeembeheerder!</b></font>";
         document.getElementById("popup1").classList.add("visible")
         return
@@ -99,10 +136,17 @@ function login(){
     window.location.href = './home.html';
 }
 
-function deleteAccount(){
-    fs.unlinkSync('./config/config.json', (e)=>{
-        if(e)throw e;
+function deleteAccount() {
+    fs.unlinkSync('./config/config.json', (e) => {
+        if (e) throw e;
     })
 
     window.location.href = './keys.html';
+}
+
+function checkLSKey(key, secret) {
+    if (key == '' || secret == '') {
+        return false;
+    }
+
 }

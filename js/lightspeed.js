@@ -3,7 +3,7 @@ const { PDFDocument, rgb } = require('pdf-lib');
 const fontkit = require('@pdf-lib/fontkit')
 
 var api_key = "cc5959f83335efb4b42184c9031889f4";
-var api_secret = "402de22a12e9b4a65e71c4309b55f548"
+var api_secret = "402de22a12e9b4a65e71c4309b55f548";
 
 var fontRegular = './fonts/Roboto-Regular.ttf';
 var fontBold = './fonts/Roboto-Bold.ttf'
@@ -663,7 +663,18 @@ async function makePakbon(orders, shipments, verzendLabelUrls) {
         })
 
         var opmerkingenText = (orders[i].comment != "")?orders[i].comment:"Geen opmerkingen";
-        opmerkingenTextArray =  opmerkingenText.match(/.{1,35}/g);
+        var textLimit = 40;
+        var opmerkingenTextArray = opmerkingenText.split(' ');
+        for (var z = 0; z + 1 < opmerkingenTextArray.length; z++){
+            while(z < opmerkingenTextArray.length - 1 && opmerkingenTextArray[z].length + opmerkingenTextArray[z + 1].length + 1 < textLimit){
+                opmerkingenTextArray[z] += " " + opmerkingenTextArray[z + 1];
+                opmerkingenTextArray.splice((z + 1), 1);
+            }
+        }
+
+        if(opmerkingenTextArray[0].length > textLimit){
+            opmerkingenTextArray =  opmerkingenText.match(/.{1,35}/g);
+        }
         opmerkingenText = "";
         for(var y = 0; y < opmerkingenTextArray.length; y++){
             opmerkingenText += opmerkingenTextArray[y] + '\n'
