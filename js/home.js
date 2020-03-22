@@ -21,7 +21,7 @@ async function getSales(){
             week += dashboard.periods[i].paidExcl;
         }
         for(var i = 0; i < dashboard.periods.length && i < 30; i++){
-            thirtydays += dashboard.periods[i];
+            thirtydays += dashboard.periods[i].paidExcl;
         }
         for(var i = 0; i < dashboard.periods.length && i < 90; i++){
             ninetydays += dashboard.periods[i].paidExcl;
