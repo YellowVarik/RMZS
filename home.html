@@ -1,50 +1,75 @@
 <html>
- <head>
+
+<head>
   <link rel="stylesheet" type="text/css" href="css/style.css">
   <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
   <link rel="stylesheet" type="text/css" href="css/all.css">
- </head>
- <body>
+</head>
 
-    <script src="https://kit.fontawesome.com/b99e675b6e.js"></script>
+<body>
 
-    <div class="wrapper">
-        <div class="sidebar">
-            <a onclick='extendMenu()' class='extendButton' style='padding: 19.5px 0px;'><i class="fas fa-arrow-right"></i></a>
-            <a href="home.html"><i class="fas fa-home"></i> Home</a>
-            <a href="orders.html"><i class="fas fa-box-open"></i> Orders</a>
-            <a href="settings.html" style='margin-top: auto;'><i class="fas fa-cog"></i> Instellingen</a>
-            <a onclick = 'document.getElementById("popuplogout").classList.add("visible")'><i class="fas fa-sign-out-alt"></i> Uitloggen</a>
-          </div>
+  <script src="https://kit.fontawesome.com/b99e675b6e.js"></script>
 
-            <div class="main_content">
-                <div style="background: #9fda34;">
-                    <br>
-                <h1 id='welkom'style="text-align: center; color: white;"></h1>
-                <hr>
-                </div>
-            </div>
+  <div class="wrapper">
+    <div class="sidebar">
+      <a onclick='extendMenu()' class='extendButton' style='padding: 19.5px 0px;'><i class="fas fa-arrow-right"></i></a>
+      <a href="home.html"><i class="fas fa-home"></i> Home</a>
+      <a href="orders.html"><i class="fas fa-box-open"></i> Orders</a>
+      <a href="settings.html" style='margin-top: auto;'><i class="fas fa-cog"></i> Instellingen</a>
+      <a onclick='document.getElementById("popuplogout").classList.add("visible")'><i class="fas fa-sign-out-alt"></i>
+        Uitloggen</a>
     </div>
-    
 
-  
-<div id="popuplogout" class="overlay">
-	<div class="popup" style="text-align: center;">
-    <h2>Uitloggen</h2>
-    <p><b>Weet u zeker dat u wilt uitloggen?</b></p>
-      <div style="display: flex;">
-        <button class="ja" onclick = 'window.location.href="./index.html"' style="background: green; width: 50%; margin: 2%;">Ja</button>
-        <button class="nee" onclick="document.getElementById('popuplogout').classList.remove('visible')" style="background: red; width: 50%; margin: 2%;">Nee</button>
+    <div class="main_content">
+      <div class="welkom" style="background: #9fda34;">
+        <br>
+        <h1 id='welkom' style="text-align: center; color: white;"></h1>
+        <hr>
       </div>
-		<div class="content">
-		</div>
-	</div>
-</div>
 
-<script type="text/javascript" scr="js/jquery-3.4.1.min.js"></script>
-<script type="text/javascript" scr="js/bootstrap.min.js"></script>
-<script type='text/javascript' src='js/account.js'></script>
-<script type="text/javascript" src="js/menu.js"></script>
+      <div class="first-row" style="display: flex;">
+        <div class="statistieken" style='background:#ebe7e7; width: 20vw; height:auto; margin: 2vw; border-radius: 5px; color: black;'>
+          <br>
+          <h3 style='text-align: center;'>Statistieken</h3>
+          <hr>
+          <p style='padding: 1vw;'><i class="fas fa-coins"></i> Maandelijkse inkomsten (DATE): </p>
+          <p style='padding: 1vw;'><i class="fas fa-coins"></i> Jaarlijkse inkomsten (DATE): </p>
+          <p style='padding: 1vw;'><i class="fas fa-coins"></i> Totale inkomsten (DATE): </p>
+        </div>
 
- </body>
+        <div class="statistieken" style='background:#ebe7e7; width: 100%; height:auto; margin: 2vw; border-radius: 5px; color: black;'>
+          <br>
+          <h3 style='text-align: center;'>Recente bestellingen</h3>
+          <hr>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+
+
+
+  <div id="popuplogout" class="overlay">
+    <div class="popup" style="text-align: center;">
+      <h2>Uitloggen</h2>
+      <p><b>Weet u zeker dat u wilt uitloggen?</b></p>
+      <div style="display: flex;">
+        <button class="ja" onclick='window.location.href="./index.html"'
+          style="background: green; width: 50%; margin: 2%;">Ja</button>
+        <button class="nee" onclick="document.getElementById('popuplogout').classList.remove('visible')"
+          style="background: red; width: 50%; margin: 2%;">Nee</button>
+      </div>
+      <div class="content">
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript" scr="js/jquery-3.4.1.min.js"></script>
+  <script type="text/javascript" scr="js/bootstrap.min.js"></script>
+  <script type='text/javascript' src='js/account.js'></script>
+  <script type="text/javascript" src="js/menu.js"></script>
+
+</body>
+
 </html>

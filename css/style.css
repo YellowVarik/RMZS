@@ -1,3 +1,13 @@
+
+::-moz-selection { /* Code for Firefox */
+  background: #9fda34;
+}
+
+::selection {
+  background: #9fda34;
+}
+
+
 .filterContainer{
   display: flex;
   padding-bottom: 10px;
@@ -302,9 +312,6 @@ input[type=text]:focus{
   font-family: 'Josefin Sans', sans-serif;
 }
 
-body{
-   background-color: #f3f5f9;
-}
 
 .wrapper{
   display: flex;
