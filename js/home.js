@@ -167,7 +167,7 @@ function makeChart(labels, omzet, canvas, titel) {
                 label: titel,
                 data: omzet,
                 borderColor: [
-                    'rgba(99, 255, 99, 1)'
+                    '#9fda34'
                 ],
             }]
         },
@@ -175,7 +175,8 @@ function makeChart(labels, omzet, canvas, titel) {
             scales: {
                 yAxes: [{
                     ticks: {
-                        beginAtZero: true
+                        beginAtZero: true,
+                        precision: 0
                     }
                 }]
             }
