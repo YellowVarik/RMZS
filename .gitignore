@@ -1,2 +1,4 @@
+node_modules/
 *.json
 *.pdf
+node_modules

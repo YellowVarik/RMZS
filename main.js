@@ -1,5 +1,4 @@
 const { app, BrowserWindow } = require('electron')
-
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let win
@@ -32,6 +31,10 @@ function createWindow () {
     // when you should delete the corresponding element.
     win = null
   })
+
+  win.on('before-quit', () => {
+    win.webContents.executeJavaScript('localStorage.clear();')
+  })
 }
 
 // This method will be called when Electron has finished
@@ -44,6 +47,7 @@ app.on('window-all-closed', () => {
   // On macOS it is common for applications and their menu bar
   // to stay active until the user quits explicitly with Cmd + Q
   if (process.platform !== 'darwin') {
+    win.webContents.executeJavaScript('localStorage.clear();')
     app.quit()
   }
 })
