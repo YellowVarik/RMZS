@@ -16,19 +16,24 @@ async function getSales(){
         var thirtydays = 0;
         var ninetydays = 0;
         var year = 0;
-        var alltime = dashboard.totals.salesIncl;
+        var alltime = Math.round((dashboard.totals.paidExcl + Number.EPSILON)*100)/100;
         for(var i = 0; i < dashboard.periods.length && i < 7; i++){
-            week += dashboard.periods[i].salesIncl;
+            week += dashboard.periods[i].paidExcl;
         }
         for(var i = 0; i < dashboard.periods.length && i < 30; i++){
-            thirtydays += dashboard.periods[i].salesIncl;
+            thirtydays += dashboard.periods[i];
         }
         for(var i = 0; i < dashboard.periods.length && i < 90; i++){
-            ninetydays += dashboard.periods[i].salesIncl;
+            ninetydays += dashboard.periods[i].paidExcl;
         }
         for(var i = 0; i < dashboard.periods.length && i < 365 && dashboard.periods[i].date.split('-')[0] == thisyear; i++){
-            year += dashboard.periods[i].salesIncl;
+            year += dashboard.periods[i].paidExcl;
         }
+
+        week = Math.round((week + Number.EPSILON) * 100) / 100;
+        thirtydays = Math.round((thirtydays + Number.EPSILON) * 100) / 100;
+        ninetydays = Math.round((ninetydays + Number.EPSILON) * 100) / 100;
+        year = Math.round((year + Number.EPSILON) * 100) / 100;
         
         document.getElementById('week').innerHTML = "<i class='fas fa-coins'></i> Inkomsten laatste 7 dagen: \u20AC" + week;
         document.getElementById('30days').innerHTML = "<i class='fas fa-coins'></i> Inkomsten laatste 30 dagen: \u20AC" + thirtydays;
