@@ -61,7 +61,7 @@ async function getSales(){
 }
 
 function makeChart(labels, omzet){
-    var canvas = document.getElementById('graph3');
+    var canvas = document.getElementById('graph1');
     var mychart = new chartjs.Chart(canvas, {
         type: 'line',
         data : {

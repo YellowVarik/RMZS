@@ -28,51 +28,49 @@
       </div>
 
       <div class="first-row" style="display: flex;">
-        <div class="statistieken"
-          style='background:#ebe7e7; width: 30vw; height:auto; margin: 2vw; border-radius: 5px; color: black;'>
+        <div class="inkomsten"
+          style='background:#ebe7e7; width: 33vw; height:auto; margin: 2vw; border-radius: 5px; color: black;'>
           <br>
-          <h3 style='text-align: center;'>Statistieken</h3>
+          <h3 style='text-align: center;'>Inkomsten</h3>
           <hr>
           <p style='padding: 1vw;' id='week'><i class="fas fa-coins"></i></p>
           <p style='padding: 1vw;' id='30days'><i class="fas fa-coins"></i></p>
           <p style='padding: 1vw;' id='90days'><i class="fas fa-coins"></i></p>
           <p style='padding: 1vw;' id='year'><i class="fas fa-coins"></i></p>
           <p style='padding: 1vw;' id='total'><i class="fas fa-coins"></i></p>
-        </div>
-
-        <div class="statistieken"
-          style='background:#ebe7e7; width: 100%; height:auto; margin: 2vw; border-radius: 5px; color: black;'>
-          <br>
-          <h3 style='text-align: center;'>Recente bestellingen</h3>
           <hr>
-        </div>
-      </div>
-
-      <div class="second-row" style="display: flex;">
-        <div class="statistieken"
-          style='background:#ebe7e7; width: 33vw; height:auto; margin: 2vw; border-radius: 5px; color: black;'>
-          <br>
-          <h3 style='text-align: center;'>Grafiek 1</h3>
-          <hr>
+          <canvas id='graph1'></canvas>
         </div>
 
         <div class="statistieken"
           style='background:#ebe7e7; width: 33vw; height:auto; margin: 2vw; border-radius: 5px; color: black;'>
           <br>
-          <h3 style='text-align: center;'>Grafiek 2</h3>
+          <h3 style='text-align: center;'>Bestellingen</h3>
           <hr>
+          <p style='padding: 1vw;' id='week'><i class="fas fa-box"></i></i></p>
+          <p style='padding: 1vw;' id='30days'><i class="fas fa-box"></i></i></p>
+          <p style='padding: 1vw;' id='90days'><i class="fas fa-box"></i></i></p>
+          <p style='padding: 1vw;' id='year'><i class="fas fa-box"></i></i></p>
+          <p style='padding: 1vw;' id='total'><i class="fas fa-box"></i></i></p>
+          <hr>
+          <canvas id='graph2'></canvas>
         </div>
 
-        <div class="statistieken"
+        <div class="inkomsten"
           style='background:#ebe7e7; width: 33vw; height:auto; margin: 2vw; border-radius: 5px; color: black;'>
           <br>
-          <h3 style='text-align: center;'>Grafiek 3</h3>
+          <h3 style='text-align: center;'>Bezoekers</h3>
+          <hr>
+          <p style='padding: 1vw;' id='week'><i class="fas fa-users"></i></i></p>
+          <p style='padding: 1vw;' id='30days'><i class="fas fa-users"></i></i></p>
+          <p style='padding: 1vw;' id='90days'><i class="fas fa-users"></i></i></p>
+          <p style='padding: 1vw;' id='year'><i class="fas fa-users"></i></i></p>
+          <p style='padding: 1vw;' id='total'><i class="fas fa-users"></i></i></p>
           <hr>
           <canvas id='graph3'></canvas>
         </div>
 
       </div>
-
     </div>
   </div>
 
