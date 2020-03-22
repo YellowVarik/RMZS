@@ -120,21 +120,21 @@ async function getVisitors(dashboard){
     var year = 0;
     var alltime = Math.round((dashboard.totals.visitors + Number.EPSILON) * 100) / 100;
 
-    var weekOmzetLabels = [];
-    var weekOmzet = [];
+    var weekLabels = [];
+    var weekData = [];
 
-    var thirtydaysOmzetLabels = [];
-    var thirtydaysOmzet = [];
+    var thirtydaysLabels = [];
+    var thirtydaysData = [];
 
     for (var i = 0; i < dashboard.periods.length && i < 7; i++) {
         week += dashboard.periods[i].visitors;
-        weekOmzetLabels[i] = dashboard.periods[i].date;
-        weekOmzet[i] = dashboard.periods[i].visitors;
+        weekLabels[i] = dashboard.periods[i].date;
+        weekData[i] = dashboard.periods[i].visitors;
     }
     for (var i = 0; i < dashboard.periods.length && i < 30; i++) {
         thirtydays += dashboard.periods[i].visitors;
-        thirtydaysOmzetLabels[i] = dashboard.periods[i].date;
-        thirtydaysOmzet[i] = dashboard.periods[i].visitors;
+        thirtydaysLabels[i] = dashboard.periods[i].date;
+        thirtydaysData[i] = dashboard.periods[i].visitors;
     }
     for (var i = 0; i < dashboard.periods.length && i < 90; i++) {
         ninetydays += dashboard.periods[i].visitors;
@@ -153,8 +153,8 @@ async function getVisitors(dashboard){
     document.getElementById('visitors90days').innerHTML = "<i class='fas fa-users'></i> Bezoekers laatste 90 dagen: " + ninetydays;
     document.getElementById('visitorsyear').innerHTML = "<i class='fas fa-users'></i> Bezoekers dit jaar: " + year;
     document.getElementById('visitorstotal').innerHTML = "<i class='fas fa-users'></i> Totale Bezoekers: " + alltime;
-
-    makeChart(weekOmzetLabels.reverse(), weekOmzet.reverse(), document.getElementById('graph3'), "Bezoekers");
+    
+    makeChart(thirtydaysLabels.reverse(), thirtydaysData.reverse(), document.getElementById('graph3'), "Bezoekers");
 }
 
 
