@@ -1,5 +1,4 @@
 const fs = require('fs');
-const https = require('https');
 const axios = require('axios').default
 
 if (!fs.existsSync('./config/config.json') && window.location.pathname.split('/').pop() !== 'keys.html') {
