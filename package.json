@@ -16,6 +16,8 @@
     "pdf-lib": "^1.4.1"
   },
   "dependencies": {
-    "axios": "^0.19.2"
+    "axios": "^0.19.2",
+    "cryptr": "^6.0.1",
+    "electron-reload": "^1.5.0"
   }
 }

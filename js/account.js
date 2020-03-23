@@ -1,12 +1,18 @@
 const fs = require('fs');
 const axios = require('axios').default
+const Cryptr = require('cryptr');
+const crypto = require('crypto')
+
+const storage = window.localStorage;
+
+console.log(storage.getItem('mpKey'), storage.getItem('lsKey'), storage.getItem('lsSecret'))
 
 if (!fs.existsSync('./config/config.json') && window.location.pathname.split('/').pop() !== 'keys.html') {
     window.location.href = "./keys.html";
 }
 
 if (window.location.pathname.split('/').pop() == 'home.html') {
-    let config = JSON.parse(fs.readFileSync("./config/config.json"));
+    const config = JSON.parse(fs.readFileSync("./config/config.json"));
     document.getElementById('welkom').innerHTML = 'Welkom, ' + config.name + "!";
 }
 
@@ -85,29 +91,33 @@ async function makeAccount() {
         });
     }
 
-    
-
     if (error) {
         document.getElementsByClassName('errormsg')[0].innerHTML = errormsg + "<font style='font-size: 10px;'><b>Klopt dit niet? Neem contact op met de systeembeheerder!</b></font>";
         document.getElementById("popup1").classList.add("visible")
         return
     }
 
+    const pwhash = crypto.createHash('md5').update(password).digest("hex");
+    const cryptr = new Cryptr(pwhash);
 
-    let account = { "name": name, "username": uname, "password": password, "mpKey": mpKey, "lsKey": lsKey, "lsSecret": lsSecret };
+    let account = { "name": name, "username": uname, "mpKey": cryptr.encrypt(mpKey), "lsKey": cryptr.encrypt(lsKey), "lsSecret": cryptr.encrypt(lsSecret) };
 
     try {
         if (!fs.existsSync("./config")) {
             fs.mkdirSync("./config");
         }
         fs.writeFileSync('./config/config.json', JSON.stringify(account));
+        storage.setItem('mpKey', mpKey);
+        storage.setItem('lsKey', lsKey);
+        storage.setItem('lsSecret', lsSecret);
+
         window.location.href = "./home.html";
     } catch (error) {
         console.error(error);
     }
 }
 
-function login() {
+async function login() {
     let username = document.getElementById("username").value;
     let password = document.getElementById("password").value;
 
@@ -121,10 +131,14 @@ function login() {
         error = true;
         errormsg = "Gebruikersnaam en/of wachtwoord komt niet overeen!<br><br>";
     }
-    if (password != configData.password) {
-        error = true;
+
+    const pwhash = crypto.createHash('md5').update(password).digest("hex");
+    const cryptr = new Cryptr(pwhash);
+
+    await axios.get(`https://${cryptr.decrypt(configData.lsKey)}:${cryptr.decrypt(configData.lsSecret)}@api.webshopapp.com/nl/orders.json`).catch(() => {
         errormsg = "Gebruikersnaam en/of wachtwoord komt niet overeen!<br><br>";
-    }
+        error = true;
+    });
 
     if (error) {
         document.getElementsByClassName('errormsg')[0].innerHTML = errormsg + "<font style='font-size: 10px;'><b>Klopt dit niet? Neem contact op met de systeembeheerder!</b></font>";
@@ -132,6 +146,9 @@ function login() {
         return
     }
 
+    storage.setItem('mpKey', cryptr.decrypt(configData.mpKey));
+    storage.setItem('lsKey', cryptr.decrypt(configData.lsKey));
+    storage.setItem('lsSecret', cryptr.decrypt(configData.lsSecret));
     window.location.href = './home.html';
 }
 

@@ -11,10 +11,7 @@ window.$ = window.jQuery = require('./js/jquery-3.4.1.min.js')
 var mpURL = "api.myparcel.nl";
 
 //De key moet worden opgrvraagd door de gebruiker in hun MyParcel account
-
-
-let config = JSON.parse(fs.readFileSync("./config/config.json"));
-var base64Key = config.mpKey;
+var base64Key = window.localStorage.getItem('mpKey');
 
 var loadScreen = $(`
 <div id='loading' class="sk-circle">

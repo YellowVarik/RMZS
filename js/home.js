@@ -1,10 +1,9 @@
 window.$ = window.jQuery = require('./js/jquery-3.4.1.min.js')
 const chartjs = require('chart.js');
 
-var config = JSON.parse(fs.readFileSync("./config/config.json"));
-var api_key = config.lsKey;
-var api_secret = config.lsSecret;
-var lsUrl = `https://${api_key}:${api_secret}@api.webshopapp.com/nl`
+const api_key = window.localStorage.getItem('lsKey');
+const api_secret = window.localStorage.getItem('lsSecret');
+const lsUrl = `https://${api_key}:${api_secret}@api.webshopapp.com/nl`
 
 getDashboard();
 

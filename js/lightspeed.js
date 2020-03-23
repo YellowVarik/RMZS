@@ -2,9 +2,8 @@ const axios = require('axios').default
 const { PDFDocument, rgb } = require('pdf-lib');
 const fontkit = require('@pdf-lib/fontkit')
 
-var config = JSON.parse(fs.readFileSync("./config/config.json"));
-var api_key = config.lsKey;
-var api_secret = config.lsSecret;
+const api_key = window.localStorage.getItem('lsKey');
+const api_secret = window.localStorage.getItem('lsSecret');
 
 var fontRegular = './fonts/Roboto-Regular.ttf';
 var fontBold = './fonts/Roboto-Bold.ttf'
