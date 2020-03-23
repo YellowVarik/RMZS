@@ -41,6 +41,6 @@ deploy:
     secure: k0tx/5D16SaMgjXlmfJZ+KZtDD8TIP6NVSvBwQWzdOUdl2J64uN6SwEXEN3va094afxhmDLuuc9AVcuj1p9VWdbGa0pp6QqT5TO4TCUx8SMiJap08+YTRbQ0gne3uW7f7OUtYNhSkyFBLJB1tlkiT6k4sos3albrZ50IZGtXi+OSu0l3VuQ3tQGe/YRgh5ishzfJF9ofll9G7I/K/U5K6oMLu7woLXMuLIxmsNi9MxGKKksY+y4KIncM/Q81pjFKegnStYe6nzE5t1OqXc9DwhMDmbLCm1DNr6J1xpfMUc2cdzIoQfl5uGQkw3SjLvsDtYm2dSmh9f8yYHMOMzJgQpTYH01ANlMIGNrS1BKVQyAwDfuFWgFGHxg+w8Q5uoZno4fKT8g+QlmZGRy51TuBp9a5xO4MXyLi7sJCIzB+b/Xy30oh9uSLlhuhrnWMOszeVfWITuVG+NQtWd9sRTQ3ALNX7meORG5IlWU72R7XCxxfA8HSLo/zD4vdyh8kPWPrJGmA8Kk+jybkTSHxjd9XLMGZ3Ymop5rgJX5/5Y680HB0byzHPZ6/VMKaHcblcPoDeAnCVEWwHHVhbPwXMNzdykSG6+5bHQiCi+CibEcZSQ16CtyUKmrV7Dg+Lpr/kTG6C1DIIgCONk7Pc5SgH9fKftNKki7dlXpkDSg3O30Jrwc=
   file:
     - dist/*.exe 
-    - dist/mac/*
+    - dist/*.dmg
   on:
     repo: jlwbr/RMZS
