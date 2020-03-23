@@ -10,6 +10,7 @@ getDashboard();
 
 async function getDashboard() {
     axios.get(lsUrl + '/dashboard.json').then(result => {
+        console.log(result.data.dashboard)
         getSales(result.data.dashboard);
         getOrders(result.data.dashboard);
         getVisitors(result.data.dashboard);

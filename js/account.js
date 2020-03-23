@@ -166,9 +166,7 @@ function deleteAccount() {
     window.location.href = './keys.html';
 }
 
-function checkLSKey(key, secret) {
-    if (key == '' || secret == '') {
-        return false;
-    }
+function changeUsername(){
+    const file = require('config/config.json');
 
 }
