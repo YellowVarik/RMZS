@@ -10,7 +10,6 @@ getDashboard();
 
 async function getDashboard() {
     axios.get(lsUrl + '/dashboard.json').then(result => {
-        console.log(result.data);
         getSales(result.data.dashboard);
         getOrders(result.data.dashboard);
         getVisitors(result.data.dashboard);
@@ -121,8 +120,6 @@ async function getSales(dashboard) {
         changeChart(chart, newalltime.labels, newalltime.data)
     })
 
-    console.log(yearLabels)
-
     
 }
 
@@ -227,8 +224,6 @@ async function getOrders(dashboard) {
     document.getElementById('ordersalltimebtn').addEventListener('click', () => {
         changeChart(chart, newalltime.labels, newalltime.data)
     })
-
-    console.log(yearLabels)
 
     
 }
@@ -336,8 +331,6 @@ async function getVisitors(dashboard) {
         changeChart(chart, newalltime.labels, newalltime.data)
     })
 
-    console.log(yearLabels)
-
     
 }
 
@@ -384,7 +377,6 @@ function reduceToWeeks(data, labels) {
     while (data.length) {
         var x = data.splice(0, 7);
         var y = labels.splice(0, 7);
-        console.log({ x, y })
         if (y.length == 7) {
             newLabels.push(y[0] + ' tot ' + y[6]);
         } else {
@@ -392,7 +384,6 @@ function reduceToWeeks(data, labels) {
         }
         newData.push(x.reduce((a, b) => a + b, 0));
     }
-    console.log({newData, newLabels})
     return {data: newData, labels: newLabels};
 }
 

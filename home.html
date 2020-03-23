@@ -103,8 +103,7 @@
       <h2>Uitloggen</h2>
       <p><b>Weet u zeker dat u wilt uitloggen?</b></p>
       <div style="display: flex;">
-        <button class="ja" onclick='window.location.href="./index.html"'
-          style="background: green; width: 50%; margin: 2%;">Ja</button>
+        <button class="ja" onclick='window.location.href="./index.html";localStorage.clear();'style="background: green; width: 50%; margin: 2%;">Ja</button>
         <button class="nee" onclick="document.getElementById('popuplogout').classList.remove('visible')"
           style="background: red; width: 50%; margin: 2%;">Nee</button>
       </div>
