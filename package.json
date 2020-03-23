@@ -4,7 +4,19 @@
   "description": "",
   "main": "main.js",
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder"
+  },
+  "build": {
+    "appId": "com.rmzs.app",
+    "mac": {
+      "category": "public.app-category.business",
+      "icon": "img/icon.png"
+    },
+    "win": {
+      "icon": "img/icon.png"
+    }
   },
   "author": "",
   "license": "ISC",
@@ -13,11 +25,11 @@
     "chart.js": "^2.9.3",
     "electron": "^7.1.11",
     "electron-pdf-window": "^1.0.12",
-    "pdf-lib": "^1.4.1"
+    "pdf-lib": "^1.4.1",
+    "electron-builder": "^22.4.1"
   },
   "dependencies": {
     "axios": "^0.19.2",
-    "cryptr": "^6.0.1",
-    "electron-reload": "^1.5.0"
+    "cryptr": "^6.0.1"
   }
 }
