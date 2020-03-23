@@ -71,8 +71,11 @@ async function getSales(dashboard) {
         var x = thirtydaysData.splice(0, 7);
         var y = thirtydaysLabels.splice(0, 7);
         console.log({x, y})
-        if(thirtydaysData.length ==)
-        newThirtyDaysLabels.push(y[0] + ' tot ' + y[6]);
+        if(y.length == 7){
+            newThirtyDaysLabels.push(y[0] + ' tot ' + y[6]);
+        }else{
+            newThirtyDaysLabels.push(y[0] + ' tot ' + y[y.length - 1]);
+        }
         newThirtyDaysOmzet.push(x.reduce( (a, b) => a + b, 0));
     }
 
