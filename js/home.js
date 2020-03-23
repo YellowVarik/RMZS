@@ -65,20 +65,6 @@ async function getSales(dashboard) {
 
     thirtydaysData.reverse();
     thirtydaysLabels.reverse();
-    var newThirtyDaysOmzet = [];
-    var newThirtyDaysLabels = [];
-    while(thirtydaysData.length){
-        var x = thirtydaysData.splice(0, 7);
-        var y = thirtydaysLabels.splice(0, 7);
-        console.log({x, y})
-        if(y.length == 7){
-            newThirtyDaysLabels.push(y[0] + ' tot ' + y[6]);
-        }else{
-            newThirtyDaysLabels.push(y[0] + ' tot ' + y[y.length - 1]);
-        }
-        newThirtyDaysOmzet.push(x.reduce( (a, b) => a + b, 0));
-    }
-
     week = Math.round((week + Number.EPSILON) * 100) / 100;
     thirtydays = Math.round((thirtydays + Number.EPSILON) * 100) / 100;
     ninetydays = Math.round((ninetydays + Number.EPSILON) * 100) / 100;
@@ -103,11 +89,11 @@ async function getSales(dashboard) {
         changeChart(chart, newThirtyDaysLabels, newThirtyDaysOmzet)
     })
 
-    
+
 
 }
 
-async function getOrders(dashboard){
+async function getOrders(dashboard) {
     var thisyear = new Date().getFullYear();
     var week = 0;
     var thirtydays = 0;
@@ -153,7 +139,7 @@ async function getOrders(dashboard){
 }
 
 
-async function getVisitors(dashboard){
+async function getVisitors(dashboard) {
     var thisyear = new Date().getFullYear();
     var week = 0;
     var thirtydays = 0;
@@ -194,7 +180,7 @@ async function getVisitors(dashboard){
     document.getElementById('visitors90days').innerHTML = "<i class='fas fa-users'></i> Bezoekers laatste 90 dagen: " + ninetydays;
     document.getElementById('visitorsyear').innerHTML = "<i class='fas fa-users'></i> Bezoekers dit jaar: " + year;
     document.getElementById('visitorstotal').innerHTML = "<i class='fas fa-users'></i> Totale Bezoekers: " + alltime;
-    
+
     makeChart(thirtydaysLabels.reverse(), thirtydaysData.reverse(), document.getElementById('graph3'), "Bezoekers");
 }
 
@@ -227,8 +213,26 @@ function makeChart(labels, data, canvas, titel) {
     return chart;
 }
 
-function changeChart(chart, labels, data){
+function changeChart(chart, labels, data) {
     chart.data.labels = labels;
     chart.data.datasets[0].data = data;
     chart.update();
+}
+
+
+function reduceToWeeks(data, labels) {
+    var newThirtyDaysOmzet = [];
+    var newThirtyDaysLabels = [];
+
+    while (data.length) {
+        var x = data.splice(0, 7);
+        var y = labels.splice(0, 7);
+        console.log({ x, y })
+        if (y.length == 7) {
+            newThirtyDaysLabels.push(y[0] + ' tot ' + y[6]);
+        } else {
+            newLabels.push(y[0] + ' tot ' + y[y.length - 1]);
+        }
+        newData.push(x.reduce((a, b) => a + b, 0));
+    }
 }

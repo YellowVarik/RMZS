@@ -1,4 +1,3 @@
-const axios = require('axios').default
 const { PDFDocument, rgb } = require('pdf-lib');
 const fontkit = require('@pdf-lib/fontkit')
 

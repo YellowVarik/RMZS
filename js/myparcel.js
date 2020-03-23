@@ -1,5 +1,4 @@
 const https = require('https')
-const fs = require('fs')
 const electron = require('electron')
 const pdfWindow = require('electron-pdf-window')
 const lightspeed = require(__dirname + '/js/lightspeed')
