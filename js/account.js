@@ -11,6 +11,14 @@ if (!fs.existsSync('./config/config.json') && window.location.pathname.split('/'
     window.location.href = "./keys.html";
 }
 
+console.log(window.location.pathname.split('/').pop());
+
+if(window.location.pathname.split('/').pop() != 'index.html' && window.location.pathname.split('/').pop() != 'keys.html'){
+    if(storage.getItem('mpKey')){
+        window.location.href = 'index.html';
+    }
+}
+
 if (window.location.pathname.split('/').pop() == 'home.html') {
     const config = JSON.parse(fs.readFileSync("./config/config.json"));
     document.getElementById('welkom').innerHTML = 'Welkom, ' + config.name + "!";
@@ -135,10 +143,12 @@ async function login() {
     const pwhash = crypto.createHash('md5').update(password).digest("hex");
     const cryptr = new Cryptr(pwhash);
 
-    await axios.get(`https://${cryptr.decrypt(configData.lsKey)}:${cryptr.decrypt(configData.lsSecret)}@api.webshopapp.com/nl/orders.json`).catch(() => {
+    try{
+        var decryptedKey = cryptr.decrypt(configData.lsKey)
+    } catch{
         errormsg = "Gebruikersnaam en/of wachtwoord komt niet overeen!<br><br>";
         error = true;
-    });
+    }
 
     if (error) {
         document.getElementsByClassName('errormsg')[0].innerHTML = errormsg + "<font style='font-size: 10px;'><b>Klopt dit niet? Neem contact op met de systeembeheerder!</b></font>";
