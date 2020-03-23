@@ -30,8 +30,8 @@ async function getSales(dashboard) {
     var weekOmzetLabels = [];
     var weekOmzet = [];
 
-    var thirtydaysOmzetLabels = [];
-    var thirtydaysOmzet = [];
+    var thirtydaysLabels = [];
+    var thirtydaysData = [];
 
     for (var i = 0; i < dashboard.periods.length && i < 7; i++) {
         week += dashboard.periods[i].paidExcl;
@@ -40,8 +40,8 @@ async function getSales(dashboard) {
     }
     for (var i = 0; i < dashboard.periods.length && i < 30; i++) {
         thirtydays += dashboard.periods[i].paidExcl;
-        thirtydaysOmzetLabels[i] = dashboard.periods[i].date;
-        thirtydaysOmzet[i] = dashboard.periods[i].paidExcl;
+        thirtydaysLabels[i] = dashboard.periods[i].date;
+        thirtydaysData[i] = dashboard.periods[i].paidExcl;
     }
     for (var i = 0; i < dashboard.periods.length && i < 90; i++) {
         ninetydays += dashboard.periods[i].paidExcl;
@@ -50,10 +50,39 @@ async function getSales(dashboard) {
         year += dashboard.periods[i].paidExcl;
     }
 
+    // var x = 0;
+    // for(var i = 0; i < thirtydaysOmzet.length; i++){
+    //     if(i % (x + 7) == 0){
+    //         thirtydaysOmzetLabels[x] = thirtydaysOmzetLabels[x] + " tot " + thirtydaysOmzetLabels[i];
+    //         thirtydaysOmzet.splice(x + 1, 6);
+    //         thirtydaysOmzetLabels.splice(x + 1, 6);
+    //         x++;
+    //         i = x;
+    //     }else{
+    //         thirtydaysOmzet[x] += thirtydaysOmzet[i];
+    //     }
+    // }
+
+    thirtydaysData.reverse();
+    thirtydaysLabels.reverse();
+    var newThirtyDaysOmzet = [];
+    var newThirtyDaysLabels = [];
+    while(thirtydaysData.length){
+        var x = thirtydaysData.splice(0, 7);
+        var y = thirtydaysLabels.splice(0, 7);
+        console.log({x, y})
+        if(thirtydaysData.length ==)
+        newThirtyDaysLabels.push(y[0] + ' tot ' + y[6]);
+        newThirtyDaysOmzet.push(x.reduce( (a, b) => a + b, 0));
+    }
+
     week = Math.round((week + Number.EPSILON) * 100) / 100;
     thirtydays = Math.round((thirtydays + Number.EPSILON) * 100) / 100;
     ninetydays = Math.round((ninetydays + Number.EPSILON) * 100) / 100;
     year = Math.round((year + Number.EPSILON) * 100) / 100;
+
+    weekOmzet.reverse();
+    weekOmzetLabels.reverse();
 
     document.getElementById('inkomstenweek').innerHTML = "<i class='fas fa-coins'></i> Inkomsten laatste 7 dagen: \u20AC" + week;
     document.getElementById('inkomsten30days').innerHTML = "<i class='fas fa-coins'></i> Inkomsten laatste 30 dagen: \u20AC" + thirtydays;
@@ -61,7 +90,17 @@ async function getSales(dashboard) {
     document.getElementById('inkomstenyear').innerHTML = "<i class='fas fa-coins'></i> Inkomsten dit jaar: \u20AC" + year;
     document.getElementById('inkomstentotal').innerHTML = "<i class='fas fa-coins'></i> Totale inkomsten: \u20AC" + alltime;
 
-    makeChart(weekOmzetLabels.reverse(), weekOmzet.reverse(), document.getElementById('graph1'), "Omzet");
+    var chart = makeChart(weekOmzetLabels, weekOmzet, document.getElementById('graph1'), "Omzet");
+
+    document.getElementById('inkomstenweekbtn').addEventListener('click', () => {
+        changeChart(chart, weekOmzetLabels, weekOmzet)
+    })
+
+    document.getElementById('inkomsten30daysbtn').addEventListener('click', () => {
+        changeChart(chart, newThirtyDaysLabels, newThirtyDaysOmzet)
+    })
+
+    
 
 }
 
@@ -157,14 +196,14 @@ async function getVisitors(dashboard){
 }
 
 
-function makeChart(labels, omzet, canvas, titel) {
-    var mychart = new chartjs.Chart(canvas, {
+function makeChart(labels, data, canvas, titel) {
+    var chart = new chartjs.Chart(canvas, {
         type: 'line',
         data: {
             labels: labels,
             datasets: [{
                 label: titel,
-                data: omzet,
+                data: data,
                 borderColor: [
                     '#9fda34'
                 ],
@@ -181,4 +220,12 @@ function makeChart(labels, omzet, canvas, titel) {
             }
         }
     })
+
+    return chart;
+}
+
+function changeChart(chart, labels, data){
+    chart.data.labels = labels;
+    chart.data.datasets[0].data = data;
+    chart.update();
 }

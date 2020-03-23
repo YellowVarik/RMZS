@@ -5,16 +5,12 @@ const crypto = require('crypto')
 
 const storage = window.localStorage;
 
-console.log(storage.getItem('mpKey'), storage.getItem('lsKey'), storage.getItem('lsSecret'))
-
 if (!fs.existsSync('./config/config.json') && window.location.pathname.split('/').pop() !== 'keys.html') {
     window.location.href = "./keys.html";
 }
 
-console.log(window.location.pathname.split('/').pop());
-
 if(window.location.pathname.split('/').pop() != 'index.html' && window.location.pathname.split('/').pop() != 'keys.html'){
-    if(storage.getItem('mpKey')){
+    if(storage.getItem('mpKey') === null){
         window.location.href = 'index.html';
     }
 }
