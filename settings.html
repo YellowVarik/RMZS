@@ -34,7 +34,7 @@
             <h3 style='margin: 1vw;'>Naam</h3>
             <input class="namechange" type="name" id="namechange" placeholder="Naam wijzigen" />
           </form>
-          <button onclick=''>Wijzigen</button>
+          <button onclick='changeName()'>Wijzigen</button>
         </div>
 
         <div class="form" style='margin: 1vw;'>
@@ -42,7 +42,7 @@
             <h3 style='margin: 1vw;'>Gebruikersnaam</h3>
             <input class="usernamechange" type="username" id="usernamechange" placeholder="Gebruikersnaam wijzigen" />
           </form>
-          <button onclick=''>Wijzigen</button>
+          <button onclick='changeUsername()'>Wijzigen</button>
         </div>
 
         <div class="form" style='margin: 1vw;'>
@@ -52,7 +52,7 @@
             <input class="passwordchangenew" type="password" id="passwordchangenew" placeholder="Nieuwe wachtwoord" />
             <input class="passwordchangenewrepeat" type="password" id="passwordchangenewrepeat" placeholder="Nieuwe wachtwoord herhalen" />
           </form>
-          <button onclick=''>Wijzigen</button>
+          <button onclick='changePassword()'>Wijzigen</button>
         </div>
 
     </div>
@@ -72,6 +72,26 @@
         <button class="nee" onclick="document.getElementById('popuplogout').classList.remove('visible')"
           style="background: red; width: 50%; margin: 2%;">Nee</button>
       </div>
+      <div class="content">
+      </div>
+    </div>
+  </div>
+
+  <div id="popuppassword" class="overlay">
+    <div class="popup">
+      <h2>Uw wachtwoord kon niet worden aangepast!</h2>
+      <p class='errormsg'></p>
+      <a class="close" onclick = 'document.getElementById("popuppassword").classList.remove("visible")'>&times;</a>
+      <div class="content">
+      </div>
+    </div>
+  </div>
+
+  <div id="popupchange" class="overlay">
+    <div class="popup">
+      <h2>Uw gegevens zijn aangepast!</h2>
+      <p class='changemessage'></p>
+      <a class="close" onclick = 'document.getElementById("popupchange").classList.remove("visible")'>&times;</a>
       <div class="content">
       </div>
     </div>

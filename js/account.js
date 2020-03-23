@@ -24,6 +24,7 @@ async function makeAccount() {
     let name = document.getElementById('naamInput').value;
     let uname = document.getElementById('usernameInput').value;
     let password = document.getElementById('passwordInput').value;
+    let passwordrepeat = document.getElementById('passwordInputRepeat').value;
 
     var keyBuffer = new Buffer.from(document.getElementById('mpKeyInput').value);
     var mpKey = keyBuffer.toString("base64");
@@ -46,6 +47,10 @@ async function makeAccount() {
     if (password.length < 1) {
         errormsg += "Het wachtwoord moet minstens 1 teken lang zijn!<br><br>"
         document.getElementById('passwordInput').value = "";
+        error = true;
+    } else if (password !== passwordrepeat){
+        errormsg += "De wachtwoorden zijn niet gelijk!<br><br>"
+        document.getElementById('passwordInputRepeat').value = "";
         error = true;
     }
 
@@ -162,11 +167,74 @@ function deleteAccount() {
     fs.unlinkSync('./config/config.json', (e) => {
         if (e) throw e;
     })
-
+    storage.clear();
     window.location.href = './keys.html';
 }
 
+function changeName(){
+    var file = require('./config/config.json');
+    var oldName = file.name;
+    var newName = document.getElementById('namechange').value;
+    file.name = newName;
+    fs.writeFileSync('./config/config.json', JSON.stringify(file));
+    document.getElementsByClassName('changemessage')[0].innerHTML = `Uw naam is veranderd van \"${oldName}\" naar \"${newName}\"`;
+    document.getElementById('popupchange').classList.add('visible');
+}
+
 function changeUsername(){
-    const file = require('config/config.json');
+    const file = require('./config/config.json');
+    var oldUsername = file.username;
+    var newUsername = document.getElementById('usernamechange').value;
+    file.username = newUsername;
+    fs.writeFileSync('./config/config.json', JSON.stringify(file));
+    document.getElementsByClassName('changemessage')[0].innerHTML = `Uw gebruikersnaam is veranderd van \"${oldUsername}\" naar \"${newUsername}\"`;
+    document.getElementById('popupchange').classList.add('visible');
+}
+
+function changePassword(){
+    const file = require('./config/config.json');
+    var oldPassword = document.getElementById('passwordchangeold').value;
+    var newPassword = document.getElementById('passwordchangenew').value;
+    var newPasswordRepeat = document.getElementById('passwordchangenewrepeat').value;
+
+    var error = false;
+    var errormsg = '';
+
+    var pwhash = crypto.createHash('md5').update(oldPassword).digest("hex");
+    var cryptr = new Cryptr(pwhash);
+
+    try{
+        var decryptedKey = cryptr.decrypt(file.lsKey)
+    } catch{
+        errormsg = "Het oude wachtwoord is niet correct!<br><br>";
+        error = true;
+    }
+
+    if(newPassword.length < 1){
+        error = true;
+        errormsg += 'Het nieuwe wachtwoord moet minstens 1 teken lang zijn!<br><br>'
+    }
+
+    if(newPassword !== newPasswordRepeat){
+        error = true;
+        errormsg += 'De nieuwe wachtwoorden zijn niet gelijk!<br><br>'
+    }
+
+    if (error) {
+        document.getElementsByClassName('errormsg')[0].innerHTML = errormsg + "<font style='font-size: 10px;'><b>Klopt dit niet? Neem contact op met de systeembeheerder!</b></font>";
+        document.getElementById("popuppassword").classList.add("visible")
+        return
+    }
+    else{
+        pwhash = crypto.createHash('md5').update(newPassword).digest("hex");
+        cryptr = new Cryptr(pwhash);
+        file.mpKey = cryptr.encrypt(storage.getItem('mpKey'));
+        file.lsKey = cryptr.encrypt(storage.getItem('lsKey'));
+        file.lsSecret = cryptr.encrypt(storage.getItem('lsSecret'));
+        console.log(file)
+        fs.writeFileSync('./config/config.json', JSON.stringify(file));
+        document.getElementsByClassName('changemessage')[0].innerHTML = 'Uw wachtwoord is aangepast!';
+        document.getElementById('popupchange').classList.add('visible');
+    }
 
 }
