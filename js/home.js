@@ -200,10 +200,10 @@ async function getOrders(dashboard) {
     weekData.reverse();
     weekLabels.reverse();
 
-    document.getElementById('ordersweek').innerHTML = "<i class='fas fa-coins'></i> orders laatste 7 dagen: \u20AC" + week;
-    document.getElementById('orders30days').innerHTML = "<i class='fas fa-coins'></i> orders laatste 30 dagen: \u20AC" + thirtydays;
-    document.getElementById('orders90days').innerHTML = "<i class='fas fa-coins'></i> orders laatste 90 dagen: \u20AC" + ninetydays;
-    document.getElementById('ordersyear').innerHTML = "<i class='fas fa-coins'></i> orders dit jaar: \u20AC" + year;
+    document.getElementById('ordersweek').innerHTML = "<i class='fas fa-coins'></i> Orders laatste 7 dagen: \u20AC" + week;
+    document.getElementById('orders30days').innerHTML = "<i class='fas fa-coins'></i> Orders laatste 30 dagen: \u20AC" + thirtydays;
+    document.getElementById('orders90days').innerHTML = "<i class='fas fa-coins'></i> Orders laatste 90 dagen: \u20AC" + ninetydays;
+    document.getElementById('ordersyear').innerHTML = "<i class='fas fa-coins'></i> Orders dit jaar: \u20AC" + year;
     document.getElementById('orderstotal').innerHTML = "<i class='fas fa-coins'></i> Totale orders: \u20AC" + alltime;
 
     var chart = makeChart(weekLabels, weekData, document.getElementById('graph2'), "Orders");
@@ -248,6 +248,15 @@ async function getVisitors(dashboard) {
     var thirtydaysLabels = [];
     var thirtydaysData = [];
 
+    var ninetydaysData = [];
+    var ninetydaysLabels = [];
+
+    var yearData = [];
+    var yearLabels = [];
+
+    var alltimeData = [];
+    var alltimeLabels = [];
+
     for (var i = 0; i < dashboard.periods.length && i < 7; i++) {
         week += dashboard.periods[i].visitors;
         weekLabels[i] = dashboard.periods[i].date;
@@ -260,23 +269,76 @@ async function getVisitors(dashboard) {
     }
     for (var i = 0; i < dashboard.periods.length && i < 90; i++) {
         ninetydays += dashboard.periods[i].visitors;
+        ninetydaysLabels[i] = dashboard.periods[i].date;
+        ninetydaysData[i] = dashboard.periods[i].visitors;
     }
     for (var i = 0; i < dashboard.periods.length && i < 365 && dashboard.periods[i].date.split('-')[0] == thisyear; i++) {
         year += dashboard.periods[i].visitors;
+        yearLabels[i] = dashboard.periods[i].date;
+        yearData[i] = dashboard.periods[i].visitors;
     }
+
+    for(var i = 0; i < dashboard.periods.length; i++){
+        alltimeLabels[i] = dashboard.periods[i].date;
+        alltimeData[i] = dashboard.periods[i].visitors;
+    }
+
+    thirtydaysData.reverse();
+    thirtydaysLabels.reverse();
+
+    ninetydaysData.reverse();
+    ninetydaysLabels.reverse();
+
+    yearData.reverse();
+    yearLabels.reverse();
+
+    alltimeData.reverse();
+    alltimeLabels.reverse();
+
+    var newthirtydays = reduceToWeeks(thirtydaysData, thirtydaysLabels);
+    var newninetydays = reduceToWeeks(ninetydaysData, ninetydaysLabels);
+    var newyear = reduceToMonths(yearData, yearLabels);
+    var newalltime = reduceToMonths(alltimeData, alltimeLabels);
 
     week = Math.round((week + Number.EPSILON) * 100) / 100;
     thirtydays = Math.round((thirtydays + Number.EPSILON) * 100) / 100;
     ninetydays = Math.round((ninetydays + Number.EPSILON) * 100) / 100;
     year = Math.round((year + Number.EPSILON) * 100) / 100;
 
-    document.getElementById('visitorsweek').innerHTML = "<i class='fas fa-users'></i> Bezoekers laatste 7 dagen: " + week;
-    document.getElementById('visitors30days').innerHTML = "<i class='fas fa-users'></i> Bezoekers laatste 30 dagen: " + thirtydays;
-    document.getElementById('visitors90days').innerHTML = "<i class='fas fa-users'></i> Bezoekers laatste 90 dagen: " + ninetydays;
-    document.getElementById('visitorsyear').innerHTML = "<i class='fas fa-users'></i> Bezoekers dit jaar: " + year;
-    document.getElementById('visitorstotal').innerHTML = "<i class='fas fa-users'></i> Totale Bezoekers: " + alltime;
+    weekData.reverse();
+    weekLabels.reverse();
 
-    makeChart(thirtydaysLabels.reverse(), thirtydaysData.reverse(), document.getElementById('graph3'), "Bezoekers");
+    document.getElementById('visitorsweek').innerHTML = "<i class='fas fa-coins'></i> Bezoekers laatste 7 dagen: \u20AC" + week;
+    document.getElementById('visitors30days').innerHTML = "<i class='fas fa-coins'></i> Bezoekers laatste 30 dagen: \u20AC" + thirtydays;
+    document.getElementById('visitors90days').innerHTML = "<i class='fas fa-coins'></i> Bezoekers laatste 90 dagen: \u20AC" + ninetydays;
+    document.getElementById('visitorsyear').innerHTML = "<i class='fas fa-coins'></i> Bezoekers dit jaar: \u20AC" + year;
+    document.getElementById('visitorstotal').innerHTML = "<i class='fas fa-coins'></i> Totale bezoekers: \u20AC" + alltime;
+
+    var chart = makeChart(weekLabels, weekData, document.getElementById('graph3'), "Bezoekers");
+
+    document.getElementById('visitorsweekbtn').addEventListener('click', () => {
+        changeChart(chart, weekLabels, weekData)
+    })
+
+    document.getElementById('visitors30daysbtn').addEventListener('click', () => {
+        changeChart(chart, newthirtydays.labels, newthirtydays.data)
+    })
+
+    document.getElementById('visitors90daysbtn').addEventListener('click', () => {
+        changeChart(chart, newninetydays.labels, newninetydays.data)
+    })
+
+    document.getElementById('visitorsyearbtn').addEventListener('click', () => {
+        changeChart(chart, newyear.labels, newyear.data)
+    })
+
+    document.getElementById('visitorsalltimebtn').addEventListener('click', () => {
+        changeChart(chart, newalltime.labels, newalltime.data)
+    })
+
+    console.log(yearLabels)
+
+    
 }
 
 
