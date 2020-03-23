@@ -200,11 +200,11 @@ async function getOrders(dashboard) {
     weekData.reverse();
     weekLabels.reverse();
 
-    document.getElementById('ordersweek').innerHTML = "<i class='fas fa-coins'></i> Orders laatste 7 dagen: " + week;
-    document.getElementById('orders30days').innerHTML = "<i class='fas fa-coins'></i> Orders laatste 30 dagen: " + thirtydays;
-    document.getElementById('orders90days').innerHTML = "<i class='fas fa-coins'></i> Orders laatste 90 dagen: " + ninetydays;
-    document.getElementById('ordersyear').innerHTML = "<i class='fas fa-coins'></i> Orders dit jaar: " + year;
-    document.getElementById('orderstotal').innerHTML = "<i class='fas fa-coins'></i> Totale orders: " + alltime;
+    document.getElementById('ordersweek').innerHTML = "<i class='fas fa-box'></i> Orders laatste 7 dagen: " + week;
+    document.getElementById('orders30days').innerHTML = "<i class='fas fa-box'></i> Orders laatste 30 dagen: " + thirtydays;
+    document.getElementById('orders90days').innerHTML = "<i class='fas fa-box'></i> Orders laatste 90 dagen: " + ninetydays;
+    document.getElementById('ordersyear').innerHTML = "<i class='fas fa-box'></i> Orders dit jaar: " + year;
+    document.getElementById('orderstotal').innerHTML = "<i class='fas fa-box'></i> Totale orders: " + alltime;
 
     var chart = makeChart(weekLabels, weekData, document.getElementById('graph2'), "Orders");
 
@@ -308,11 +308,11 @@ async function getVisitors(dashboard) {
     weekData.reverse();
     weekLabels.reverse();
 
-    document.getElementById('visitorsweek').innerHTML = "<i class='fas fa-coins'></i> Bezoekers laatste 7 dagen: " + week;
-    document.getElementById('visitors30days').innerHTML = "<i class='fas fa-coins'></i> Bezoekers laatste 30 dagen: " + thirtydays;
-    document.getElementById('visitors90days').innerHTML = "<i class='fas fa-coins'></i> Bezoekers laatste 90 dagen: " + ninetydays;
-    document.getElementById('visitorsyear').innerHTML = "<i class='fas fa-coins'></i> Bezoekers dit jaar: " + year;
-    document.getElementById('visitorstotal').innerHTML = "<i class='fas fa-coins'></i> Totale bezoekers: " + alltime;
+    document.getElementById('visitorsweek').innerHTML = "<i class='fas fa-users'></i> Bezoekers laatste 7 dagen: " + week;
+    document.getElementById('visitors30days').innerHTML = "<i class='fas fa-users'></i> Bezoekers laatste 30 dagen: " + thirtydays;
+    document.getElementById('visitors90days').innerHTML = "<i class='fas fa-users'></i> Bezoekers laatste 90 dagen: " + ninetydays;
+    document.getElementById('visitorsyear').innerHTML = "<i class='fas fa-users'></i> Bezoekers dit jaar: " + year;
+    document.getElementById('visitorstotal').innerHTML = "<i class='fas fa-users'></i> Totale bezoekers: " + alltime;
 
     var chart = makeChart(weekLabels, weekData, document.getElementById('graph3'), "Bezoekers");
 
