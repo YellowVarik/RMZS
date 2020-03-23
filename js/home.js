@@ -27,16 +27,25 @@ async function getSales(dashboard) {
     var year = 0;
     var alltime = Math.round((dashboard.totals.paidExcl + Number.EPSILON) * 100) / 100;
 
-    var weekOmzetLabels = [];
-    var weekOmzet = [];
+    var weekLabels = [];
+    var weekData = [];
 
     var thirtydaysLabels = [];
     var thirtydaysData = [];
 
+    var ninetydaysData = [];
+    var ninetydaysLabels = [];
+
+    var yearData = [];
+    var yearLabels = [];
+
+    var alltimeData = [];
+    var alltimeLabels = [];
+
     for (var i = 0; i < dashboard.periods.length && i < 7; i++) {
         week += dashboard.periods[i].paidExcl;
-        weekOmzetLabels[i] = dashboard.periods[i].date;
-        weekOmzet[i] = dashboard.periods[i].paidExcl;
+        weekLabels[i] = dashboard.periods[i].date;
+        weekData[i] = dashboard.periods[i].paidExcl;
     }
     for (var i = 0; i < dashboard.periods.length && i < 30; i++) {
         thirtydays += dashboard.periods[i].paidExcl;
@@ -45,33 +54,44 @@ async function getSales(dashboard) {
     }
     for (var i = 0; i < dashboard.periods.length && i < 90; i++) {
         ninetydays += dashboard.periods[i].paidExcl;
+        ninetydaysLabels[i] = dashboard.periods[i].date;
+        ninetydaysData[i] = dashboard.periods[i].paidExcl;
     }
     for (var i = 0; i < dashboard.periods.length && i < 365 && dashboard.periods[i].date.split('-')[0] == thisyear; i++) {
         year += dashboard.periods[i].paidExcl;
+        yearLabels[i] = dashboard.periods[i].date;
+        yearData[i] = dashboard.periods[i].paidExcl;
     }
 
-    // var x = 0;
-    // for(var i = 0; i < thirtydaysOmzet.length; i++){
-    //     if(i % (x + 7) == 0){
-    //         thirtydaysOmzetLabels[x] = thirtydaysOmzetLabels[x] + " tot " + thirtydaysOmzetLabels[i];
-    //         thirtydaysOmzet.splice(x + 1, 6);
-    //         thirtydaysOmzetLabels.splice(x + 1, 6);
-    //         x++;
-    //         i = x;
-    //     }else{
-    //         thirtydaysOmzet[x] += thirtydaysOmzet[i];
-    //     }
-    // }
+    for(var i = 0; i < dashboard.periods.length; i++){
+        alltimeLabels[i] = dashboard.periods[i].date;
+        alltimeData[i] = dashboard.periods[i].paidExcl;
+    }
 
     thirtydaysData.reverse();
     thirtydaysLabels.reverse();
+
+    ninetydaysData.reverse();
+    ninetydaysLabels.reverse();
+
+    yearData.reverse();
+    yearLabels.reverse();
+
+    alltimeData.reverse();
+    alltimeLabels.reverse();
+
+    var newthirtydays = reduceToWeeks(thirtydaysData, thirtydaysLabels);
+    var newninetydays = reduceToWeeks(ninetydaysData, ninetydaysLabels);
+    var newyear = reduceToMonths(yearData, yearLabels);
+    var newalltime = reduceToMonths(alltimeData, alltimeLabels);
+
     week = Math.round((week + Number.EPSILON) * 100) / 100;
     thirtydays = Math.round((thirtydays + Number.EPSILON) * 100) / 100;
     ninetydays = Math.round((ninetydays + Number.EPSILON) * 100) / 100;
     year = Math.round((year + Number.EPSILON) * 100) / 100;
 
-    weekOmzet.reverse();
-    weekOmzetLabels.reverse();
+    weekData.reverse();
+    weekLabels.reverse();
 
     document.getElementById('inkomstenweek').innerHTML = "<i class='fas fa-coins'></i> Inkomsten laatste 7 dagen: \u20AC" + week;
     document.getElementById('inkomsten30days').innerHTML = "<i class='fas fa-coins'></i> Inkomsten laatste 30 dagen: \u20AC" + thirtydays;
@@ -79,18 +99,31 @@ async function getSales(dashboard) {
     document.getElementById('inkomstenyear').innerHTML = "<i class='fas fa-coins'></i> Inkomsten dit jaar: \u20AC" + year;
     document.getElementById('inkomstentotal').innerHTML = "<i class='fas fa-coins'></i> Totale inkomsten: \u20AC" + alltime;
 
-    var chart = makeChart(weekOmzetLabels, weekOmzet, document.getElementById('graph1'), "Omzet");
+    var chart = makeChart(weekLabels, weekData, document.getElementById('graph1'), "Omzet");
 
     document.getElementById('inkomstenweekbtn').addEventListener('click', () => {
-        changeChart(chart, weekOmzetLabels, weekOmzet)
+        changeChart(chart, weekLabels, weekData)
     })
 
     document.getElementById('inkomsten30daysbtn').addEventListener('click', () => {
-        changeChart(chart, newThirtyDaysLabels, newThirtyDaysOmzet)
+        changeChart(chart, newthirtydays.labels, newthirtydays.data)
     })
 
+    document.getElementById('inkomsten90daysbtn').addEventListener('click', () => {
+        changeChart(chart, newninetydays.labels, newninetydays.data)
+    })
 
+    document.getElementById('inkomstenyearbtn').addEventListener('click', () => {
+        changeChart(chart, newyear.labels, newyear.data)
+    })
 
+    document.getElementById('inkomstenalltimebtn').addEventListener('click', () => {
+        changeChart(chart, newalltime.labels, newalltime.data)
+    })
+
+    console.log(yearLabels)
+
+    
 }
 
 async function getOrders(dashboard) {
@@ -101,41 +134,103 @@ async function getOrders(dashboard) {
     var year = 0;
     var alltime = Math.round((dashboard.totals.orders + Number.EPSILON) * 100) / 100;
 
-    var weekOmzetLabels = [];
-    var weekOmzet = [];
+    var weekLabels = [];
+    var weekData = [];
 
-    var thirtydaysOmzetLabels = [];
-    var thirtydaysOmzet = [];
+    var thirtydaysLabels = [];
+    var thirtydaysData = [];
+
+    var ninetydaysData = [];
+    var ninetydaysLabels = [];
+
+    var yearData = [];
+    var yearLabels = [];
+
+    var alltimeData = [];
+    var alltimeLabels = [];
 
     for (var i = 0; i < dashboard.periods.length && i < 7; i++) {
         week += dashboard.periods[i].orders;
-        weekOmzetLabels[i] = dashboard.periods[i].date;
-        weekOmzet[i] = dashboard.periods[i].orders;
+        weekLabels[i] = dashboard.periods[i].date;
+        weekData[i] = dashboard.periods[i].orders;
     }
     for (var i = 0; i < dashboard.periods.length && i < 30; i++) {
         thirtydays += dashboard.periods[i].orders;
-        thirtydaysOmzetLabels[i] = dashboard.periods[i].date;
-        thirtydaysOmzet[i] = dashboard.periods[i].orders;
+        thirtydaysLabels[i] = dashboard.periods[i].date;
+        thirtydaysData[i] = dashboard.periods[i].orders;
     }
     for (var i = 0; i < dashboard.periods.length && i < 90; i++) {
         ninetydays += dashboard.periods[i].orders;
+        ninetydaysLabels[i] = dashboard.periods[i].date;
+        ninetydaysData[i] = dashboard.periods[i].orders;
     }
     for (var i = 0; i < dashboard.periods.length && i < 365 && dashboard.periods[i].date.split('-')[0] == thisyear; i++) {
         year += dashboard.periods[i].orders;
+        yearLabels[i] = dashboard.periods[i].date;
+        yearData[i] = dashboard.periods[i].orders;
     }
+
+    for(var i = 0; i < dashboard.periods.length; i++){
+        alltimeLabels[i] = dashboard.periods[i].date;
+        alltimeData[i] = dashboard.periods[i].orders;
+    }
+
+    thirtydaysData.reverse();
+    thirtydaysLabels.reverse();
+
+    ninetydaysData.reverse();
+    ninetydaysLabels.reverse();
+
+    yearData.reverse();
+    yearLabels.reverse();
+
+    alltimeData.reverse();
+    alltimeLabels.reverse();
+
+    var newthirtydays = reduceToWeeks(thirtydaysData, thirtydaysLabels);
+    var newninetydays = reduceToWeeks(ninetydaysData, ninetydaysLabels);
+    var newyear = reduceToMonths(yearData, yearLabels);
+    var newalltime = reduceToMonths(alltimeData, alltimeLabels);
 
     week = Math.round((week + Number.EPSILON) * 100) / 100;
     thirtydays = Math.round((thirtydays + Number.EPSILON) * 100) / 100;
     ninetydays = Math.round((ninetydays + Number.EPSILON) * 100) / 100;
     year = Math.round((year + Number.EPSILON) * 100) / 100;
 
-    document.getElementById('ordersweek').innerHTML = "<i class='fas fa-box'></i> Orders laatste 7 dagen: " + week;
-    document.getElementById('orders30days').innerHTML = "<i class='fas fa-box'></i> Orders laatste 30 dagen: " + thirtydays;
-    document.getElementById('orders90days').innerHTML = "<i class='fas fa-box'></i> Orders laatste 90 dagen: " + ninetydays;
-    document.getElementById('ordersyear').innerHTML = "<i class='fas fa-box'></i> Orders dit jaar: " + year;
-    document.getElementById('orderstotal').innerHTML = "<i class='fas fa-box'></i> Totale Orders: " + alltime;
+    weekData.reverse();
+    weekLabels.reverse();
 
-    makeChart(weekOmzetLabels.reverse(), weekOmzet.reverse(), document.getElementById('graph2'), 'Bestellingen');
+    document.getElementById('ordersweek').innerHTML = "<i class='fas fa-coins'></i> orders laatste 7 dagen: \u20AC" + week;
+    document.getElementById('orders30days').innerHTML = "<i class='fas fa-coins'></i> orders laatste 30 dagen: \u20AC" + thirtydays;
+    document.getElementById('orders90days').innerHTML = "<i class='fas fa-coins'></i> orders laatste 90 dagen: \u20AC" + ninetydays;
+    document.getElementById('ordersyear').innerHTML = "<i class='fas fa-coins'></i> orders dit jaar: \u20AC" + year;
+    document.getElementById('orderstotal').innerHTML = "<i class='fas fa-coins'></i> Totale orders: \u20AC" + alltime;
+
+    var chart = makeChart(weekLabels, weekData, document.getElementById('graph2'), "Orders");
+
+    document.getElementById('ordersweekbtn').addEventListener('click', () => {
+        changeChart(chart, weekLabels, weekData)
+    })
+
+    document.getElementById('orders30daysbtn').addEventListener('click', () => {
+        changeChart(chart, newthirtydays.labels, newthirtydays.data)
+    })
+
+    document.getElementById('orders90daysbtn').addEventListener('click', () => {
+        changeChart(chart, newninetydays.labels, newninetydays.data)
+    })
+
+    document.getElementById('ordersyearbtn').addEventListener('click', () => {
+        changeChart(chart, newyear.labels, newyear.data)
+    })
+
+    document.getElementById('ordersalltimebtn').addEventListener('click', () => {
+        changeChart(chart, newalltime.labels, newalltime.data)
+    })
+
+    console.log(yearLabels)
+
+    
 }
 
 
@@ -221,18 +316,43 @@ function changeChart(chart, labels, data) {
 
 
 function reduceToWeeks(data, labels) {
-    var newThirtyDaysOmzet = [];
-    var newThirtyDaysLabels = [];
+    var newData = [];
+    var newLabels = [];
 
     while (data.length) {
         var x = data.splice(0, 7);
         var y = labels.splice(0, 7);
         console.log({ x, y })
         if (y.length == 7) {
-            newThirtyDaysLabels.push(y[0] + ' tot ' + y[6]);
+            newLabels.push(y[0] + ' tot ' + y[6]);
         } else {
             newLabels.push(y[0] + ' tot ' + y[y.length - 1]);
         }
         newData.push(x.reduce((a, b) => a + b, 0));
     }
+    console.log({newData, newLabels})
+    return {data: newData, labels: newLabels};
+}
+
+function reduceToMonths(data, labels){
+    var index2 = 0;
+    var month = '';
+    var newdata = [];
+    var newlabels = [];
+
+    while(data.length){
+        if(index2 == 0){
+            month = labels[0].split('-')[1]
+        }
+        else if(labels[index2].split('-')[1] != month || index2 + 1 == data.length){
+            var x = data.splice(0, index2 + 1)
+            newdata.push(x.reduce((a, b) => a+b, 0));
+            newlabels.push(month + '-' + labels[0].split('-')[0])
+            month = labels[index2].split('-')[1];
+            index2 = 0;
+        }
+        index2++;
+    }
+
+    return {data: newdata, labels: newlabels}
 }
