@@ -44,7 +44,6 @@ async function getSales(dashboard) {
     var alltimeLabels = [];
 
     for (var i = (dashboard.periods.length >= 7)? dashboard.periods.length - 7 : 0; i < dashboard.periods.length; i++) {
-        console.log(i)
         week += dashboard.periods[i].paidExcl;
         weekLabels.push(dashboard.periods[i].date);
         weekData.push(dashboard.periods[i].paidExcl);
@@ -135,7 +134,6 @@ async function getOrders(dashboard) {
     var alltimeLabels = [];
 
     for (var i = (dashboard.periods.length >= 7)? dashboard.periods.length - 7 : 0; i < dashboard.periods.length; i++) {
-        console.log(i)
         week += dashboard.periods[i].orders;
         weekLabels.push(dashboard.periods[i].date);
         weekData.push(dashboard.periods[i].orders);
@@ -227,7 +225,6 @@ async function getVisitors(dashboard) {
     var alltimeLabels = [];
 
     for (var i = (dashboard.periods.length >= 7)? dashboard.periods.length - 7 : 0; i < dashboard.periods.length; i++) {
-        console.log(i)
         week += dashboard.periods[i].visitors;
         weekLabels.push(dashboard.periods[i].date);
         weekData.push(dashboard.periods[i].visitors);
