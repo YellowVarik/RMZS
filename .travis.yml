@@ -35,10 +35,9 @@ branches:
   - "/^v\\d+\\.\\d+\\.\\d+$/"
 deploy:
   provider: releases
+  api_key: d24bd71dcec58392b9b6a3d076a90ddab6ee11c8
   skip_cleanup: true
   file_glob: true
-  api_key:
-    secure: CggPgXoP1nPQ0A3B8ZTtlZBFU2a/jgP6pLu/iaa2+EqWLU7nIMUN17IfOPCOfrw/2kuKtZOCQNgLh9Xrb3EOkS92QHOKuwsrmmPzuk02vQ0QgbhzmxSsbooUtVD9T2/bwJo5/eaNOG2RxpKmowFvjl97lrgO0xaD35qq1pvWElQYGKZpIopRj14XS4AjBu8UzWDvUZD1wX/NAnjhvB54NMg3Y9JJcWRPV2uiNmfqCR6riEmhA3xwqa4WmbMnjNl7olSEkG6U5Hya3g4wg8cAUqOrLTB7SPE0DHi+WrnDwTP+qKskqknzltfXEjk6Jkqego5f3ZnZJCJPuIddfQUnVLMvjIg6dYD82arhFfWoPg6Ub8hY1DWJEl3gFrnh/pwq+AkF2OYka/llr7+7d/P1iLPqSjP+eOGkO/BQcJWCz4GAMCt/h0T/QGB9VPBPBbAfIu/9L4zivLoXCHfD43UsdKKQJtrx7YViQmF1w1gPSeOi672/HbXk2C/+QDNTiD63UItiMOq8uZcKP268ZZgfZVzpKVZiJ5/1r69SRW+7wiJWNzI6B6vQWZRFJOGMyyuPX3U2eXT8jKQ7x3T2vk673kSXkLPNebr6hq3jOD/EHJVkZi/jw6fC0veEVttuFiYfueKcqyTBzaSvHAgRq6R28qxqPCyhmc6Eb5TKFfCljiQ=
   file:
     - dist/*.exe
     - dist/*.dmg
