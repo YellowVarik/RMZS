@@ -6,6 +6,7 @@
   "scripts": {
     "start": "electron .",
     "pack": "electron-builder --dir",
+    "dist:win": "electron-builder --win"
     "dist": "electron-builder"
   },
   "build": {
