@@ -7,3 +7,5 @@ Run dit command:
 ```bash
 npm start
 ```
+
+[![Build Status](https://travis-ci.com/YellowVarik/RMZS.svg?token=4haUHmGMXp6iPxpxqmCN&branch=master)](https://travis-ci.com/YellowVarik/RMZS)
