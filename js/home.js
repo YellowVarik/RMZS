@@ -9,7 +9,8 @@ getDashboard();
 
 
 async function getDashboard() {
-    axios.get(lsUrl + '/dashboard.json').then(result => {
+    axios.get(lsUrl + '/dashboard.json?date_min=2014-01-01', {
+    }).then(result => {
         console.log(result.data.dashboard)
         result.data.dashboard.periods.reverse();
         getSales(result.data.dashboard);
@@ -43,31 +44,35 @@ async function getSales(dashboard) {
     var alltimeData = [];
     var alltimeLabels = [];
 
-    for (var i = (dashboard.periods.length >= 7)? dashboard.periods.length - 7 : 0; i < dashboard.periods.length; i++) {
+    for (var i = (dashboard.periods.length >= 7) ? dashboard.periods.length - 7 : 0; i < dashboard.periods.length; i++) {
         week += dashboard.periods[i].paidExcl;
         weekLabels.push(dashboard.periods[i].date);
         weekData.push(dashboard.periods[i].paidExcl);
     }
-    for (var i = (dashboard.periods.length >= 30)? dashboard.periods.length - 30 : 0; i < dashboard.periods.length; i++) {
+    for (var i = (dashboard.periods.length >= 28 + new Date().getDay() + 1) ? dashboard.periods.length - 28 + new Date().getDay() + 1 : 0; i < dashboard.periods.length; i++) {
         thirtydays += dashboard.periods[i].paidExcl;
-        thirtydaysLabels[i] = dashboard.periods[i].date;
-        thirtydaysData[i] = dashboard.periods[i].paidExcl;
+        thirtydaysLabels.push(dashboard.periods[i].date);
+        thirtydaysData.push(dashboard.periods[i].paidExcl);
     }
-    for (var i = (dashboard.periods.length >= 90)? dashboard.periods.length - 90 : 0; i < dashboard.periods.length; i++) {
+    for (var i = (dashboard.periods.length >= 63 + new Date().getDay() + 1) ? dashboard.periods.length - 63 + new Date().getDay() + 1 : 0; i < dashboard.periods.length; i++) {
         ninetydays += dashboard.periods[i].paidExcl;
-        ninetydaysLabels[i] = dashboard.periods[i].date;
-        ninetydaysData[i] = dashboard.periods[i].paidExcl;
+        ninetydaysLabels.push(dashboard.periods[i].date);
+        ninetydaysData.push(dashboard.periods[i].paidExcl);
     }
-    for (var i = (dashboard.periods.length >= 365)? dashboard.periods.length - 365 : 0; i < dashboard.periods.length && i < 365 && dashboard.periods[i].date.split('-')[0] == thisyear; i++) {
-        year += dashboard.periods[i].paidExcl;
-        yearLabels[i] = dashboard.periods[i].date;
-        yearData[i] = dashboard.periods[i].paidExcl;
+    for (var i = (dashboard.periods.length >= 365) ? dashboard.periods.length - 365 : 0; i < dashboard.periods.length; i++) {
+        if (dashboard.periods[i].date.split('-')[0] == thisyear) {
+            year += dashboard.periods[i].paidExcl;
+            yearLabels.push(dashboard.periods[i].date);
+            yearData.push(dashboard.periods[i].paidExcl);
+        }
     }
 
-    for(var i = 0; i < dashboard.periods.length; i++){
-        alltimeLabels[i] = dashboard.periods[i].date;
-        alltimeData[i] = dashboard.periods[i].paidExcl;
+    for (var i = 0; i < dashboard.periods.length; i++) {
+        alltimeLabels.push(dashboard.periods[i].date);
+        alltimeData.push(dashboard.periods[i].paidExcl);
     }
+
+    console.log(alltimeData,alltimeLabels)
 
     var newthirtydays = reduceToWeeks(thirtydaysData, thirtydaysLabels);
     var newninetydays = reduceToWeeks(ninetydaysData, ninetydaysLabels);
@@ -100,6 +105,7 @@ async function getSales(dashboard) {
     })
 
     document.getElementById('inkomstenyearbtn').addEventListener('click', () => {
+        console.log(newyear)
         changeChart(chart, newyear.labels, newyear.data)
     })
 
@@ -107,7 +113,7 @@ async function getSales(dashboard) {
         changeChart(chart, newalltime.labels, newalltime.data)
     })
 
-    
+
 }
 
 async function getOrders(dashboard) {
@@ -133,30 +139,32 @@ async function getOrders(dashboard) {
     var alltimeData = [];
     var alltimeLabels = [];
 
-    for (var i = (dashboard.periods.length >= 7)? dashboard.periods.length - 7 : 0; i < dashboard.periods.length; i++) {
+    for (var i = (dashboard.periods.length >= 7) ? dashboard.periods.length - 7 : 0; i < dashboard.periods.length; i++) {
         week += dashboard.periods[i].orders;
         weekLabels.push(dashboard.periods[i].date);
         weekData.push(dashboard.periods[i].orders);
     }
-    for (var i = (dashboard.periods.length >= 30)? dashboard.periods.length - 30 : 0; i < dashboard.periods.length; i++) {
+    for (var i = (dashboard.periods.length >= 28 + new Date().getDay() + 1) ? dashboard.periods.length - 28 + new Date().getDay() + 1 : 0; i < dashboard.periods.length; i++) {
         thirtydays += dashboard.periods[i].orders;
-        thirtydaysLabels[i] = dashboard.periods[i].date;
-        thirtydaysData[i] = dashboard.periods[i].orders;
+        thirtydaysLabels.push(dashboard.periods[i].date);
+        thirtydaysData.push(dashboard.periods[i].orders);
     }
-    for (var i = (dashboard.periods.length >= 90)? dashboard.periods.length - 90 : 0; i < dashboard.periods.length; i++) {
+    for (var i = (dashboard.periods.length >= 63 + new Date().getDay() + 1) ? dashboard.periods.length - 63 + new Date().getDay() + 1 : 0; i < dashboard.periods.length; i++) {
         ninetydays += dashboard.periods[i].orders;
-        ninetydaysLabels[i] = dashboard.periods[i].date;
-        ninetydaysData[i] = dashboard.periods[i].orders;
+        ninetydaysLabels.push(dashboard.periods[i].date);
+        ninetydaysData.push(dashboard.periods[i].orders);
     }
-    for (var i = (dashboard.periods.length >= 365)? dashboard.periods.length - 365 : 0; i < dashboard.periods.length && i < 365 && dashboard.periods[i].date.split('-')[0] == thisyear; i++) {
-        year += dashboard.periods[i].orders;
-        yearLabels[i] = dashboard.periods[i].date;
-        yearData[i] = dashboard.periods[i].orders;
+    for (var i = (dashboard.periods.length >= 365) ? dashboard.periods.length - 365 : 0; i < dashboard.periods.length; i++) {
+        if (dashboard.periods[i].date.split('-')[0] == thisyear) {
+            year += dashboard.periods[i].orders;
+            yearLabels.push(dashboard.periods[i].date);
+            yearData.push(dashboard.periods[i].orders);
+        }
     }
 
-    for(var i = 0; i < dashboard.periods.length; i++){
-        alltimeLabels[i] = dashboard.periods[i].date;
-        alltimeData[i] = dashboard.periods[i].orders;
+    for (var i = 0; i < dashboard.periods.length; i++) {
+        alltimeLabels.push(dashboard.periods[i].date);
+        alltimeData.push(dashboard.periods[i].orders);
     }
 
     var newthirtydays = reduceToWeeks(thirtydaysData, thirtydaysLabels);
@@ -197,7 +205,7 @@ async function getOrders(dashboard) {
         changeChart(chart, newalltime.labels, newalltime.data)
     })
 
-    
+
 }
 
 
@@ -224,30 +232,32 @@ async function getVisitors(dashboard) {
     var alltimeData = [];
     var alltimeLabels = [];
 
-    for (var i = (dashboard.periods.length >= 7)? dashboard.periods.length - 7 : 0; i < dashboard.periods.length; i++) {
+    for (var i = (dashboard.periods.length >= 7) ? dashboard.periods.length - 7 : 0; i < dashboard.periods.length; i++) {
         week += dashboard.periods[i].visitors;
         weekLabels.push(dashboard.periods[i].date);
         weekData.push(dashboard.periods[i].visitors);
     }
-    for (var i = (dashboard.periods.length >= 30)? dashboard.periods.length - 30 : 0; i < dashboard.periods.length; i++) {
+    for (var i = (dashboard.periods.length >= 28 + new Date().getDay() + 1) ? dashboard.periods.length - 28 + new Date().getDay() + 1 : 0; i < dashboard.periods.length; i++) {
         thirtydays += dashboard.periods[i].visitors;
-        thirtydaysLabels[i] = dashboard.periods[i].date;
-        thirtydaysData[i] = dashboard.periods[i].visitors;
+        thirtydaysLabels.push(dashboard.periods[i].date);
+        thirtydaysData.push(dashboard.periods[i].visitors);
     }
-    for (var i = (dashboard.periods.length >= 90)? dashboard.periods.length - 90 : 0; i < dashboard.periods.length; i++) {
+    for (var i = (dashboard.periods.length >= 63 + new Date().getDay() + 1) ? dashboard.periods.length - 63 + new Date().getDay() + 1 : 0; i < dashboard.periods.length; i++) {
         ninetydays += dashboard.periods[i].visitors;
-        ninetydaysLabels[i] = dashboard.periods[i].date;
-        ninetydaysData[i] = dashboard.periods[i].visitors;
+        ninetydaysLabels.push(dashboard.periods[i].date);
+        ninetydaysData.push(dashboard.periods[i].visitors);
     }
-    for (var i = (dashboard.periods.length >= 365)? dashboard.periods.length - 365 : 0; i < dashboard.periods.length && i < 365 && dashboard.periods[i].date.split('-')[0] == thisyear; i++) {
-        year += dashboard.periods[i].visitors;
-        yearLabels[i] = dashboard.periods[i].date;
-        yearData[i] = dashboard.periods[i].visitors;
+    for (var i = (dashboard.periods.length >= 365) ? dashboard.periods.length - 365 : 0; i < dashboard.periods.length; i++) {
+        if (dashboard.periods[i].date.split('-')[0] == thisyear) {
+            year += dashboard.periods[i].visitors;
+            yearLabels.push(dashboard.periods[i].date);
+            yearData.push(dashboard.periods[i].visitors);
+        }
     }
 
-    for(var i = 0; i < dashboard.periods.length; i++){
-        alltimeLabels[i] = dashboard.periods[i].date;
-        alltimeData[i] = dashboard.periods[i].visitors;
+    for (var i = 0; i < dashboard.periods.length; i++) {
+        alltimeLabels.push(dashboard.periods[i].date);
+        alltimeData.push(dashboard.periods[i].visitors);
     }
 
     var newthirtydays = reduceToWeeks(thirtydaysData, thirtydaysLabels);
@@ -288,7 +298,7 @@ async function getVisitors(dashboard) {
         changeChart(chart, newalltime.labels, newalltime.data)
     })
 
-    
+
 }
 
 
@@ -334,35 +344,37 @@ function reduceToWeeks(data, labels) {
     while (data.length) {
         var x = data.splice(0, 7);
         var y = labels.splice(0, 7);
-        if (y.length == 7) {
-            newLabels.push(y[0] + ' tot ' + y[6]);
-        } else {
-            newLabels.push(y[0] + ' tot ' + y[y.length - 1]);
-        }
+        newLabels.push(getWeekNumber(new Date(y[0])));
         newData.push(x.reduce((a, b) => a + b, 0));
     }
-    return {data: newData, labels: newLabels};
+    return { data: newData, labels: newLabels };
 }
 
-function reduceToMonths(data, labels){
-    var index2 = 0;
-    var month = '';
-    var newdata = [];
-    var newlabels = [];
+function reduceToMonths(data, labels) {
+    var newData = [];
+    var newLabels = [];
 
-    while(data.length){
-        if(index2 == 0){
-            month = labels[0].split('-')[1]
-        }
-        else if(labels[index2].split('-')[1] != month || index2 + 1 == data.length){
-            var x = data.splice(0, index2 + 1)
-            newdata.push(x.reduce((a, b) => a+b, 0));
-            newlabels.push(month + '-' + labels[0].split('-')[0])
-            month = labels[index2].split('-')[1];
-            index2 = 0;
-        }
-        index2++;
+    while (data.length) {
+        let [year, month, day] = labels[0].split('-');
+        let daysInCurrentMonth = new Date(year, month, 0).getDate();
+        var x = data.splice(0, daysInCurrentMonth - (Number(day) - 1));
+        var y = labels.splice(0, daysInCurrentMonth - (Number(day) - 1));
+        newLabels.push(month+"-"+year);
+        newData.push(x.reduce((a, b) => a + b, 0));
     }
+    return { data: newData, labels: newLabels };
+}
 
-    return {data: newdata, labels: newlabels}
+function getWeekNumber(d) {
+    // Copy date so don't modify original
+    d = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+    // Set to nearest Thursday: current date + 4 - current day number
+    // Make Sunday's day number 7
+    d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay()||7));
+    // Get first day of year
+    var yearStart = new Date(Date.UTC(d.getUTCFullYear(),0,1));
+    // Calculate full weeks to nearest Thursday
+    var weekNo = Math.ceil(( ( (d - yearStart) / 86400000) + 1)/7);
+    // Return array of year and week number
+    return weekNo+"-"+d.getUTCFullYear();
 }
