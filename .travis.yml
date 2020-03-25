@@ -45,4 +45,4 @@ deploy:
     - dist/*.exe
     - dist/*.dmg
   on:
-    repo: jlwbr/RMZS
+    tags: true
