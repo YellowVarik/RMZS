@@ -1,5 +1,4 @@
 const https = require('https')
-const fs = require('fs')
 const electron = require('electron')
 const pdfWindow = require('electron-pdf-window')
 const lightspeed = require(__dirname + '/js/lightspeed')
@@ -294,12 +293,15 @@ async function displayMPInfo(data){
   }
   
   let parsedData = JSON.parse(data);
-  let count = parsedData.data.results;
+  console.log(parsedData)
+  let count = parsedData.data.shipments.length;
   let zending = parsedData.data.shipments;
 
   var {shipments, orders, products} = await lightspeed.getLightspeedData();
+  console.log(zending);
   //Elke zending wordt apart weergegeven
   for(var i = 0; i < count; i++){
+    console.log(i)
     let lightspeedOrder, lightspeedShipment = null;
     let klant = zending[i].recipient;
     if(zending[i].options.label_description.includes('ORD')){

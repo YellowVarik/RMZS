@@ -3,3 +3,4 @@ node_modules/
 *.pdf
 node_modules
 dist/
+.vscode

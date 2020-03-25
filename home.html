@@ -8,8 +8,6 @@
 
 <body>
 
-  <script src="https://kit.fontawesome.com/b99e675b6e.js"></script>
-
   <div class="wrapper">
     <div class="sidebar">
       <a onclick='extendMenu()' class='extendButton' style='padding: 19.5px 0px;'><i class="fas fa-arrow-right"></i></a>
@@ -29,45 +27,66 @@
 
       <div class="first-row" style="display: flex;">
         <div class="inkomsten"
-          style='background:#ebe7e7; width: 33vw; height:auto; margin: 2vw; border-radius: 5px; color: black;'>
+          style='background:white; width: 33%; height:auto; margin: 2vw; border-radius: 5px; color: black;   box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);'>
           <br>
           <h3 style='text-align: center;'>Inkomsten</h3>
           <hr>
-          <p style='padding: 1vw;' id='week'><i class="fas fa-coins"></i></p>
-          <p style='padding: 1vw;' id='30days'><i class="fas fa-coins"></i></p>
-          <p style='padding: 1vw;' id='90days'><i class="fas fa-coins"></i></p>
-          <p style='padding: 1vw;' id='year'><i class="fas fa-coins"></i></p>
-          <p style='padding: 1vw;' id='total'><i class="fas fa-coins"></i></p>
+          <p style='padding: 1vw;' id='inkomstenweek'><i class="fas fa-coins"></i></p>
+          <p style='padding: 1vw;' id='inkomsten30days'><i class="fas fa-coins"></i></p>
+          <p style='padding: 1vw;' id='inkomsten90days'><i class="fas fa-coins"></i></p>
+          <p style='padding: 1vw;' id='inkomstenyear'><i class="fas fa-coins"></i></p>
+          <p style='padding: 1vw;' id='inkomstentotal'><i class="fas fa-coins"></i></p>
           <hr>
           <canvas id='graph1'></canvas>
+          <div class='knopjes' style='display: flex; width: 100%; height: auto;'>
+            <button id="inkomstenweekbtn">7 Dagen</button>
+            <button id="inkomsten30daysbtn">5 Weken</button>
+            <button id="inkomsten90daysbtn">10 Weken</button>
+            <button id="inkomstenyearbtn">Jaar</button>
+            <button id="inkomstenalltimebtn">Altijd</button>
+          </div>
         </div>
 
         <div class="statistieken"
-          style='background:#ebe7e7; width: 33vw; height:auto; margin: 2vw; border-radius: 5px; color: black;'>
+          style='background:white; width: 33%; height:auto; margin: 2vw; border-radius: 5px; color: black;   box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);'>
           <br>
           <h3 style='text-align: center;'>Bestellingen</h3>
           <hr>
-          <p style='padding: 1vw;' id='week'><i class="fas fa-box"></i></i></p>
-          <p style='padding: 1vw;' id='30days'><i class="fas fa-box"></i></i></p>
-          <p style='padding: 1vw;' id='90days'><i class="fas fa-box"></i></i></p>
-          <p style='padding: 1vw;' id='year'><i class="fas fa-box"></i></i></p>
-          <p style='padding: 1vw;' id='total'><i class="fas fa-box"></i></i></p>
+          <p style='padding: 1vw;' id='ordersweek'><i class="fas fa-box"></i></i></p>
+          <p style='padding: 1vw;' id='orders30days'><i class="fas fa-box"></i></i></p>
+          <p style='padding: 1vw;' id='orders90days'><i class="fas fa-box"></i></i></p>
+          <p style='padding: 1vw;' id='ordersyear'><i class="fas fa-box"></i></i></p>
+          <p style='padding: 1vw;' id='orderstotal'><i class="fas fa-box"></i></i></p>
           <hr>
           <canvas id='graph2'></canvas>
+          <div class='knopjes' style='display: flex; width: 100%; height: auto;'>
+            <button id="ordersweekbtn">7 Dagen</button>
+            <button id="orders30daysbtn">30 Dagen</button>
+            <button id="orders90daysbtn">90 Dagen</button>
+            <button id="ordersyearbtn">Jaar</button>
+            <button id="ordersalltimebtn">Altijd</button>
+          </div>
         </div>
 
         <div class="inkomsten"
-          style='background:#ebe7e7; width: 33vw; height:auto; margin: 2vw; border-radius: 5px; color: black;'>
+          style='background:white; width: 33%; height:auto; margin: 2vw; border-radius: 5px; color: black;   box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);'>
           <br>
           <h3 style='text-align: center;'>Bezoekers</h3>
           <hr>
-          <p style='padding: 1vw;' id='week'><i class="fas fa-users"></i></i></p>
-          <p style='padding: 1vw;' id='30days'><i class="fas fa-users"></i></i></p>
-          <p style='padding: 1vw;' id='90days'><i class="fas fa-users"></i></i></p>
-          <p style='padding: 1vw;' id='year'><i class="fas fa-users"></i></i></p>
-          <p style='padding: 1vw;' id='total'><i class="fas fa-users"></i></i></p>
+          <p style='padding: 1vw;' id='visitorsweek'><i class="fas fa-users"></i></i></p>
+          <p style='padding: 1vw;' id='visitors30days'><i class="fas fa-users"></i></i></p>
+          <p style='padding: 1vw;' id='visitors90days'><i class="fas fa-users"></i></i></p>
+          <p style='padding: 1vw;' id='visitorsyear'><i class="fas fa-users"></i></i></p>
+          <p style='padding: 1vw;' id='visitorstotal'><i class="fas fa-users"></i></i></p>
           <hr>
           <canvas id='graph3'></canvas>
+          <div class='knopjes' style='display: flex; width: 100%; height: auto;'>
+            <button id="visitorsweekbtn">7 Dagen</button>
+            <button id="visitors30daysbtn">30 Dagen</button>
+            <button id="visitors90daysbtn">90 Dagen</button>
+            <button id="visitorsyearbtn">Jaar</button>
+            <button id="visitorsalltimebtn">Altijd</button>
+          </div>
         </div>
 
       </div>
@@ -82,7 +101,7 @@
       <h2>Uitloggen</h2>
       <p><b>Weet u zeker dat u wilt uitloggen?</b></p>
       <div style="display: flex;">
-        <button class="ja" onclick='window.location.href="./index.html"'
+        <button class="ja" onclick='window.location.href="./index.html";localStorage.clear();'
           style="background: green; width: 50%; margin: 2%;">Ja</button>
         <button class="nee" onclick="document.getElementById('popuplogout').classList.remove('visible')"
           style="background: red; width: 50%; margin: 2%;">Nee</button>

@@ -1,12 +1,11 @@
-const axios = require('axios').default
 const { PDFDocument, rgb } = require('pdf-lib');
 const fontkit = require('@pdf-lib/fontkit')
 
 const api_key = window.localStorage.getItem('lsKey');
 const api_secret = window.localStorage.getItem('lsSecret');
 
-var fontRegular = './fonts/Roboto-Regular.ttf';
-var fontBold = './fonts/Roboto-Bold.ttf'
+var fontRegular = __dirname + '/../fonts/Roboto-Regular.ttf';
+var fontBold = __dirname + '/../fonts/Roboto-Bold.ttf'
 
 var shipments, orders, products;
 
@@ -67,8 +66,8 @@ module.exports = {
                         "Accept": "application/pdf",
                     }
                 }
-                if (!fs.existsSync("./data")) {
-                    fs.mkdirSync("./data");
+                if (!fs.existsSync("../data")) {
+                    fs.mkdirSync("../data");
                 }
                 let pdfFile = fs.createWriteStream(__dirname + `/../data/verzendLabel${order[i].number}.pdf`)
                 let data = '';
@@ -158,7 +157,7 @@ async function makePakbon(orders, shipments, verzendLabelUrls) {
 
     const regular = await doc.embedFont(fs.readFileSync(fontRegular));
     const bold = await doc.embedFont(fs.readFileSync(fontBold))
-    const logo = await doc.embedPng(fs.readFileSync('./img/logo.png'));
+    const logo = await doc.embedPng(fs.readFileSync(__dirname + '/../img/logo.png'));
     const logoDims = logo.scale(0.3);
 
     const textSize = 9;

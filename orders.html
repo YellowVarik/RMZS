@@ -7,8 +7,6 @@
 </head>
 
 <body>
-  
-  <script src="https://kit.fontawesome.com/b99e675b6e.js"></script>
 
   <div class="wrapper">
     <div class="sidebar">
@@ -110,7 +108,7 @@
       <h2>Uitloggen</h2>
       <p><b>Weet u zeker dat u wilt uitloggen?</b></p>
         <div style="display: flex;">
-          <button class="ja" onclick = 'window.location.href="./index.html"' style="background: green; width: 50%; margin: 2%;">Ja</button>
+          <button class="ja" onclick='window.location.href="./index.html";localStorage.clear();' style="background: green; width: 50%; margin: 2%;">Ja</button>
           <button class="nee" onclick="document.getElementById('popuplogout').classList.remove('visible')" style="background: red; width: 50%; margin: 2%;">Nee</button>
         </div>
       <div class="content">
@@ -120,6 +118,7 @@
 
   <script type="text/javascript" scr="js/jquery-3.4.1.min.js"></script>
   <script type="text/javascript" scr="js/bootstrap.min.js"></script>
+  <script type="text/javascript" src='js/account.js'></script>
   <script type="text/javascript" src="js/myparcel.js"></script>
   <script type="text/javascript" src="js/lightspeed.js"></script>
   <script type="text/javascript" src="js/menu.js"></script>
