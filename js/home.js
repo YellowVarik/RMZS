@@ -72,8 +72,6 @@ async function getSales(dashboard) {
         alltimeData.push(dashboard.periods[i].paidExcl);
     }
 
-    console.log(alltimeData,alltimeLabels)
-
     var newthirtydays = reduceToWeeks(thirtydaysData, thirtydaysLabels);
     var newninetydays = reduceToWeeks(ninetydaysData, ninetydaysLabels);
     var newyear = reduceToMonths(yearData, yearLabels);
@@ -105,7 +103,6 @@ async function getSales(dashboard) {
     })
 
     document.getElementById('inkomstenyearbtn').addEventListener('click', () => {
-        console.log(newyear)
         changeChart(chart, newyear.labels, newyear.data)
     })
 
@@ -341,12 +338,9 @@ function reduceToWeeks(data, labels) {
     var newData = [];
     var newLabels = [];
 
-    console.log(data, labels)
-
     while (data.length) {
         var x = data.splice(0, 7);
         var y = labels.splice(0, 7);
-        console.log(x, y)
         newLabels.push(getWeekNumber(new Date(y[0])));
         newData.push(x.reduce((a, b) => a + b, 0));
     }
