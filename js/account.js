@@ -9,8 +9,8 @@ if (!fs.existsSync('./config/config.json') && window.location.pathname.split('/'
     window.location.href = "./keys.html";
 }
 
-if(window.location.pathname.split('/').pop() != 'index.html' && window.location.pathname.split('/').pop() != 'keys.html'){
-    if(storage.getItem('mpKey') === null){
+if (window.location.pathname.split('/').pop() != 'index.html' && window.location.pathname.split('/').pop() != 'keys.html') {
+    if (storage.getItem('mpKey') === null) {
         window.location.href = 'index.html';
     }
 }
@@ -48,7 +48,7 @@ async function makeAccount() {
         errormsg += "Het wachtwoord moet minstens 1 teken lang zijn!<br><br>"
         document.getElementById('passwordInput').value = "";
         error = true;
-    } else if (password !== passwordrepeat){
+    } else if (password !== passwordrepeat) {
         errormsg += "De wachtwoorden zijn niet gelijk!<br><br>"
         document.getElementById('passwordInputRepeat').value = "";
         error = true;
@@ -80,12 +80,12 @@ async function makeAccount() {
         errormsg += "De Lightspeed API key moet 32 tekens lang zijn!<br><br>"
         document.getElementById('lsKeyInput').value = "";
         error = true;
-    } else{
+    } else {
         await axios.get(`https://${lsKey}:${lsSecret}@api.webshopapp.com/nl/orders.json`).catch(() => {
             errormsg += 'De Lightspeed API Key of secret is onjuist!<br><br>';
             error = true;
         });
-        
+
         lsKeyChecked = true;
     }
 
@@ -93,7 +93,7 @@ async function makeAccount() {
         errormsg += "De Lightspeed API Secret moet 32 tekens lang zijn!<br><br>"
         document.getElementById('lsSecretInput').value = "";
         error = true;
-    } else if (!lsKeyChecked){
+    } else if (!lsKeyChecked) {
         await axios.get(`https://${lsKey}:${lsSecret}@api.webshopapp.com/nl/orders.json`).catch(() => {
             errormsg += 'De Lightspeed API Key of secret is onjuist!<br><br>';
             error = true;
@@ -144,7 +144,7 @@ async function login() {
     const pwhash = crypto.createHash('md5').update(password).digest("hex");
     const cryptr = new Cryptr(pwhash);
 
-    try{
+    try {
         var decryptedKey = cryptr.decrypt(configData.lsKey)
     } catch{
         errormsg = "Gebruikersnaam en/of wachtwoord komt niet overeen!<br><br>";
@@ -171,7 +171,7 @@ function deleteAccount() {
     window.location.href = './keys.html';
 }
 
-function changeName(){
+function changeName() {
     var file = require('./config/config.json');
     var oldName = file.name;
     var newName = document.getElementById('namechange').value;
@@ -179,19 +179,44 @@ function changeName(){
     fs.writeFileSync('./config/config.json', JSON.stringify(file));
     document.getElementsByClassName('changemessage')[0].innerHTML = `Uw naam is veranderd van \"${oldName}\" naar \"${newName}\"`;
     document.getElementById('popupchange').classList.add('visible');
+    var inputs = document.getElementsByTagName('input')
+    for(var i = 0; i < inputs.length; i++){
+        inputs[i].value = '';
+    }
 }
 
-function changeUsername(){
+function changeUsername() {
     const file = require('./config/config.json');
+    var error = false;
     var oldUsername = file.username;
     var newUsername = document.getElementById('usernamechange').value;
+    var password = document.getElementById('unamepassword').value
+    console.log(password)
+    var pwhash = crypto.createHash('md5').update(password).digest("hex");
+    var cryptr = new Cryptr(pwhash);
+
+    try {
+        var decryptedKey = cryptr.decrypt(file.lsKey)
+    } catch{
+        errormsg = "Het wachtwoord is niet correct!<br><br>";
+        error = true;
+    }
+    if (error) {
+        document.getElementsByClassName('errormsg')[0].innerHTML = errormsg + "<font style='font-size: 10px;'><b>Klopt dit niet? Neem contact op met de systeembeheerder!</b></font>";
+        document.getElementById("popuppassword").classList.add("visible")
+        return
+    }
     file.username = newUsername;
     fs.writeFileSync('./config/config.json', JSON.stringify(file));
     document.getElementsByClassName('changemessage')[0].innerHTML = `Uw gebruikersnaam is veranderd van \"${oldUsername}\" naar \"${newUsername}\"`;
     document.getElementById('popupchange').classList.add('visible');
+    var inputs = document.getElementsByTagName('input')
+    for(var i = 0; i < inputs.length; i++){
+        inputs[i].value = '';
+    }
 }
 
-function changePassword(){
+function changePassword() {
     const file = require('./config/config.json');
     var oldPassword = document.getElementById('passwordchangeold').value;
     var newPassword = document.getElementById('passwordchangenew').value;
@@ -203,19 +228,19 @@ function changePassword(){
     var pwhash = crypto.createHash('md5').update(oldPassword).digest("hex");
     var cryptr = new Cryptr(pwhash);
 
-    try{
+    try {
         var decryptedKey = cryptr.decrypt(file.lsKey)
     } catch{
         errormsg = "Het oude wachtwoord is niet correct!<br><br>";
         error = true;
     }
 
-    if(newPassword.length < 1){
+    if (newPassword.length < 1) {
         error = true;
         errormsg += 'Het nieuwe wachtwoord moet minstens 1 teken lang zijn!<br><br>'
     }
 
-    if(newPassword !== newPasswordRepeat){
+    if (newPassword !== newPasswordRepeat) {
         error = true;
         errormsg += 'De nieuwe wachtwoorden zijn niet gelijk!<br><br>'
     }
@@ -225,7 +250,7 @@ function changePassword(){
         document.getElementById("popuppassword").classList.add("visible")
         return
     }
-    else{
+    else {
         pwhash = crypto.createHash('md5').update(newPassword).digest("hex");
         cryptr = new Cryptr(pwhash);
         file.mpKey = cryptr.encrypt(storage.getItem('mpKey'));
@@ -235,6 +260,10 @@ function changePassword(){
         fs.writeFileSync('./config/config.json', JSON.stringify(file));
         document.getElementsByClassName('changemessage')[0].innerHTML = 'Uw wachtwoord is aangepast!';
         document.getElementById('popupchange').classList.add('visible');
+        var inputs = document.getElementsByTagName('input')
+        for(var i = 0; i < inputs.length; i++){
+            inputs[i].value = '';
+        }
     }
 
 }

@@ -8,8 +8,6 @@
 
 <body>
 
-  <script src="https://kit.fontawesome.com/b99e675b6e.js"></script>
-
   <div class="wrapper">
     <div class="sidebar">
       <a onclick='extendMenu()' class='extendButton' style='padding: 19.5px 0px;'><i class="fas fa-arrow-right"></i></a>
@@ -41,6 +39,7 @@
           <form class="login-form">
             <h3 style='margin: 1vw;'>Gebruikersnaam</h3>
             <input class="usernamechange" type="username" id="usernamechange" placeholder="Gebruikersnaam wijzigen" />
+            <input class="unamepassword" type="password" id="unamepassword" placeholder="Wachtwoord" />
           </form>
           <button onclick='changeUsername()'>Wijzigen</button>
         </div>
@@ -79,7 +78,7 @@
 
   <div id="popuppassword" class="overlay">
     <div class="popup">
-      <h2>Uw wachtwoord kon niet worden aangepast!</h2>
+      <h2>Fout aanpassen gegevens</h2>
       <p class='errormsg'></p>
       <a class="close" onclick = 'document.getElementById("popuppassword").classList.remove("visible")'>&times;</a>
       <div class="content">

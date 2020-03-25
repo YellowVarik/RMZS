@@ -9,7 +9,7 @@ getDashboard();
 
 
 async function getDashboard() {
-    axios.get(lsUrl + '/dashboard.json?date_min=2014-01-01', {
+    axios.get(lsUrl + '/dashboard.json?date_min=2013-01-01', {
     }).then(result => {
         console.log(result.data.dashboard)
         result.data.dashboard.periods.reverse();
@@ -49,12 +49,12 @@ async function getSales(dashboard) {
         weekLabels.push(dashboard.periods[i].date);
         weekData.push(dashboard.periods[i].paidExcl);
     }
-    for (var i = (dashboard.periods.length >= 28 + new Date().getDay() + 1) ? dashboard.periods.length - 28 + new Date().getDay() + 1 : 0; i < dashboard.periods.length; i++) {
+    for (var i = (dashboard.periods.length >= 28 + new Date().getDay() + 1) ? dashboard.periods.length - (28 + new Date().getDay() + 1) : 0; i < dashboard.periods.length; i++) {
         thirtydays += dashboard.periods[i].paidExcl;
         thirtydaysLabels.push(dashboard.periods[i].date);
         thirtydaysData.push(dashboard.periods[i].paidExcl);
     }
-    for (var i = (dashboard.periods.length >= 63 + new Date().getDay() + 1) ? dashboard.periods.length - 63 + new Date().getDay() + 1 : 0; i < dashboard.periods.length; i++) {
+    for (var i = (dashboard.periods.length >= 63 + new Date().getDay() + 1) ? dashboard.periods.length - (63 + new Date().getDay() + 1) : 0; i < dashboard.periods.length; i++) {
         ninetydays += dashboard.periods[i].paidExcl;
         ninetydaysLabels.push(dashboard.periods[i].date);
         ninetydaysData.push(dashboard.periods[i].paidExcl);
@@ -144,12 +144,12 @@ async function getOrders(dashboard) {
         weekLabels.push(dashboard.periods[i].date);
         weekData.push(dashboard.periods[i].orders);
     }
-    for (var i = (dashboard.periods.length >= 28 + new Date().getDay() + 1) ? dashboard.periods.length - 28 + new Date().getDay() + 1 : 0; i < dashboard.periods.length; i++) {
+    for (var i = (dashboard.periods.length >= 28 + new Date().getDay() + 1) ? dashboard.periods.length - (28 + new Date().getDay() + 1) : 0; i < dashboard.periods.length; i++) {
         thirtydays += dashboard.periods[i].orders;
         thirtydaysLabels.push(dashboard.periods[i].date);
         thirtydaysData.push(dashboard.periods[i].orders);
     }
-    for (var i = (dashboard.periods.length >= 63 + new Date().getDay() + 1) ? dashboard.periods.length - 63 + new Date().getDay() + 1 : 0; i < dashboard.periods.length; i++) {
+    for (var i = (dashboard.periods.length >= 63 + new Date().getDay() + 1) ? dashboard.periods.length - (63 + new Date().getDay() + 1) : 0; i < dashboard.periods.length; i++) {
         ninetydays += dashboard.periods[i].orders;
         ninetydaysLabels.push(dashboard.periods[i].date);
         ninetydaysData.push(dashboard.periods[i].orders);
@@ -237,12 +237,12 @@ async function getVisitors(dashboard) {
         weekLabels.push(dashboard.periods[i].date);
         weekData.push(dashboard.periods[i].visitors);
     }
-    for (var i = (dashboard.periods.length >= 28 + new Date().getDay() + 1) ? dashboard.periods.length - 28 + new Date().getDay() + 1 : 0; i < dashboard.periods.length; i++) {
+    for (var i = (dashboard.periods.length >= 28 + new Date().getDay() + 1) ? dashboard.periods.length - (28 + new Date().getDay() + 1) : 0; i < dashboard.periods.length; i++) {
         thirtydays += dashboard.periods[i].visitors;
         thirtydaysLabels.push(dashboard.periods[i].date);
         thirtydaysData.push(dashboard.periods[i].visitors);
     }
-    for (var i = (dashboard.periods.length >= 63 + new Date().getDay() + 1) ? dashboard.periods.length - 63 + new Date().getDay() + 1 : 0; i < dashboard.periods.length; i++) {
+    for (var i = (dashboard.periods.length >= 63 + new Date().getDay() + 1) ? dashboard.periods.length - (63 + new Date().getDay() + 1) : 0; i < dashboard.periods.length; i++) {
         ninetydays += dashboard.periods[i].visitors;
         ninetydaysLabels.push(dashboard.periods[i].date);
         ninetydaysData.push(dashboard.periods[i].visitors);
@@ -341,9 +341,12 @@ function reduceToWeeks(data, labels) {
     var newData = [];
     var newLabels = [];
 
+    console.log(data, labels)
+
     while (data.length) {
         var x = data.splice(0, 7);
         var y = labels.splice(0, 7);
+        console.log(x, y)
         newLabels.push(getWeekNumber(new Date(y[0])));
         newData.push(x.reduce((a, b) => a + b, 0));
     }
@@ -376,5 +379,5 @@ function getWeekNumber(d) {
     // Calculate full weeks to nearest Thursday
     var weekNo = Math.ceil(( ( (d - yearStart) / 86400000) + 1)/7);
     // Return array of year and week number
-    return weekNo+"-"+d.getUTCFullYear();
+    return "Week " + weekNo;
 }
