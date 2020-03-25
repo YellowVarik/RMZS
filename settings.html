@@ -31,7 +31,7 @@
           <form class="login-form">
             <h3 style='margin: 1vw;'>Naam</h3>
             <div class='inputmid'>
-            <input class="namechange" type="name" id="namechange" placeholder="Naam wijzigen" />
+              <input class="namechange" type="name" id="namechange" placeholder="Naam wijzigen" />
             </div>
           </form>
           <button onclick='changeName()'>Wijzigen</button>
@@ -41,8 +41,9 @@
           <form class="login-form">
             <h3 style='margin: 1vw;'>Gebruikersnaam</h3>
             <div class='inputmid'>
-            <input class="usernamechange" type="username" id="usernamechange" placeholder="Gebruikersnaam wijzigen" />
-            <input class="unamepassword" type="password" id="unamepassword" placeholder="Wachtwoord" />
+              <input class="usernamechange" type="username" id="usernamechange" placeholder="Gebruikersnaam wijzigen" />
+              <input class="unamepassword" type="password" id="unamepassword" placeholder="Wachtwoord" />
+            </div>
           </form>
           <button onclick='changeUsername()'>Wijzigen</button>
         </div>
@@ -52,41 +53,37 @@
             <h3 style='margin: 1vw;'>Wachtwoord</h3>
             <input class="passwordchangeold" type="password" id="passwordchangeold" placeholder="Oude wachtwoord" />
             <input class="passwordchangenew" type="password" id="passwordchangenew" placeholder="Nieuwe wachtwoord" />
-            <input class="passwordchangenewrepeat" type="password" id="passwordchangenewrepeat" placeholder="Nieuwe wachtwoord herhalen" />
+            <input class="passwordchangenewrepeat" type="password" id="passwordchangenewrepeat"
+              placeholder="Nieuwe wachtwoord herhalen" />
           </form>
           <button onclick='changePassword()'>Wijzigen</button>
         </div>
-
-    </div>
-
-    <div class='second-row' style='display: flex;'>
-
-      <div class="form" style='margin: 1vw;'>
-        <form class="login-form">
-          <h3 style='margin: 1vw;'>MyParcel API Key</h3>
-          <input class="myparcelkeychange"  type="myparcelkeychange" id='mpKeyInputChange' placeholder="MyParcel API Key wijzigen"/>
-        </form>
-        <button onclick='changeName()'>Wijzigen</button>
       </div>
 
-      <div class="form" style='margin: 1vw;'>
-        <form class="login-form">
-          <h3 style='margin: 1vw;'>Lightspeed API Key</h3>
-          <input class="lightspeedkeychange" type="lightspeedkeychange" id='lsKeyInputChange' placeholder="Lightspeed API Key wijzigen"/>
-        </form>
-        <button onclick='changeUsername()'>Wijzigen</button>
+      <div class='second-row' style='display: flex;'>
+
+        <div class="form" style='margin: 1vw;'>
+          <form class="login-form">
+            <h3 style='margin: 1vw;'>MyParcel API Key</h3>
+            <input class="myparcelkeychange" type="myparcelkeychange" id='myparcelkeychange'
+              placeholder="MyParcel API Key wijzigen" />
+            <input class="myparcelpassword" type="password" id="myparcelpassword" placeholder="Wachtwoord" />
+          </form>
+          <button onclick='changempkey()'>Wijzigen</button>
+        </div>
+
+        <div class="form" style='margin: 1vw;'>
+          <form class="login-form">
+            <h3 style='margin: 1vw;'>Lightspeed API Key</h3>
+            <input class="lightspeedkeychange" type="lightspeedkeychange" id='lightspeedkeychange'
+              placeholder="Lightspeed API Key wijzigen" />
+            <input class="lightspeedsecretchange" type="lightspeedsecretchange" id='lightspeedsecretchange'
+              placeholder="Lightspeed Secret wijzigen" />
+            <input class="lspassword" type="password" id="lspassword" placeholder="Wachtwoord" />
+          </form>
+          <button onclick='changelskey()'>Wijzigen</button>
+        </div>
       </div>
-
-      <div class="form" style='margin: 1vw;'>
-        <form class="login-form">
-          <h3 style='margin: 1vw;'>Lightspeed Secret</h3>
-          <input class="lightspeedsecretchange" type="lightspeedsecretchange" id='lsSecretInputChange' placeholder="Lightspeed Secret wijzigen"/>
-        </form>
-        <button onclick='changePassword()'>Wijzigen</button>
-      </div>
-
-  </div>
-
     </div>
   </div>
 
@@ -111,7 +108,7 @@
     <div class="popup">
       <h2>Fout aanpassen gegevens</h2>
       <p class='errormsg'></p>
-      <a class="close" onclick = 'document.getElementById("popuppassword").classList.remove("visible")'>&times;</a>
+      <a class="close" onclick='document.getElementById("popuppassword").classList.remove("visible")'>&times;</a>
       <div class="content">
       </div>
     </div>
@@ -121,7 +118,7 @@
     <div class="popup">
       <h2>Uw gegevens zijn aangepast!</h2>
       <p class='changemessage'></p>
-      <a class="close" onclick = 'document.getElementById("popupchange").classList.remove("visible")'>&times;</a>
+      <a class="close" onclick='document.getElementById("popupchange").classList.remove("visible")'>&times;</a>
       <div class="content">
       </div>
     </div>

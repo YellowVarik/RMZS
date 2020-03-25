@@ -180,7 +180,7 @@ function changeName() {
     document.getElementsByClassName('changemessage')[0].innerHTML = `Uw naam is veranderd van \"${oldName}\" naar \"${newName}\"`;
     document.getElementById('popupchange').classList.add('visible');
     var inputs = document.getElementsByTagName('input')
-    for(var i = 0; i < inputs.length; i++){
+    for (var i = 0; i < inputs.length; i++) {
         inputs[i].value = '';
     }
 }
@@ -211,7 +211,7 @@ function changeUsername() {
     document.getElementsByClassName('changemessage')[0].innerHTML = `Uw gebruikersnaam is veranderd van \"${oldUsername}\" naar \"${newUsername}\"`;
     document.getElementById('popupchange').classList.add('visible');
     var inputs = document.getElementsByTagName('input')
-    for(var i = 0; i < inputs.length; i++){
+    for (var i = 0; i < inputs.length; i++) {
         inputs[i].value = '';
     }
 }
@@ -261,9 +261,118 @@ function changePassword() {
         document.getElementsByClassName('changemessage')[0].innerHTML = 'Uw wachtwoord is aangepast!';
         document.getElementById('popupchange').classList.add('visible');
         var inputs = document.getElementsByTagName('input')
-        for(var i = 0; i < inputs.length; i++){
+        for (var i = 0; i < inputs.length; i++) {
             inputs[i].value = '';
         }
     }
 
+
+}
+
+async function changempkey() {
+    const file = require('./config/config.json');
+    var errormsg = '';
+    var error = false;
+    var mpKeyBuffer = new Buffer.from(document.getElementById('myparcelkeychange').value);
+    var mpKey = mpKeyBuffer.toString('base64')
+    
+
+    if (document.getElementById('myparcelkeychange').value.length != 40) {
+        errormsg += "De MyParcel API key moet 40 tekens lang zijn!<br><br>"
+        error = true;
+    }else{
+        await axios.get("https://api.myparcel.nl/shipments", {
+            headers: {
+                "Authorization": `base ${mpKey}`
+            }
+        }).catch(() => {
+            errormsg += 'De MyParcel API Key is onjuist!<br><br>';
+            error = true;
+        })
+    
+    }
+
+
+    var password = document.getElementById('myparcelpassword').value;
+
+
+    var pwhash = crypto.createHash('md5').update(password).digest("hex");
+    var cryptr = new Cryptr(pwhash);
+
+    try {
+        var decryptedKey = cryptr.decrypt(file.lsKey)
+    } catch{
+        errormsg += "Het wachtwoord is niet correct!<br><br>";
+        error = true;
+    }
+    
+
+    if (error) {
+        document.getElementsByClassName('errormsg')[0].innerHTML = errormsg + "<font style='font-size: 10px;'><b>Klopt dit niet? Neem contact op met de systeembeheerder!</b></font>";
+        document.getElementById("popuppassword").classList.add("visible")
+        return
+    }
+
+    file.mpKey = cryptr.encrypt(mpKey);
+    storage.setItem('mpKey', mpKey);
+    fs.writeFileSync('./config/config.json', JSON.stringify(file));
+    document.getElementsByClassName('changemessage')[0].innerHTML = 'Uw MyParcel API Key is aangepast!';
+    document.getElementById('popupchange').classList.add('visible');
+    var inputs = document.getElementsByTagName('input')
+    for (var i = 0; i < inputs.length; i++) {
+        inputs[i].value = '';
+    }
+}
+
+async function changelskey() {
+    const file = require('./config/config.json');
+    var errormsg = '';
+    var error = false;
+    var lsKey = document.getElementById('lightspeedkeychange').value;
+    var lsSecret = document.getElementById('lightspeedsecretchange').value;
+
+
+    var password = document.getElementById('lspassword').value;
+    
+
+    if (document.getElementById('lightspeedkeychange').value.length != 32 || document.getElementById('lightspeedkeychange').value.length != 32) {
+        errormsg += "De Key en Secret moeten 40 tekens lang zijn!<br><br>"
+        error = true;
+    }else{
+        await axios.get(`https://${lsKey}:${lsSecret}@api.webshopapp.com/nl/orders.json`).catch(() => {
+            errormsg += 'De Lightspeed API Key of secret is onjuist!<br><br>';
+            error = true;
+        });
+    
+    }
+
+
+    var pwhash = crypto.createHash('md5').update(password).digest("hex");
+    var cryptr = new Cryptr(pwhash);
+
+    try {
+        var decryptedKey = cryptr.decrypt(file.lsKey)
+    } catch{
+        errormsg += "Het wachtwoord is niet correct!<br><br>";
+        error = true;
+    }
+    
+
+    if (error) {
+        document.getElementsByClassName('errormsg')[0].innerHTML = errormsg + "<font style='font-size: 10px;'><b>Klopt dit niet? Neem contact op met de systeembeheerder!</b></font>";
+        document.getElementById("popuppassword").classList.add("visible")
+        return
+    }
+
+    file.lsKey = cryptr.encrypt(lsKey);
+    file.lsSecret = cryptr.encrypt(lsSecret);
+    storage.setItem('lsKey', lsKey);
+    storage.setItem('lsSecret', lsSecret);
+    fs.writeFileSync('./config/config.json', JSON.stringify(file));
+    document.getElementsByClassName('changemessage')[0].innerHTML = 'Uw Lightspeed API Key en Secret zijn aangepast!';
+    document.getElementById('popupchange').classList.add('visible');
+    var inputs = document.getElementsByTagName('input')
+    for (var i = 0; i < inputs.length; i++) {
+        inputs[i].value = '';
+    }
 }
