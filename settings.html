@@ -30,7 +30,9 @@
         <div class="form" style='margin: 1vw;'>
           <form class="login-form">
             <h3 style='margin: 1vw;'>Naam</h3>
+            <div class='inputmid'>
             <input class="namechange" type="name" id="namechange" placeholder="Naam wijzigen" />
+            </div>
           </form>
           <button onclick='changeName()'>Wijzigen</button>
         </div>
@@ -38,6 +40,7 @@
         <div class="form" style='margin: 1vw;'>
           <form class="login-form">
             <h3 style='margin: 1vw;'>Gebruikersnaam</h3>
+            <div class='inputmid'>
             <input class="usernamechange" type="username" id="usernamechange" placeholder="Gebruikersnaam wijzigen" />
             <input class="unamepassword" type="password" id="unamepassword" placeholder="Wachtwoord" />
           </form>
@@ -55,6 +58,34 @@
         </div>
 
     </div>
+
+    <div class='second-row' style='display: flex;'>
+
+      <div class="form" style='margin: 1vw;'>
+        <form class="login-form">
+          <h3 style='margin: 1vw;'>MyParcel API Key</h3>
+          <input class="myparcelkeychange"  type="myparcelkeychange" id='mpKeyInputChange' placeholder="MyParcel API Key wijzigen"/>
+        </form>
+        <button onclick='changeName()'>Wijzigen</button>
+      </div>
+
+      <div class="form" style='margin: 1vw;'>
+        <form class="login-form">
+          <h3 style='margin: 1vw;'>Lightspeed API Key</h3>
+          <input class="lightspeedkeychange" type="lightspeedkeychange" id='lsKeyInputChange' placeholder="Lightspeed API Key wijzigen"/>
+        </form>
+        <button onclick='changeUsername()'>Wijzigen</button>
+      </div>
+
+      <div class="form" style='margin: 1vw;'>
+        <form class="login-form">
+          <h3 style='margin: 1vw;'>Lightspeed Secret</h3>
+          <input class="lightspeedsecretchange" type="lightspeedsecretchange" id='lsSecretInputChange' placeholder="Lightspeed Secret wijzigen"/>
+        </form>
+        <button onclick='changePassword()'>Wijzigen</button>
+      </div>
+
+  </div>
 
     </div>
   </div>
