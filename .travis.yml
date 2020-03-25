@@ -35,7 +35,8 @@ branches:
   - "/^v\\d+\\.\\d+\\.\\d+$/"
 deploy:
   provider: releases
-  api_key: d24bd71dcec58392b9b6a3d076a90ddab6ee11c8
+  api_key:
+    secure: k8Sk+jQMBgVRQvCL+EO2mdptumaua3COUfYEdt8fFWwwFMq/dK7rhj3Ux6G2nBq31wQbG8lrG4tzsc6LTP59woteLljfNS6YF0wRF0zg8kq6LNECFz3VzCaiiergvIUqTqogB3L5uQoE8BKl1s+gJy8xuCMMpMAJOt/2S+OISDaLjyefgQS+kMRGp/WT7qS3b+rtMtHEoDP+muSwohvZAUJMWU7S+H5HUzya844X5UtkEI+3OCOrP3TgaWm9BKwbnY/+7EMGy6xkjPnwRkCzU2K2X38i9cs7kFSpXauLzh1BoQ5Z/PtJZdf2gN7nLDn/2arIrRlL1ndLRnwWVoglT3c34d3LIwYJu34a/0bKcYdx72Eey5EsYxn4rprOKW80/Sca4g11LmCv2WXcDZJ39lDzgbJJ+N0+JyO/XXO37VM+wpD6+/Y8O3JXck2C0JNzGcxY9fxkFz+5HntHgYH4+HlPWUplOS7JimikR8Dj5SQtP/Az74LSqPmFa+/BuNeqSXHX0tziymtCY0wz1AW7eb0kxb2bL8d9ZzaFSn50ZPuapR1GA5jCjaEpYQS0wVsEOpbtxqlW9Q8wEMGnZEnMwZNwj92HsMu4t3t20IvV1PHLUPnvyAPL6s7+ij/fproY65zOKwAYLLneV2GTBvOdRP/PwrYQUMMaoawSjS5m1E8=
   skip_cleanup: true
   file_glob: true
   file:
