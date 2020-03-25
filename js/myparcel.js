@@ -2,6 +2,7 @@ const https = require('https')
 const electron = require('electron')
 const pdfWindow = require('electron-pdf-window')
 const lightspeed = require(__dirname + '/js/lightspeed')
+const path = require('path')
 
 //jQuery moet op een andere manier worden toegevoegd
 window.$ = window.jQuery = require('./js/jquery-3.4.1.min.js')
@@ -143,7 +144,6 @@ function printSelected(parcels){
     }
   }
 
-  console.log({selectedOrders, selectedShipments, verzendLabels})
   if(selectedOrders.length > 0){
     lightspeed.getOrderVerzendLabel(selectedOrders, selectedShipments);
   }
@@ -200,7 +200,6 @@ function getPDF(id){
 
     result.on("end", () => {
       pdfFile.end();
-      console.log(`label opgeslagen in data/label${fileName}.pdf`)
       openPDF(__dirname + `/data/label${fileName}.pdf`);
     })
   })
@@ -250,7 +249,6 @@ async function getMyParcelData(){
         }
         fs.writeFile("data/zendingen.json", data, (e) => {
             if(e) throw e;
-            console.log("Data opgeslagen!");
         })
     })
   })
@@ -293,15 +291,12 @@ async function displayMPInfo(data){
   }
   
   let parsedData = JSON.parse(data);
-  console.log(parsedData)
   let count = parsedData.data.shipments.length;
   let zending = parsedData.data.shipments;
 
   var {shipments, orders, products} = await lightspeed.getLightspeedData();
-  console.log(zending);
   //Elke zending wordt apart weergegeven
   for(var i = 0; i < count; i++){
-    console.log(i)
     let lightspeedOrder, lightspeedShipment = null;
     let klant = zending[i].recipient;
     if(zending[i].options.label_description.includes('ORD')){
@@ -410,7 +405,6 @@ function TrackTrace(id){
     })
 
     response.on('end', ()=>{
-      console.log(data);
     })
   })
 
@@ -438,7 +432,6 @@ function selectAllParcels(){
 
 function deleteShipment(id){
   var data = '';
-  console.log(mpURL + `/shipments/${id}`)
   var options = {
     hostname: mpURL,
     path: `/shipments/${id}`,
@@ -462,7 +455,6 @@ function deleteShipment(id){
       data += d;
     });
     result.on("end", () => {
-      console.log(data);
     })
   })
   request.on('error', (e) => {
@@ -758,7 +750,7 @@ class Shipment{
     
     if(this.lightspeedOrder != null){
       document.getElementById(`print${this.id}`).addEventListener('click', () => {
-        lightspeed.getOrderVerzendLabel(this.lightspeedOrder, this.lightspeedShipment);
+        lightspeed.getOrderVerzendLabel(this.lightspeedOrder, this.lightspeedShipment, path.resolve('./data'));
         setTimeout(() => {getMyParcelData()}, 500);
       });
     }else{

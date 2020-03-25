@@ -33,7 +33,7 @@ module.exports = {
         return { shipments, orders, products };
     },
 
-    getOrderVerzendLabel: async function (order, shipment) {
+    getOrderVerzendLabel: async function (order, shipment, datapath) {
         var shipmentId;
         var ordersArr = [];
         var shipmentsArr = [];
@@ -69,7 +69,7 @@ module.exports = {
                 if (!fs.existsSync("../data")) {
                     fs.mkdirSync("../data");
                 }
-                let pdfFile = fs.createWriteStream(__dirname + `/../data/verzendLabel${order[i].number}.pdf`)
+                let pdfFile = fs.createWriteStream(path.join(datapath ,`verzendLabel${order[i].number}.pdf`));
                 let data = '';
                 var request = await https.request(options, function (result) {
                     result.on('data', (d) => {
@@ -89,12 +89,12 @@ module.exports = {
                 
                 ordersArr[i] = order[i];
                 shipmentsArr[i] = shipment[i];
-                labelsArr[i] = __dirname + `/../data/verzendLabel${order[i].number}.pdf`;
+                labelsArr[i] = path.join(datapath,`verzendLabel${order[i].number}.pdf`);
             }
             
                 
 
-            setTimeout(() => {makePakbon(ordersArr, shipmentsArr, labelsArr);}, 100);
+            setTimeout(() => {makePakbon(ordersArr, shipmentsArr, labelsArr, datapath);}, 100);
         } else {
             await axios.get(`https://api.myparcel.nl/shipments?q=${order.number}`, {
                 headers: {
@@ -126,7 +126,7 @@ module.exports = {
             if (!fs.existsSync("./data")) {
                 fs.mkdirSync("./data");
             }
-            var pdfFile = fs.createWriteStream(__dirname + `/../data/verzendLabel${order.number}.pdf`)
+            var pdfFile = fs.createWriteStream(path.join(datapath ,`verzendLabel${order.number}.pdf`))
             var data = '';
             var request = await https.request(options, function (result) {
                 result.on('data', (d) => {
@@ -138,8 +138,8 @@ module.exports = {
                     pdfFile.end();
                     ordersArr[0] = order;
                     shipmentsArr[0] = shipment;
-                    labelsArr[0] = __dirname + `/../data/verzendLabel${order.number}.pdf`;
-                    makePakbon(ordersArr, shipmentsArr, labelsArr);
+                    labelsArr[0] = path.join(datapath ,`verzendLabel${order.number}.pdf`);
+                    makePakbon(ordersArr, shipmentsArr, labelsArr, datapath);
                 })
             })
 
@@ -151,7 +151,7 @@ module.exports = {
     }
 }
 
-async function makePakbon(orders, shipments, verzendLabelUrls) {
+async function makePakbon(orders, shipments, verzendLabelUrls, datapath) {
     const doc = await PDFDocument.create();
     doc.registerFontkit(fontkit);
 
@@ -713,8 +713,8 @@ async function makePakbon(orders, shipments, verzendLabelUrls) {
         })
     }
 
-    var file = fs.createWriteStream(__dirname + `/../data/pakbon.pdf`);
+    var file = fs.createWriteStream(path.resolve(datapath + `pakbon.pdf`));
     var buffer = await doc.save();
     file.write(buffer);
-    openPDF(__dirname + `/../data/pakbon.pdf`)
+    openPDF(datapath + `pakbon.pdf`)
 }
