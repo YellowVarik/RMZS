@@ -131,6 +131,7 @@ function printSelected(parcels){
   var selectedOrders = [];
   var selectedShipments = [];
   var verzendLabels = [];
+  var datapath = path.resolve('./data');
   for(var i = 0; i < parcels.length; i++){
     for(x = 0; x < zendingen.length; x++){
       if(zendingen[x].id == parcels[i]){
@@ -145,14 +146,14 @@ function printSelected(parcels){
   }
 
   if(selectedOrders.length > 0){
-    lightspeed.getOrderVerzendLabel(selectedOrders, selectedShipments);
+    lightspeed.getOrderVerzendLabel(selectedOrders, selectedShipments, datapath);
   }
   if(verzendLabels.length > 0){
-    getPDF(verzendLabels);
+    getPDF(verzendLabels, datapath);
   }
 }
 
-function getPDF(id){
+function getPDF(id, datapath){
   let data = '';
   let requestId = id;
   let fileName = id;
@@ -191,7 +192,7 @@ function getPDF(id){
   if(!fs.existsSync("./data")){
     fs.mkdirSync("./data");
   }
-  var pdfFile = fs.createWriteStream(`data/label${fileName}.pdf`)
+  var pdfFile = fs.createWriteStream(path.join(datapath, `label${fileName}.pdf`))
   var request = https.request(options, function(result){
     result.on('data', (d) => {
       data += d;
@@ -200,7 +201,7 @@ function getPDF(id){
 
     result.on("end", () => {
       pdfFile.end();
-      openPDF(__dirname + `/data/label${fileName}.pdf`);
+      openPDF(path.join(datapath, `label${fileName}.pdf`));
     })
   })
 
@@ -755,7 +756,7 @@ class Shipment{
       });
     }else{
       document.getElementById(`print${this.id}`).addEventListener('click', () => {
-        getPDF(this.id);
+        getPDF(this.id, path.resolve('./data'));
         setTimeout(() => {getMyParcelData()}, 500);
       });
     }
