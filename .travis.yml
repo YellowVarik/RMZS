@@ -35,14 +35,14 @@ before_cache:
 branches:
   except:
   - "/^v\\d+\\.\\d+\\.\\d+$/"
-deploy:
-  provider: releases
-  api_key:
-    secure: KR+XcfExncSwToK/jrBTAtg0w6Ab9cfs7M8RKbQ0z1fk0+S+Vz7v31pn2ZaY5JVAyEsaQFlogfC223OHifsGFuIgJlRteILjiHRzGmmItGVZ8tEnyHDfTa9AAbhk9nRnxEfdV3FQwAg28xFnzbKe/zr3M0Q3fxvOZgLyA3JJd3AWaaAva196uwuQYM98mUa8ebiK4bdqEmEeca6HvcFJ5TkhKjEI36PbGpzrbYbVMi0VSeyn68vD/BoE3kBVkeZSa21I/fjsNciREGGM4/KTAhPYz9b5ck2I7hRuxnJzvTX8c79e3kuv3/LM1qgw+M4yv7TrY8VskPwJH0R/B43qH+m7+AfwZ3fGEs4V0aoFKk7uV3VIteFI64Fe7mIqWzxpKyvRfI+vN/uRR/7F74zHLkGyNOGcbCCtVtt0yEs5xVzulsEviGxsIa56NFFj7vj9D4eAd1aVNo10Ru2eluZkDPA6YPQ9uiLpb/wIb3OEyuCSJc/ImrECSrC4cjGvzJBBc2z9Sl4hBtXTdjxZFuNs8glahk1DIZN1UmIrBZLeiVSteNWLEkj8NHWnfS8kREP5lI7En7pgqhqzCAHIjT1oyMAsLELPcM/1+uwSEyJhhK61PwMXTIcr8bpQ6q8p5L7X19zP8ENjRDzk0zAJ7aN+XPz6DPL3e+03RIk3jv4LHKo=
-  skip_cleanup: true
-  file_glob: true
-  file:
-    - dist/*.exe
-    - dist/*.dmg
-  on:
-    tags: true
+# deploy:
+#   provider: releases
+#   api_key:
+#     secure: KR+XcfExncSwToK/jrBTAtg0w6Ab9cfs7M8RKbQ0z1fk0+S+Vz7v31pn2ZaY5JVAyEsaQFlogfC223OHifsGFuIgJlRteILjiHRzGmmItGVZ8tEnyHDfTa9AAbhk9nRnxEfdV3FQwAg28xFnzbKe/zr3M0Q3fxvOZgLyA3JJd3AWaaAva196uwuQYM98mUa8ebiK4bdqEmEeca6HvcFJ5TkhKjEI36PbGpzrbYbVMi0VSeyn68vD/BoE3kBVkeZSa21I/fjsNciREGGM4/KTAhPYz9b5ck2I7hRuxnJzvTX8c79e3kuv3/LM1qgw+M4yv7TrY8VskPwJH0R/B43qH+m7+AfwZ3fGEs4V0aoFKk7uV3VIteFI64Fe7mIqWzxpKyvRfI+vN/uRR/7F74zHLkGyNOGcbCCtVtt0yEs5xVzulsEviGxsIa56NFFj7vj9D4eAd1aVNo10Ru2eluZkDPA6YPQ9uiLpb/wIb3OEyuCSJc/ImrECSrC4cjGvzJBBc2z9Sl4hBtXTdjxZFuNs8glahk1DIZN1UmIrBZLeiVSteNWLEkj8NHWnfS8kREP5lI7En7pgqhqzCAHIjT1oyMAsLELPcM/1+uwSEyJhhK61PwMXTIcr8bpQ6q8p5L7X19zP8ENjRDzk0zAJ7aN+XPz6DPL3e+03RIk3jv4LHKo=
+#   skip_cleanup: true
+#   file_glob: true
+#   file:
+#     - dist/*.exe
+#     - dist/*.dmg
+#   on:
+#     tags: true
