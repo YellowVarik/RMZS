@@ -36,7 +36,6 @@ var lsStatusFilter = null;
 var lsCustomStatusFilter = null;
 var zendingen = [];
 var selectedParcels = [];
-var customStatusesArray = [];
 
 var arrowUp = String.fromCharCode(9650);
 var arrowDown = String.fromCharCode(9660);
@@ -72,24 +71,8 @@ function filter(category, value, element){
 
   switch(category){
     case 'Status':
-      for(let i = 0; i < zendingen.length; i++){
-        if(category == value){
-          zendingen[i].show($('#zendingen'));
-        }
-        else if(typeFilter !== null){
-          if(zendingen[i].status == value && zendingen[i].type == typeFilter){
-            zendingen[i].show($('#zendingen'));
-          }
-        }
-        else{
-          if(zendingen[i].status == value){
-            zendingen[i].show($('#zendingen'));
-          }
-        }
-      }
-
       if(category == value){
-        $('#statusFilter').find('.filterTitle').eq(0).text('Status')
+        $('#statusFilter').find('.filterTitle').eq(0).text('MyParcel Status')
         statusFilter = null;
       }
       else if(element !== null){
@@ -99,22 +82,6 @@ function filter(category, value, element){
       
       break;
     case 'Type':
-      for(let i = 0; i < zendingen.length; i++){
-        if(category == value){
-          zendingen[i].show($('#zendingen'));
-        }
-        else if(statusFilter !== null){
-          if(zendingen[i].type == value && zendingen[i].status == statusFilter){
-            zendingen[i].show($('#zendingen'));
-          }
-        }
-        else{
-          if(zendingen[i].type == value){
-            zendingen[i].show($('#zendingen'));
-          }
-        }
-      }
-
       if(category == value){
         $('#typeFilter').find('.filterTitle').eq(0).text('Type')
         typeFilter = null;
@@ -125,61 +92,45 @@ function filter(category, value, element){
       }
       break;
     case 'lsStatus':
-      for(let i = 0; i < zendingen.length; i++){
-        if(category == value){
-          zendingen[i].show($('#zendingen'));
-        }
-        else if(lsStatusFilter !== null){
-          if(zendingen[i].lsStatus == value && zendingen[i].lsStatus == lsStatusFilter){
-            zendingen[i].show($('#zendingen'));
-          }
-        }
-        else{
-          if(zendingen[i].lsStatus == value){
-            zendingen[i].show($('#zendingen'));
-          }
-        }
-      }
-
       if(category == value){
-        $('#lsStatusFilter').find('.filterTitle').eq(0).text('Lightspeed Statu');
-        typeFilter = null;
+        $('#lsStatusFilter').find('.filterTitle').eq(0).text('Lightspeed Status');
+        lsStatusFilter = null;
       }
       else if(element !== null){
         $('#lsStatusFilter').find('.filterTitle').eq(0).text(element.innerHTML);
-        typeFilter = value;
+        lsStatusFilter = value;
       }
       break;
 
     case 'lsCustomStatus':
-      for(let i = 0; i < zendingen.length; i++){
-        if(category == value){
-          zendingen[i].show($('#zendingen'));
-        }
-        else if(lsCustomStatusFilter !== null && zendingen[i].lsCustomStatus !== null){
-          if(zendingen[i].lsCustomStatus.id == value && zendingen[i].lsCustomStatus.id == lsCustomStatusFilter){
-            zendingen[i].show($('#zendingen'));
-          }
-        }
-        else{
-          if(zendingen[i].lsCustomStatus !== null && zendingen[i].lsCustomStatus.id == value){
-            zendingen[i].show($('#zendingen'));
-          }
-        }
-      }
-
       if(category == value){
         $('#lsCustomStatusFilter').find('.filterTitle').eq(0).text('Eigen Status');
-        typeFilter = null;
+        lsCustomStatusFilter = null;
       }
       else if(element !== null){
         $('#lsCustomStatusFilter').find('.filterTitle').eq(0).text(element.innerHTML);
-        typeFilter = value;
+        lsCustomStatusFilter = value;
       }
       break;
     
       
   }
+
+  console.log({statusFilter, typeFilter, lsStatusFilter, lsCustomStatusFilter})
+
+  zendingen.forEach((zending) => {
+    if(statusFilter !== null && zending.status != statusFilter){
+    }
+    else if(typeFilter !== null && zending.type != typeFilter){
+    }
+    else if(lsStatusFilter !== null && zending.lsStatus != lsStatusFilter){
+    }
+    else if(lsCustomStatusFilter !== null && (zending.lsCustomStatus == null || zending.lsCustomStatus.id != lsCustomStatusFilter)){
+    }
+    else{
+      zending.show($('#zendingen'));
+    }
+  })
 
 
 }
@@ -753,7 +704,6 @@ class Shipment{
   }
 
   show(parent) {
-    console.log(this.kenmerk, this.lsStatus, this.lsCustomStatus)
     let row = document.createElement('tr');
     row.setAttribute('data-id', this.id);
 
@@ -837,7 +787,7 @@ class Shipment{
         break;
     }
     if(this.lsCustomStatus  !== null){
-      status.innerHTML += `<br><i class="fas fa-info-circle"></i><mark style="background-color: ${this.lsCustomStatus.color}">${this.lsCustomStatus.title}</mark>`
+      status.innerHTML += `<br><i class="fas fa-info-circle"></i><mark style="background-color: ${this.lsCustomStatus.color};">${this.lsCustomStatus.title}</mark>`
     } else {
       status.innerHTML += '<br><i class="fas fa-info-circle"></i>/'
     }

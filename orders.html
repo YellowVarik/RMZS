@@ -22,17 +22,6 @@
 
           <div class='filterContainer'>
             <h3 class='filterLabel'>Filter: </h3>
-            <div class='filter' id='statusFilter'>
-              <li class='filterTitle'>Status</li>
-              <ul class='filterList'>
-                <li class='filterOption'><a onclick='filter("Status", "Status", this)'>-</a></li>
-                <li class='filterOption'><a onclick='filter("Status", 1, this)'>Concept</a></li>
-                <li class='filterOption'><a onclick='filter("Status", 2, this)'>Voorgemeld</a></li>
-                <li class='filterOption'><a onclick='filter("Status", 3, this)'>Onderweg</a></li>
-                <li class='filterOption'><a onclick='filter("Status", 4, this)'>Afgeleverd</a></li>
-                <li class='filterOption'><a onclick='filter("Status", 5, this)'>Retour</a></li>
-              </ul>
-            </div>
 
             <div class='filter' id='typeFilter'>
               <li class='filterTitle'>Type</li>
@@ -42,6 +31,19 @@
                 <li class='filterOption'><a onclick='filter("Type", 2, this)'>Brievenbus pakket</a></li>
                 <li class='filterOption'><a onclick='filter("Type", 3, this)'>Brief</a></li>
                 <li class='filterOption'><a onclick='filter("Type", 4, this)'>Digitale postzegel</a></li>
+              </ul>
+            </div>
+
+            
+            <div class='filter' id='statusFilter'>
+              <li class='filterTitle'>MyParcel Status</li>
+              <ul class='filterList'>
+                <li class='filterOption'><a onclick='filter("Status", "Status", this)'>-</a></li>
+                <li class='filterOption'><a onclick='filter("Status", 1, this)'>Concept</a></li>
+                <li class='filterOption'><a onclick='filter("Status", 2, this)'>Voorgemeld</a></li>
+                <li class='filterOption'><a onclick='filter("Status", 3, this)'>Onderweg</a></li>
+                <li class='filterOption'><a onclick='filter("Status", 4, this)'>Afgeleverd</a></li>
+                <li class='filterOption'><a onclick='filter("Status", 5, this)'>Retour</a></li>
               </ul>
             </div>
 
