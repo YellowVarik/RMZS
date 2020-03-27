@@ -32,8 +32,11 @@ var loadScreen = $(`
 var gesorteerd = null;
 var typeFilter = null;
 var statusFilter = null;
+var lsStatusFilter = null;
+var lsCustomStatusFilter = null;
 var zendingen = [];
 var selectedParcels = [];
+var customStatusesArray = [];
 
 var arrowUp = String.fromCharCode(9650);
 var arrowDown = String.fromCharCode(9660);
@@ -121,6 +124,60 @@ function filter(category, value, element){
         typeFilter = value;
       }
       break;
+    case 'lsStatus':
+      for(let i = 0; i < zendingen.length; i++){
+        if(category == value){
+          zendingen[i].show($('#zendingen'));
+        }
+        else if(lsStatusFilter !== null){
+          if(zendingen[i].lsStatus == value && zendingen[i].lsStatus == lsStatusFilter){
+            zendingen[i].show($('#zendingen'));
+          }
+        }
+        else{
+          if(zendingen[i].lsStatus == value){
+            zendingen[i].show($('#zendingen'));
+          }
+        }
+      }
+
+      if(category == value){
+        $('#lsStatusFilter').find('.filterTitle').eq(0).text('Lightspeed Statu');
+        typeFilter = null;
+      }
+      else if(element !== null){
+        $('#lsStatusFilter').find('.filterTitle').eq(0).text(element.innerHTML);
+        typeFilter = value;
+      }
+      break;
+
+    case 'lsCustomStatus':
+      for(let i = 0; i < zendingen.length; i++){
+        if(category == value){
+          zendingen[i].show($('#zendingen'));
+        }
+        else if(lsCustomStatusFilter !== null && zendingen[i].lsCustomStatus !== null){
+          if(zendingen[i].lsCustomStatus.id == value && zendingen[i].lsCustomStatus.id == lsCustomStatusFilter){
+            zendingen[i].show($('#zendingen'));
+          }
+        }
+        else{
+          if(zendingen[i].lsCustomStatus !== null && zendingen[i].lsCustomStatus.id == value){
+            zendingen[i].show($('#zendingen'));
+          }
+        }
+      }
+
+      if(category == value){
+        $('#lsCustomStatusFilter').find('.filterTitle').eq(0).text('Eigen Status');
+        typeFilter = null;
+      }
+      else if(element !== null){
+        $('#lsCustomStatusFilter').find('.filterTitle').eq(0).text(element.innerHTML);
+        typeFilter = value;
+      }
+      break;
+    
       
   }
 
@@ -295,22 +352,39 @@ async function displayMPInfo(data){
   let count = parsedData.data.shipments.length;
   let zending = parsedData.data.shipments;
 
-  var {shipments, orders, products} = await lightspeed.getLightspeedData();
+  var {shipments, orders, products, customStatuses} = await lightspeed.getLightspeedData();
   //Elke zending wordt apart weergegeven
   for(var i = 0; i < count; i++){
-    let lightspeedOrder, lightspeedShipment = null;
+    let lightspeedOrder, lightspeedShipment, lsStatus, lsCustomStatus = null;
     let klant = zending[i].recipient;
     if(zending[i].options.label_description.includes('ORD')){
       for(let x = 0; x < orders.length; x++){
         if(zending[i].options.label_description == orders[x].number){
           lightspeedOrder = orders[x];
           lightspeedShipment = shipments[x];
+          lsStatus = orders[x].status;
+          if(orders[x].customStatusId != null && orders[x].customStatusId != 0){
+            for(var z = 0; z < customStatuses.length; z++){
+              if(customStatuses[z].id == orders[x].customStatusId){
+                lsCustomStatus = {
+                  id: customStatuses[z].id,
+                  title: customStatuses[z].title,
+                  color: customStatuses[z].color
+                }
+              }
+            }
+          }
         }
       }
     }
-    let shipment = new Shipment(zending[i].id, zending[i].options.package_type, (zending[i].options.label_description.includes('retour'))?5:zending[i].status, zending[i].options.label_description, zending[i].barcode, klant.person, klant.postal_code, klant.street, klant.number + ((klant.number_suffix != null) ? klant.number_suffix : ''), klant.city, klant.cc, klant.email, klant.phone, new Date(zending[i].modified), lightspeedOrder, lightspeedShipment);
+    let shipment = new Shipment(zending[i].id, zending[i].options.package_type, (zending[i].options.label_description.includes('retour'))?5:zending[i].status, zending[i].options.label_description, zending[i].barcode, klant.person, klant.postal_code, klant.street, klant.number + ((klant.number_suffix != null) ? klant.number_suffix : ''), klant.city, klant.cc, klant.email, klant.phone, new Date(zending[i].modified), lightspeedOrder, lightspeedShipment, lsStatus, lsCustomStatus);
     zendingen[i] = shipment;
   }
+  customStatuses.forEach(function (status) {
+    let filterOption = $(`<li class='filterOption'><a onclick='filter("lsCustomStatus", ${status.id}, this)'>${status.title}</a></li>'`);
+    let filterParent = $('#lsCustomStatusFilter').find('.filterList').eq(0);
+    filterOption.appendTo(filterParent);
+  })
   zendingen.forEach(function (item){
     item.show($('#zendingen'));
   })
@@ -657,7 +731,7 @@ function typeKleinGroot(a,b){
 }
 class Shipment{
   
-  constructor(id, type, status, kenmerk, barcode, naam, postcode, straat, huisnummer, stad, land, email, telefoon, datum, lightspeedOrder, lightspeedShipment){
+  constructor(id, type, status, kenmerk, barcode, naam, postcode, straat, huisnummer, stad, land, email, telefoon, datum, lightspeedOrder, lightspeedShipment, lsStatus, lsCustomStatus){
     this.id = id;
     this.type = type;
     this.status = status;
@@ -674,9 +748,12 @@ class Shipment{
     this.datum = datum;
     this.lightspeedOrder = lightspeedOrder;
     this.lightspeedShipment = lightspeedShipment;
+    this.lsStatus = lsStatus;
+    this.lsCustomStatus = lsCustomStatus;
   }
 
   show(parent) {
+    console.log(this.kenmerk, this.lsStatus, this.lsCustomStatus)
     let row = document.createElement('tr');
     row.setAttribute('data-id', this.id);
 
@@ -703,28 +780,67 @@ class Shipment{
     }
 
     let status = document.createElement('td');
+    status.innerHTML = '<i class="fas fa-box"></i>'
     switch(this.status){
       case 1:
-        status.innerHTML = 'Concept';
+        status.innerHTML += 'Concept';
         break;
       case 2:
-        status.innerHTML = 'Voorgemeld';
+        status.innerHTML += 'Voorgemeld';
         break;
       case 3:
-        status.innerHTML = 'Onderweg';
+        status.innerHTML += 'Onderweg';
         break;
       case 4:
-        status.innerHTML = 'Afgeleverd';
+        status.innerHTML += 'Afgeleverd';
         break;
       case 5:
-        status.innerHTML = 'Retour';
+        status.innerHTML += 'Retour';
         break;
       default:
-        status.innerHTML = 'Kon status niet ophalen';
+        status.innerHTML += 'Kon status niet ophalen';
         status.style = 'color: red;';
         break;
     }
-
+    
+    status.innerHTML += '<br><i class="fas fa-rocket"></i>'
+    switch(this.lsStatus){
+      case 'new':
+        status.innerHTML += 'Nieuw';
+        break;
+      case 'on_hold':
+        status.innerHTML += 'In de wacht';
+        break;
+      case 'processing':
+        status.innerHTML += 'Verwerken';
+        break;
+      case 'processing_awaiting_payment':
+        status.innerHTML += 'Wachten op betaling';
+        break;
+      case 'processing_awaiting_shipment':
+        status.innerHTML += 'Klaar voor verzending';
+        break;
+      case 'processing_awaiting_pickup':
+        status.innerHTML += 'Klaar voor ophalen';
+        break;
+      case 'completed':
+        status.innerHTML += 'Afgerond';
+        break;
+      case 'completed_shipped':
+        status.innerHTML += 'Verzonden';
+        break;
+      case 'completed_picked_up':
+        status.innerHTML += 'Opgehaald';
+        break;
+      case 'cancelled':
+        status.innerHTML += 'Gecanceld';
+        break;
+    }
+    if(this.lsCustomStatus  !== null){
+      status.innerHTML += `<br><i class="fas fa-info-circle"></i><mark style="background-color: ${this.lsCustomStatus.color}">${this.lsCustomStatus.title}</mark>`
+    } else {
+      status.innerHTML += '<br><i class="fas fa-info-circle"></i>/'
+    }
     let kenmerk = document.createElement('td');
     kenmerk.innerHTML = this.kenmerk;
 

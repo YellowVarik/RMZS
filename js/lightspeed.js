@@ -7,7 +7,7 @@ const api_secret = window.localStorage.getItem('lsSecret');
 var fontRegular = __dirname + '/../fonts/Roboto-Regular.ttf';
 var fontBold = __dirname + '/../fonts/Roboto-Bold.ttf'
 
-var shipments, orders, products;
+var shipments, orders, products, customStatuses;
 
 var lsUrl = `https://${api_key}:${api_secret}@api.webshopapp.com/nl`
 
@@ -30,7 +30,14 @@ module.exports = {
         }).catch(error => {
             console.log(error);
         });
-        return { shipments, orders, products };
+
+        await axios.get(`${lsUrl}/orders/customstatuses.json`).then(response => {
+            customStatuses = response.data.customStatuses;
+        }).catch(error => {
+            console.log(error);
+        })
+        console.log ({shipments, orders, products, customStatuses});
+        return { shipments, orders, products, customStatuses };
     },
 
     getOrderVerzendLabel: async function (order, shipment, datapath) {
