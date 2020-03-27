@@ -116,8 +116,6 @@ function filter(category, value, element){
       
   }
 
-  console.log({statusFilter, typeFilter, lsStatusFilter, lsCustomStatusFilter})
-
   zendingen.forEach((zending) => {
     if(statusFilter !== null && zending.status != statusFilter){
     }
@@ -759,7 +757,7 @@ class Shipment{
         status.innerHTML += 'Nieuw';
         break;
       case 'on_hold':
-        status.innerHTML += 'In de wacht';
+        status.innerHTML += 'Wachten op vastlegging';
         break;
       case 'processing':
         status.innerHTML += 'Verwerken';
@@ -771,19 +769,19 @@ class Shipment{
         status.innerHTML += 'Klaar voor verzending';
         break;
       case 'processing_awaiting_pickup':
-        status.innerHTML += 'Klaar voor ophalen';
+        status.innerHTML += 'Klaar voor afhalen';
         break;
       case 'completed':
         status.innerHTML += 'Afgerond';
         break;
       case 'completed_shipped':
-        status.innerHTML += 'Verzonden';
+        status.innerHTML += 'Afgerond';
         break;
       case 'completed_picked_up':
-        status.innerHTML += 'Opgehaald';
+        status.innerHTML += 'Afgerond';
         break;
       case 'cancelled':
-        status.innerHTML += 'Gecanceld';
+        status.innerHTML += 'Geannuleerd';
         break;
     }
     if(this.lsCustomStatus  !== null){
@@ -791,6 +789,7 @@ class Shipment{
     } else {
       status.innerHTML += '<br><i class="fas fa-info-circle"></i>/'
     }
+    status.innerHTML += '<a class="editBtn"><i class="fas fa-edit"></i></a>'
     let kenmerk = document.createElement('td');
     kenmerk.innerHTML = this.kenmerk;
 

@@ -1,4 +1,5 @@
 const { app, BrowserWindow, autoUpdater, dialog } = require('electron')
+const fs = require('fs')
 const log = require('electron-log')
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
