@@ -317,6 +317,7 @@ th {
 
 td {
   padding: 5px;
+  line-height: 1.5rem;
 }
 
 input[type=text] {

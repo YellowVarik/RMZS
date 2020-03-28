@@ -480,6 +480,8 @@ function showEditStatus(zending){
     popup.find('#statusSelection').val(zending.lsCustomStatus.id);
   }
 
+  popup.find('.save').eq(0).off('click')
+
   popup.find('.save').eq(0).click(() => {
     if(popup.find('#statusSelection').val() == null){
       zending.lightspeedOrder.customStatusId = null;
@@ -487,17 +489,32 @@ function showEditStatus(zending){
     else{
       zending.lightspeedOrder.customStatusId = popup.find('#statusSelection').val();
     }
-    saveStatus(zending.lightspeedOrder);
+    saveStatus(zending);
     popup.removeClass('visible')
   })
   
   popup.addClass('visible');
 }
 
-async function saveStatus(order){
-  console.log(order);
-  await lightspeed.updateCustomStatus(order);
-  getMyParcelData();
+async function saveStatus(zending){
+  console.log(zending)
+  await lightspeed.updateCustomStatus(zending.lightspeedOrder);
+  var targetElement = zending.row.getElementsByTagName('mark')[0];
+  var customColor = 'rgba(0,0,0,0); color: white';
+  var customTitle = '/'
+  customStatusesArray.forEach((element)=>{
+    if(element.id == zending.lightspeedOrder.customStatusId){
+      zending.lsCustomStatus = {
+        id: element.id,
+        color: element.color,
+        title: element.title
+      };
+      customColor = element.color;
+      customTitle = element.title;
+    }
+  })
+  targetElement.style = 'background-color: ' + customColor + ';';
+  targetElement.innerHTML = customTitle;
 }
 
 function deleteShipment(id){
@@ -745,14 +762,15 @@ class Shipment{
     this.lightspeedShipment = lightspeedShipment;
     this.lsStatus = lsStatus;
     this.lsCustomStatus = lsCustomStatus;
+    this.row = document.createElement('tr');
   }
 
   show(parent) {
-    let row = document.createElement('tr');
-    row.setAttribute('data-id', this.id);
+    this.row.innerHTML = '';
+    this.row.setAttribute('data-id', this.id);
 
     let checkMark = $(`<td><span><a onclick="selectParcel(${this.id})"><i class="fas ${(selectedParcels.includes(this.id))?'fa-check-square':'fa-square'} checkmark checkmark${this.id}"></i></a></span></td>`);
-    checkMark.appendTo(row);
+    checkMark.appendTo(this.row);
 
     let type = document.createElement('td');
     switch(this.type){
@@ -833,7 +851,7 @@ class Shipment{
     if(this.lsCustomStatus  !== null){
       status.innerHTML += `<br><i class="fas fa-info-circle"></i><mark style="background-color: ${this.lsCustomStatus.color};">${this.lsCustomStatus.title}</mark>`
     } else {
-      status.innerHTML += '<br><i class="fas fa-info-circle"></i>/'
+      status.innerHTML += '<br><i class="fas fa-info-circle"></i><mark style="background-color: rgba(0,0,0,0); color: white">/</mark>'
     }
     status.innerHTML += `<a class="editBtn" ><i class="fas fa-edit"></i></a>`
     let kenmerk = document.createElement('td');
@@ -857,10 +875,10 @@ class Shipment{
     let buttons = document.createElement('td');
     buttons.innerHTML = `<span><a id='print${this.id}'><i class='fas fa-file-pdf fa-lg'></i>${(this.status == 1)? `<a onclick='deleteShipment(${this.id})'><i class='fas fa-trash fa-lg' style='color: red'></i></a>`: ''}</span>`;
 
-    row.append(type, status, kenmerk, barcode, name, adres, contact, datum, buttons);
-    parent.append(row);
+    this.row.append(type, status, kenmerk, barcode, name, adres, contact, datum, buttons);
+    parent.append(this.row);
 
-    row.getElementsByClassName('editBtn')[0].addEventListener("click", ()=>{
+    this.row.getElementsByClassName('editBtn')[0].addEventListener("click", ()=>{
       showEditStatus(this);
     })
     
