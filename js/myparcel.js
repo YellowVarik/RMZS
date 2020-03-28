@@ -498,7 +498,7 @@ function showEditStatus(zending){
 
 async function saveStatus(zending){
   console.log(zending)
-  await lightspeed.updateCustomStatus(zending.lightspeedOrder);
+  await lightspeed.updateOrder(zending.lightspeedOrder);
   var targetElement = zending.row.getElementsByTagName('mark')[0];
   var customColor = 'rgba(0,0,0,0); color: white';
   var customTitle = '/'

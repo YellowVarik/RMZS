@@ -36,7 +36,6 @@ module.exports = {
         }).catch(error => {
             console.log(error);
         })
-        console.log ({shipments, orders, products, customStatuses});
         return { shipments, orders, products, customStatuses };
     },
 
@@ -157,10 +156,23 @@ module.exports = {
         }
     },
 
-    updateCustomStatus: async function(order){
+    updateOrder: async function(order){
         axios.put(`${lsUrl}/orders/${order.id}.json`, {
-            "order": {
-                "customStatusId": `${order.customStatusId}`
+            order
+        },{
+            headers: {
+                "Content-Type": "application/json"
+            }
+        }).then(response => {
+            console.log(response.data)
+        })
+    },
+
+    updateCustomStatus: async function(status){
+        axios.put(`${lsUrl}/orders/customstatuses/${status.id}.json`, {
+            "customStatus":{
+                "color": status.color,
+                "title": status.title
             }
         },{
             headers: {

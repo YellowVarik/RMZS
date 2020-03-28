@@ -11,6 +11,41 @@ body{
   background: #9fda34;
 }
 
+.customStatus{
+  width: 100%;
+  padding: 20px;
+  text-align: left;
+  cursor: pointer;
+  vertical-align: middle;
+}
+
+.customStatus span{
+  font-size: 20px;
+  padding: 10px;
+}
+
+.customStatus span h3{
+  float: left;
+}
+
+.customStatus span a{
+  float: right;
+  opacity: 0;
+}
+
+.customStatus:hover span a{
+  opacity: 0.6;
+  transition: all 0.3s ease;
+}
+.customStatus span a:hover{
+  opacity: 1;
+}
+
+.customStatus span a i{
+  color: #727272;
+  margin-right: 5px;
+}
+
 .login-page {
   width: 40%;
   margin: 0;
@@ -748,6 +783,31 @@ input[type=text]:focus {
 .popup .content {
   max-height: 30%;
   overflow: auto;
+}
+
+.popup input[type=text]{
+  width: 80%;
+  padding: 20px;
+}
+
+#customStatusPopup{
+  text-align: center;
+}
+
+#customStatusPopup label{
+  font-size: 20px;
+  padding: 15px;
+  float: left;
+  margin-right: auto;
+}
+
+#customStatusPopup .colorPicker{
+  width: 80%;
+  padding: 20px;
+}
+
+#customStatusPopup .colorPicker label{
+  font-size: 15px;
 }
 
 @media screen and (max-width: 700px) {
