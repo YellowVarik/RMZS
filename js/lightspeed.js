@@ -155,6 +155,20 @@ module.exports = {
             });
             request.end();
         }
+    },
+
+    updateCustomStatus: async function(order){
+        axios.put(`${lsUrl}/orders/${order.id}.json`, {
+            "order": {
+                "customStatusId": `${order.customStatusId}`
+            }
+        },{
+            headers: {
+                "Content-Type": "application/json"
+            }
+        }).then(response => {
+            console.log(response.data)
+        })
     }
 }
 

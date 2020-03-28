@@ -246,6 +246,41 @@ body{
   color: white;
 }
 
+#statusPopup.visible{
+  visibility: visible;
+  opacity: 1;
+}
+
+#statusPopup .popup{
+  width: 70%;
+  height: 300px;
+  text-align: center;
+}
+
+#statusPopup .popup select{
+  width: 70%;
+  border: 2px solid #727272;
+  padding: 10px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+
+.popup .save{
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  background-color: #4CAF50;
+  width: 100%;
+  padding: 20px;
+}
+
+.popup .save:hover{
+  background-color: #43A047;
+}
+
 .reload i {
   transform: rotate(0deg);
   transition: transform 0.3s;
@@ -323,6 +358,10 @@ input[type=text]:focus {
 
 #zendingen tr i {
   padding: 0 10px;
+}
+
+#zendingen tr .editBtn{
+  float: right;
 }
 
 .sortBtn:hover {

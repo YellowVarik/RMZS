@@ -5,7 +5,7 @@ const lightspeed = require(__dirname + '/js/lightspeed')
 const path = require('path')
 
 //jQuery moet op een andere manier worden toegevoegd
-window.$ = window.jQuery = require('./js/jquery-3.4.1.min.js')
+const $ = require('jquery')
 
 
 var mpURL = "api.myparcel.nl";
@@ -34,6 +34,7 @@ var typeFilter = null;
 var statusFilter = null;
 var lsStatusFilter = null;
 var lsCustomStatusFilter = null;
+var customStatusesArray;
 var zendingen = [];
 var selectedParcels = [];
 
@@ -302,6 +303,7 @@ async function displayMPInfo(data){
   let zending = parsedData.data.shipments;
 
   var {shipments, orders, products, customStatuses} = await lightspeed.getLightspeedData();
+  customStatusesArray = customStatuses;
   //Elke zending wordt apart weergegeven
   for(var i = 0; i < count; i++){
     let lightspeedOrder, lightspeedShipment, lsStatus, lsCustomStatus = null;
@@ -329,9 +331,11 @@ async function displayMPInfo(data){
     let shipment = new Shipment(zending[i].id, zending[i].options.package_type, (zending[i].options.label_description.includes('retour'))?5:zending[i].status, zending[i].options.label_description, zending[i].barcode, klant.person, klant.postal_code, klant.street, klant.number + ((klant.number_suffix != null) ? klant.number_suffix : ''), klant.city, klant.cc, klant.email, klant.phone, new Date(zending[i].modified), lightspeedOrder, lightspeedShipment, lsStatus, lsCustomStatus);
     zendingen[i] = shipment;
   }
+  let filterParent = $('#lsCustomStatusFilter').find('.filterList').eq(0);
+  filterParent.empty();
+  $(`<li class='filterOption'><a onclick='filter("lsCustomStatus", "lsCustomStatus", this)'>-</a></li>`).appendTo(filterParent)
   customStatuses.forEach(function (status) {
     let filterOption = $(`<li class='filterOption'><a onclick='filter("lsCustomStatus", ${status.id}, this)'>${status.title}</a></li>'`);
-    let filterParent = $('#lsCustomStatusFilter').find('.filterList').eq(0);
     filterOption.appendTo(filterParent);
   })
   zendingen.forEach(function (item){
@@ -452,6 +456,48 @@ function selectAllParcels(){
   else{
     $('#myparcel').find(".checkmark").removeClass('fa-check-square').addClass("fa-square");
   }
+}
+
+function showEditStatus(zending){
+  var popup = $('#statusPopup');
+  popup.find('h2').eq(0).text('Status aanpassen voor ' + zending.kenmerk);
+  console.log(zending)
+  var options = popup.find('#statusSelection').find('option');
+  for(let i = 0; i < options.length; i++){
+    options[i].remove();
+  }
+  $('<option value=0>Geen Status</option>').appendTo(popup.find('#statusSelection'))
+
+  customStatusesArray.forEach((status) => {
+    var option = $(`<option value='${status.id}'>${status.title}</option>`);
+    option.appendTo(popup.find('#statusSelection'));
+  })
+
+  if(zending.lsCustomStatus === null){
+    popup.find('#statusSelection').val(0);
+  }
+  else{
+    popup.find('#statusSelection').val(zending.lsCustomStatus.id);
+  }
+
+  popup.find('.save').eq(0).click(() => {
+    if(popup.find('#statusSelection').val() == null){
+      zending.lightspeedOrder.customStatusId = null;
+    }
+    else{
+      zending.lightspeedOrder.customStatusId = popup.find('#statusSelection').val();
+    }
+    saveStatus(zending.lightspeedOrder);
+    popup.removeClass('visible')
+  })
+  
+  popup.addClass('visible');
+}
+
+async function saveStatus(order){
+  console.log(order);
+  await lightspeed.updateCustomStatus(order);
+  getMyParcelData();
 }
 
 function deleteShipment(id){
@@ -789,7 +835,7 @@ class Shipment{
     } else {
       status.innerHTML += '<br><i class="fas fa-info-circle"></i>/'
     }
-    status.innerHTML += '<a class="editBtn"><i class="fas fa-edit"></i></a>'
+    status.innerHTML += `<a class="editBtn" ><i class="fas fa-edit"></i></a>`
     let kenmerk = document.createElement('td');
     kenmerk.innerHTML = this.kenmerk;
 
@@ -813,6 +859,10 @@ class Shipment{
 
     row.append(type, status, kenmerk, barcode, name, adres, contact, datum, buttons);
     parent.append(row);
+
+    row.getElementsByClassName('editBtn')[0].addEventListener("click", ()=>{
+      showEditStatus(this);
+    })
     
     if(this.lightspeedOrder != null){
       document.getElementById(`print${this.id}`).addEventListener('click', () => {
