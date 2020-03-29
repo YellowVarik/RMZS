@@ -45,7 +45,7 @@ module.exports = {
         var shipmentsArr = [];
         var labelsArr = [];
         if (order instanceof Array) {
-            for (var i = 0; i < order.length; i++) {
+            for (let i = 0; i < order.length; i++) {
                 await axios.get(`https://api.myparcel.nl/shipments?q=${order[i].number}`, {
                     headers: {
                         "Authorization": `base ${base64Key}`,
@@ -85,6 +85,10 @@ module.exports = {
 
                     result.on("end", () => {
                         pdfFile.end();
+                        console.log(i, order.length)
+                        if(i === order.length - 1){
+                            makePakbon(ordersArr, shipmentsArr, labelsArr, datapath)
+                        }
                     })
                 })
 
@@ -97,10 +101,6 @@ module.exports = {
                 shipmentsArr[i] = shipment[i];
                 labelsArr[i] = path.join(datapath,`verzendLabel${order[i].number}.pdf`);
             }
-            
-                
-
-            setTimeout(() => {makePakbon(ordersArr, shipmentsArr, labelsArr, datapath);}, 500);
         } else {
             await axios.get(`https://api.myparcel.nl/shipments?q=${order.number}`, {
                 headers: {
@@ -781,8 +781,8 @@ async function makePakbon(orders, shipments, verzendLabelUrls, datapath) {
         })
     }
 
-    var file = fs.createWriteStream(path.resolve(datapath + `pakbon.pdf`));
+    var file = fs.createWriteStream(path.resolve(datapath + `/pakbon.pdf`));
     var buffer = await doc.save();
     file.write(buffer);
-    openPDF(datapath + `pakbon.pdf`)
+    openPDF(path.resolve(datapath + `/pakbon.pdf`))
 }
