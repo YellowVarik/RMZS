@@ -66,4 +66,16 @@ async function addStatus(customStatus) {
 
         popup.addClass('visible');
     })
+    div.find('.delete').eq(0).click(()=>{
+        $('#deleteStatusPopup').find('.ja').eq(0).off('click').click(()=>{
+            deleteStatus(customStatus.id, div);
+            $('#deleteStatusPopup').removeClass('visible');
+        })
+        $('#deleteStatusPopup').addClass('visible');
+    })
+}
+
+function deleteStatus(id, div){
+    lightspeed.deleteCustomStatus(id);
+    div.remove();
 }

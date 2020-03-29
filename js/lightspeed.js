@@ -207,6 +207,14 @@ module.exports = {
         })
         
         return ({"color": newcolor, "title": newtitle, "id": newid});
+    },
+
+    deleteCustomStatus: async function(id){
+        await axios.delete(`${lsUrl}/orders/customstatuses/${id}.json`).then(response => {
+            console.log(response.data);
+        }).catch(error => {
+            console.error(error);
+        })
     }
 }
 

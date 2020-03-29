@@ -149,6 +149,20 @@
     </div>
   </div>
 
+  <div id="deleteStatusPopup" class="overlay">
+    <div class="popup" style="text-align: center;">
+      <h2>Status verwijderen</h2>
+      <p><b>Weet u zeker dat u deze status wilt verwijderen?</b></p>
+      <div style="display: flex;">
+        <button class="ja" style="background: green; width: 50%; margin: 2%;">Ja</button>
+        <button class="nee" onclick="document.getElementById('deleteStatusPopup').classList.remove('visible')"
+          style="background: red; width: 50%; margin: 2%;">Nee</button>
+      </div>
+      <div class="content">
+      </div>
+    </div>
+  </div>
+
   <script type="text/javascript" scr="js/jquery-3.4.1.min.js"></script>
   <script type="text/javascript" scr="js/bootstrap.min.js"></script>
   <script type="text/javascript" src='js/account.js'></script>
