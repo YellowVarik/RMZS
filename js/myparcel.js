@@ -328,7 +328,7 @@ async function displayMPInfo(data){
         }
       }
     }
-    let shipment = new Shipment(zending[i].id, zending[i].options.package_type, (zending[i].options.label_description.includes('retour'))?5:zending[i].status, zending[i].options.label_description, zending[i].barcode, klant.person, klant.postal_code, klant.street, klant.number + ((klant.number_suffix != null) ? klant.number_suffix : ''), klant.city, klant.cc, klant.email, klant.phone, new Date(zending[i].modified), lightspeedOrder, lightspeedShipment, lsStatus, lsCustomStatus);
+    let shipment = new Shipment(zending[i].id, zending[i].options.package_type, zending[i].status, zending[i].options.label_description, zending[i].barcode, klant.person, klant.postal_code, klant.street, klant.number + ((klant.number_suffix != null) ? klant.number_suffix : ''), klant.city, klant.cc, klant.email, klant.phone, new Date(zending[i].modified), lightspeedOrder, lightspeedShipment, lsStatus, lsCustomStatus);
     zendingen[i] = shipment;
   }
   let filterParent = $('#lsCustomStatusFilter').find('.filterList').eq(0);
