@@ -85,7 +85,6 @@ module.exports = {
 
                     result.on("end", () => {
                         pdfFile.end();
-                        console.log(i, order.length)
                         if(i === order.length - 1){
                             makePakbon(ordersArr, shipmentsArr, labelsArr, datapath)
                         }
