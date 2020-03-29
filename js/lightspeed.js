@@ -100,7 +100,7 @@ module.exports = {
             
                 
 
-            setTimeout(() => {makePakbon(ordersArr, shipmentsArr, labelsArr, datapath);}, 100);
+            setTimeout(() => {makePakbon(ordersArr, shipmentsArr, labelsArr, datapath);}, 500);
         } else {
             await axios.get(`https://api.myparcel.nl/shipments?q=${order.number}`, {
                 headers: {
@@ -227,6 +227,7 @@ async function makePakbon(orders, shipments, verzendLabelUrls, datapath) {
     const pakbonTextHeight = regular.heightAtSize(pakbonTextSize);
     for (var i = 0; i < orders.length; i++) {
         var page = doc.addPage();
+        console.log(verzendLabelUrls[i])
         var verzendLabelDocument = await PDFDocument.load(fs.readFileSync(verzendLabelUrls[i]));
 
         var verzendLabel = await doc.embedPage(verzendLabelDocument.getPages()[0], {
