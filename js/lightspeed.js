@@ -168,8 +168,8 @@ module.exports = {
         })
     },
 
-    updateCustomStatus: async function(color, title){
-        axios.put(`${lsUrl}/orders/customstatuses/${status.id}.json`, {
+    updateCustomStatus: async function(color, title, id){
+        axios.put(`${lsUrl}/orders/customstatuses/${id}.json`, {
             "customStatus":{
                 "color": color,
                 "title": title
@@ -180,10 +180,13 @@ module.exports = {
             }
         }).then(response => {
             console.log(response.data)
+        }).catch(error => {
+            console.error(error);
         })
     },
 
     addCustomStatus: async function(color, title){
+        var newcolor, newtitle, newid;
         await axios.post(`${lsUrl}/orders/customstatuses.json`, {
             "customStatus": {
                 "color": color,
@@ -195,8 +198,15 @@ module.exports = {
             }
         }).then(response => {
             console.log(response.data)
-            return response.data.customStatus
+            var status = response.data.customStatus;
+            newcolor = status.color;
+            newtitle = status.title,
+            newid = status.id;
+        }).catch(error => {
+            console.error(error);
         })
+        
+        return ({"color": newcolor, "title": newtitle, "id": newid});
     }
 }
 

@@ -18,11 +18,12 @@ async function showStatusses() {
         popup.find('h2').eq(0).text('Status toevoegen');
         popup.find('.colorPicker').eq(0).empty();
         colorPicker.from(popup.find('.colorPicker').eq(0));
-        popup.find('.save').off('click').click(()=>{
+        popup.find('.save').off('click').click(async function(){
             let color = popup.find('.a-color-picker-rgbhex').eq(0).find('input').eq(0).val();
             let title = popup.find('.title').val();
             console.log({color, title});
-            let customStatus = lightspeed.addCustomStatus(color, title);
+            let customStatus = await lightspeed.addCustomStatus(color, title);
+            console.log(customStatus)
             addStatus(customStatus);
             popup.removeClass('visible')
         })
@@ -46,9 +47,8 @@ async function addStatus(customStatus){
                 if(title === customStatus.title && color == customStatus.color){
                     popup.removeClass('visible')
                 }else{
-                    customStatus.title = title;
-                    customStatus.color = color;
-                    lightspeed.updateCustomStatus(customStatus);
+                    id = customStatus.id;
+                    lightspeed.updateCustomStatus(color, title, id);
                     div.find('h3').eq(0).text(title).css('color', color);
                     popup.removeClass('visible')
                 }

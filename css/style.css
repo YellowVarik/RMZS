@@ -16,7 +16,7 @@ body{
   padding: 20px;
   text-align: left;
   cursor: pointer;
-  vertical-align: middle;
+  line-height: 30px;
 }
 
 .customStatus span{
