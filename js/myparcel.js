@@ -322,9 +322,11 @@ async function displayMPInfo(data){
                   title: customStatuses[z].title,
                   color: customStatuses[z].color
                 }
+                break;
               }
             }
           }
+          break;
         }
       }
     }
@@ -388,6 +390,7 @@ function selectParcel(id){
     if(parcel==id){
       selected = true;
       i = index;
+      break;
     }
     
   })
