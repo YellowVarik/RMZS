@@ -13,7 +13,7 @@ var mpURL = "api.myparcel.nl";
 //De key moet worden opgrvraagd door de gebruiker in hun MyParcel account
 var base64Key = window.localStorage.getItem('mpKey');
 
-var loadScreen = $(`
+const loadScreen = $(`
 <div id='loading' class="sk-circle">
 <div class="sk-circle1 sk-child"></div>
 <div class="sk-circle2 sk-child"></div>

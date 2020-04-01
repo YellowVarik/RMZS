@@ -754,14 +754,14 @@ async function makePakbon(orders, shipments, verzendLabelUrls, datapath) {
             lineHeight: 10
         })
         //----Sticker----
-        page.drawRectangle({
-            x: 28.3466,
-            y: 28.3466,
-            width: 425.2,
-            height: 283.4666,
-            borderColor: rgb(0, 0, 0),
-            borderWidth: 1
-        })
+        // page.drawRectangle({
+        //     x: 28.3466,
+        //     y: 28.3466,
+        //     width: 425.2,
+        //     height: 283.4666,
+        //     borderColor: rgb(0, 0, 0),
+        //     borderWidth: 1
+        // })
 
 
 

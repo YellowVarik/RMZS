@@ -39,12 +39,14 @@ async function showStatusses() {
 
 async function addStatus(customStatus) {
     let div = $(`<div class='customStatus'><span><h3 style='color:${customStatus.color}'>${customStatus.title}</h3><a class='delete'><i class='fas fa-trash'></i></a><a class='edit'><i class='fas fa-edit'></i></a></span></div></div>`).appendTo('#customStatusSettings');
+    var thisTitle = customStatus.title;
+    var thisColor = customStatus.color;
     div.find('.edit').eq(0).click(() => {
         let popup = $('#customStatusPopup');
         popup.find('.errormsg').css('visibility', 'hidden');
         popup.find('h2').eq(0).text('Status aanpassen');
-        popup.find('.title').eq(0).val(customStatus.title);
-        popup.find('.colorPicker').eq(0).empty().attr('acp-color', customStatus.color);
+        popup.find('.title').eq(0).val(thisTitle);
+        popup.find('.colorPicker').eq(0).empty().attr('acp-color', thisColor);
         colorPicker.from(popup.find('.colorPicker').eq(0));
 
         popup.find('.save').off('click').click(() => {
@@ -60,6 +62,8 @@ async function addStatus(customStatus) {
                 id = customStatus.id;
                 lightspeed.updateCustomStatus(color, title, id);
                 div.find('h3').eq(0).text(title).css('color', color);
+                thisTitle = title;
+                thisColor = color;
                 popup.removeClass('visible')
             }
         });
