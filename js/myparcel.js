@@ -345,11 +345,17 @@ async function displayMPInfo(data) {
   })
   var today = new Date();
   var alreadySaved = false;
+  if(!fs.existsSync('./data/zendingen')){
+    fs.mkdirSync('./data/zendingen');
+  }
   fs.readdirSync('./data/zendingen/').forEach(file => {
     console.log(file)
     let fileDate = file.replace('.json', '').split('-');
-    if (fileDate[0] == today.getDate() && fileDate[1] == (today.getMonth() + 1) && fileDate[2] == today.getFullYear()) {
-      console.log('bruh')
+    console.log(new Date(Number(fileDate[2]), Number(fileDate[1]) - 1, Number(fileDate[0]) + 7))
+    if(new Date(Number(fileDate[2]), Number(fileDate[1]) - 1, Number(fileDate[0]) + 7) <= today){
+      fs.unlinkSync('./data/zendingen/' + file);
+    }
+    else if (fileDate[0] == today.getDate() && fileDate[1] == (today.getMonth() + 1) && fileDate[2] == today.getFullYear()) {
       alreadySaved = true;
     }
   })

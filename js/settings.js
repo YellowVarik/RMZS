@@ -1,10 +1,30 @@
 const lightspeed = require(__dirname + '/js/lightspeed')
 const colorPicker = require('a-color-picker');
+const $ = require('jquery')
 
 
 showStatusses();
 
 async function showStatusses() {
+    var loading = $('<h2 id="loadingtext" style="padding: 10px;">Statussen aan het laden.</h2>').appendTo('#customStatusSettings');
+    var count = 0;
+    var loadingInterval = setInterval(() => {
+        switch(count){
+            case 0:
+                loading.text('Statussen aan het laden..')
+                count++;
+                break;
+            case 1:
+                loading.text('Statussen aan het laden...')
+                count++;
+                break;
+            case 2:
+                loading.text('Statussen aan het laden.')
+                count = 0;
+                break;
+        }
+
+    }, 300)
     var { shipments, orders, products, customStatuses } = await lightspeed.getLightspeedData();
     console.log(customStatuses)
     for (let i = 0; i < customStatuses.length; i++) {
@@ -28,13 +48,14 @@ async function showStatusses() {
             }
             console.log({ color, title });
             let customStatus = await lightspeed.addCustomStatus(color, title);
-            console.log(customStatus)
             addStatus(customStatus);
             popup.removeClass('visible')
         })
 
         popup.addClass('visible');
     })
+    loading.remove();
+    clearInterval(loadingInterval);
 }
 
 async function addStatus(customStatus) {
