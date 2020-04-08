@@ -357,6 +357,10 @@ async function displayMPInfo(data) {
     }
     else if (fileDate[0] == today.getDate() && fileDate[1] == (today.getMonth() + 1) && fileDate[2] == today.getFullYear()) {
       alreadySaved = true;
+      $(`<li class="fileSelectionOption"><a onclick="loadBackup('${file}')">${file.replace('.json', '')}</a></li>`).appendTo($('#fileSelection').find('.fileSelectionList').eq(0))
+    }
+    else{
+      $(`<li class="fileSelectionOption"><a>${file.replace('.json', '')}</a></li>`).appendTo($('#fileSelection').find('.fileSelectionList').eq(0))
     }
   })
   if (!alreadySaved) {
@@ -459,6 +463,22 @@ function TrackTrace(id) {
   })
 
   request.end();
+}
+
+function loadBackup(file){
+  zendingen = [];
+  let tr = $('#zendingen').find('tr');
+  if (tr.length > 0) {
+    for (let i = 0; i < tr.length; i++) {
+      tr[i].remove();
+    }
+  }
+
+  newZendingen = require('./data/zendingen/' + file);
+  newZendingen.forEach((zending, index) => {
+    zendingen[index] = new Shipment(zending.id, zending.type, zending.status, zending.kenmerk, zending.barcode, zending.naam, zending.postcode, zending.straat, zending.huisnummer, zending.stad, zending.land, zending.email, zending.telefoon, new Date(zending.datum), zending.lightspeedOrder, zending.lightspeedShipment, zending.lsStatus, zending.lsCustomStatus);
+    zendingen[index].show($('#zendingen'));
+  })
 }
 
 function selectAllParcels() {
