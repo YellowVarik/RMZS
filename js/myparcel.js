@@ -43,90 +43,90 @@ var arrowDown = String.fromCharCode(9660);
 
 getMyParcelData();
 
-function search(){
+function search() {
   var input = document.getElementById("searchBox");
   var query = input.value.toLowerCase();
 
   let tr = $('#zendingen').find('tr');
-  if(tr.length > 0){
-    for (let i = 0; i < tr.length; i++){
+  if (tr.length > 0) {
+    for (let i = 0; i < tr.length; i++) {
       tr[i].remove();
     }
   }
 
-  for(let i = 0; i < zendingen.length; i++){
-    if(zendingen[i].kenmerk.toLowerCase().includes(query) || zendingen[i].naam.toLowerCase().includes(query) || zendingen[i].stad.toLowerCase().includes(query) || zendingen[i].straat.toLowerCase().includes(query) || zendingen[i].postcode.toLowerCase().includes(query) || zendingen[i].email.toLowerCase().includes(query)){
+  for (let i = 0; i < zendingen.length; i++) {
+    if (zendingen[i].kenmerk.toLowerCase().includes(query) || zendingen[i].naam.toLowerCase().includes(query) || zendingen[i].stad.toLowerCase().includes(query) || zendingen[i].straat.toLowerCase().includes(query) || zendingen[i].postcode.toLowerCase().includes(query) || zendingen[i].email.toLowerCase().includes(query)) {
       zendingen[i].show($('#zendingen'));
     }
   }
 }
 
-function filter(category, value, element){
+function filter(category, value, element) {
 
   let tr = $('#zendingen').find('tr');
-  if(tr.length > 0){
-    for (let i = 0; i < tr.length; i++){
+  if (tr.length > 0) {
+    for (let i = 0; i < tr.length; i++) {
       tr[i].remove();
     }
   }
 
-  switch(category){
+  switch (category) {
     case 'Status':
-      if(category == value){
+      if (category == value) {
         $('#statusFilter').find('.filterTitle').eq(0).text('MyParcel Status')
         statusFilter = null;
       }
-      else if(element !== null){
+      else if (element !== null) {
         $('#statusFilter').find('.filterTitle').eq(0).text(element.innerHTML);
         statusFilter = value;
       }
-      
+
       break;
     case 'Type':
-      if(category == value){
+      if (category == value) {
         $('#typeFilter').find('.filterTitle').eq(0).text('Type')
         typeFilter = null;
       }
-      else if(element !== null){
+      else if (element !== null) {
         $('#typeFilter').find('.filterTitle').eq(0).text(element.innerHTML);
         typeFilter = value;
       }
       break;
     case 'lsStatus':
-      if(category == value){
+      if (category == value) {
         $('#lsStatusFilter').find('.filterTitle').eq(0).text('Lightspeed Status');
         lsStatusFilter = null;
       }
-      else if(element !== null){
+      else if (element !== null) {
         $('#lsStatusFilter').find('.filterTitle').eq(0).text(element.innerHTML);
         lsStatusFilter = value;
       }
       break;
 
     case 'lsCustomStatus':
-      if(category == value){
+      if (category == value) {
         $('#lsCustomStatusFilter').find('.filterTitle').eq(0).text('Eigen Status');
         lsCustomStatusFilter = null;
       }
-      else if(element !== null){
+      else if (element !== null) {
         $('#lsCustomStatusFilter').find('.filterTitle').eq(0).text(element.innerHTML);
         lsCustomStatusFilter = value;
       }
       break;
-    
-      
+
+
   }
 
   zendingen.forEach((zending) => {
-    if(statusFilter !== null && zending.status != statusFilter){
+    if (statusFilter !== null && zending.status != statusFilter) {
     }
-    else if(typeFilter !== null && zending.type != typeFilter){
+    else if (typeFilter !== null && zending.type != typeFilter) {
     }
-    else if(lsStatusFilter !== null && zending.lsStatus != lsStatusFilter){
+    else if (lsStatusFilter !== null && zending.lsStatus != lsStatusFilter) {
     }
-    else if(lsCustomStatusFilter !== null && (zending.lsCustomStatus == null || zending.lsCustomStatus.id != lsCustomStatusFilter)){
+    else if (lsCustomStatusFilter !== null && (zending.lsCustomStatus == null || zending.lsCustomStatus.id != lsCustomStatusFilter)) {
     }
-    else{
+    else {
       zending.show($('#zendingen'));
     }
   })
@@ -134,49 +134,49 @@ function filter(category, value, element){
 
 }
 
-function printSelected(parcels){
+function printSelected(parcels) {
   var selectedOrders = [];
   var selectedShipments = [];
   var verzendLabels = [];
   var datapath = path.resolve('./data');
-  for(var i = 0; i < parcels.length; i++){
-    for(x = 0; x < zendingen.length; x++){
-      if(zendingen[x].id == parcels[i]){
-        if(zendingen[x].lightspeedOrder != null){
+  for (var i = 0; i < parcels.length; i++) {
+    for (x = 0; x < zendingen.length; x++) {
+      if (zendingen[x].id == parcels[i]) {
+        if (zendingen[x].lightspeedOrder != null) {
           selectedOrders.push(zendingen[x].lightspeedOrder);
           selectedShipments.push(zendingen[x].lightspeedShipment);
-        } else{
+        } else {
           verzendLabels.push(zendingen[x].id);
         }
       }
     }
   }
 
-  if(selectedOrders.length > 0){
+  if (selectedOrders.length > 0) {
     lightspeed.getOrderVerzendLabel(selectedOrders, selectedShipments, datapath);
   }
-  if(verzendLabels.length > 0){
+  if (verzendLabels.length > 0) {
     getPDF(verzendLabels, datapath);
   }
 }
 
-function getPDF(id, datapath){
+function getPDF(id, datapath) {
   let data = '';
   let requestId = id;
   let fileName = id;
-  if(id instanceof Array){
-    if(id.length == 0){
+  if (id instanceof Array) {
+    if (id.length == 0) {
       console.error('GEEN ZENDINGEN GESELECTEERD');
       return;
     }
 
-    fileName = `${id[0]} - ${id[id.length-1]}`
+    fileName = `${id[0]} - ${id[id.length - 1]}`
 
-    for(let i = 0; i < id.length; i++){
-      if(i == 0){
+    for (let i = 0; i < id.length; i++) {
+      if (i == 0) {
         requestId = id[i];
       }
-      else{
+      else {
         requestId += `;${id[i]}`;
       }
     }
@@ -187,7 +187,7 @@ function getPDF(id, datapath){
     path: `/shipment_labels/${requestId}`,
     method: "GET",
     encoding: null,
-    headers:{
+    headers: {
       "Host": mpURL,
       "Authorization": `base ${base64Key}`,
       "Content-Type": "application/pdf",
@@ -196,11 +196,11 @@ function getPDF(id, datapath){
       "Accept": "application/pdf",
     }
   }
-  if(!fs.existsSync("./data")){
+  if (!fs.existsSync("./data")) {
     fs.mkdirSync("./data");
   }
   var pdfFile = fs.createWriteStream(path.join(datapath, `label${fileName}.pdf`))
-  var request = https.request(options, function(result){
+  var request = https.request(options, function (result) {
     result.on('data', (d) => {
       data += d;
       pdfFile.write(d);
@@ -218,7 +218,7 @@ function getPDF(id, datapath){
   request.end();
 }
 
-async function getMyParcelData(){
+async function getMyParcelData() {
   loadScreen.appendTo($('.main_content')[0]);
   var data = "";
 
@@ -230,7 +230,7 @@ async function getMyParcelData(){
     hostname: mpURL,
     path: "/shipments",
     method: "GET",
-    headers:{
+    headers: {
       "Host": mpURL,
       "Authorization": `base ${base64Key}`,
       "Content-Type": "application/json;charset=utf-8",
@@ -243,80 +243,80 @@ async function getMyParcelData(){
     }
   }
 
-  var request = https.request(options, function(result){
+  var request = https.request(options, function (result) {
     result.on('data', (d) => {
       //De tussentijdse data wordt toegevoegd aan een variabele
       data += d;
     });
     result.on("end", () => {
-        //De data wordt verwerkt
-        displayMPInfo(data);
-        //De data wordt opgeslagen in een bestand
-        if(!fs.existsSync("./data")){
-          fs.mkdirSync("./data");
-        }
-        fs.writeFile("data/zendingen.json", data, (e) => {
-            if(e) throw e;
-        })
+      //De data wordt verwerkt
+      displayMPInfo(data);
+      //De data wordt opgeslagen in een bestand
+      if (!fs.existsSync("./data")) {
+        fs.mkdirSync("./data");
+      }
+      fs.writeFile("data/zendingen.json", data, (e) => {
+        if (e) throw e;
+      })
     })
   })
   request.on('error', (e) => {
     console.error("KON DATA VAN MYPARCEL NIET OPHALEN \n" + e);
 
     //Als er geen data kon worden opgehaald wordt het uit een bestand gehaald
-    if(fs.existsSync("./data/zendingen.json")){
-      fs.readFile("data/zendingen.json", function(err, data){
+    if (fs.existsSync("./data/zendingen.json")) {
+      fs.readFile("data/zendingen.json", function (err, data) {
         displayMPInfo(data);
-      });      
+      });
     }
-    else{
+    else {
       let error = "<p>Kon data niet vinden</p>";
       $("#myparcel").append(error);
     }
   });
   request.end();
-  
-  
+
+
 }
 
-async function displayMPInfo(data){
-  $('.sortBtn').each(function(){
+async function displayMPInfo(data) {
+  $('.sortBtn').each(function () {
     $(this).text($(this).text().replace(arrowUp, ''))
     $(this).text($(this).text().replace(arrowDown, ''))
   });
 
-  
+
 
   selectedParcels = [];
   $('#myparcel').find(".checkmark").eq(0).removeClass('fa-check-square').addClass("fa-square");
-  
+
   gesorteerd = null;
   let tr = $('#zendingen').find('tr');
-  if(tr.length > 0){
-    for (let i = 0; i < tr.length; i++){
+  if (tr.length > 0) {
+    for (let i = 0; i < tr.length; i++) {
       tr[i].remove();
     }
   }
-  
+
   let parsedData = JSON.parse(data);
   let count = parsedData.data.shipments.length;
   let zending = parsedData.data.shipments;
 
-  var {shipments, orders, products, customStatuses} = await lightspeed.getLightspeedData();
+  var { shipments, orders, products, customStatuses } = await lightspeed.getLightspeedData();
   customStatusesArray = customStatuses;
   //Elke zending wordt apart weergegeven
-  for(var i = 0; i < count; i++){
+  for (var i = 0; i < count; i++) {
     let lightspeedOrder, lightspeedShipment, lsStatus, lsCustomStatus = null;
     let klant = zending[i].recipient;
-    if(zending[i].options.label_description.includes('ORD')){
-      for(let x = 0; x < orders.length; x++){
-        if(zending[i].options.label_description == orders[x].number){
+    if (zending[i].options.label_description.includes('ORD')) {
+      for (let x = 0; x < orders.length; x++) {
+        if (zending[i].options.label_description == orders[x].number) {
           lightspeedOrder = orders[x];
           lightspeedShipment = shipments[x];
           lsStatus = orders[x].status;
-          if(orders[x].customStatusId != null && orders[x].customStatusId != 0){
-            for(var z = 0; z < customStatuses.length; z++){
-              if(customStatuses[z].id == orders[x].customStatusId){
+          if (orders[x].customStatusId != null && orders[x].customStatusId != 0) {
+            for (var z = 0; z < customStatuses.length; z++) {
+              if (customStatuses[z].id == orders[x].customStatusId) {
                 lsCustomStatus = {
                   id: customStatuses[z].id,
                   title: customStatuses[z].title,
@@ -340,41 +340,54 @@ async function displayMPInfo(data){
     let filterOption = $(`<li class='filterOption'><a onclick='filter("lsCustomStatus", ${status.id}, this)'>${status.title}</a></li>'`);
     filterOption.appendTo(filterParent);
   })
-  zendingen.forEach(function (item){
+  zendingen.forEach(function (item) {
     item.show($('#zendingen'));
   })
+  var today = new Date();
+  var alreadySaved = false;
+  fs.readdirSync('./data/zendingen/').forEach(file => {
+    console.log(file)
+    let fileDate = file.replace('.json', '').split('-');
+    if (fileDate[0] == today.getDate() && fileDate[1] == (today.getMonth() + 1) && fileDate[2] == today.getFullYear()) {
+      console.log('bruh')
+      alreadySaved = true;
+    }
+  })
+  if (!alreadySaved) {
+    fs.writeFileSync('./data/zendingen/' + today.getDate() + "-" + (today.getMonth() + 1) + "-" + today.getFullYear() + '.json', JSON.stringify(zendingen));
+  }
   $('#loading').remove();
 }
 
-function redisplayMPInfo(sortingMethod){
+function redisplayMPInfo(sortingMethod) {
 
-  $('.sortBtn').each(function(){
+  $('.sortBtn').each(function () {
     $(this).text($(this).text().replace(arrowUp, ''))
     $(this).text($(this).text().replace(arrowDown, ''))
   });
 
   let tr = $('#zendingen').find('tr');
-  if(tr.length > 0){
-    for (let i = 0; i < tr.length; i++){
+  if (tr.length > 0) {
+    for (let i = 0; i < tr.length; i++) {
       tr[i].remove();
     }
   }
 
   zendingen.sort(sortingMethod);
-  for(let i = 0; i < zendingen.length; i++){
+  for (let i = 0; i < zendingen.length; i++) {
     zendingen[i].show($('#zendingen'));
   }
 
   search();
-  if(statusFilter !== null){
+  if (statusFilter !== null) {
     filter('Status', statusFilter, null);
   }
-  else if(typeFilter !== null){
+  else if (typeFilter !== null) {
     filter('Type', typeFilter, null);
   }
 }
 
-function openPDF(filePath){
+function openPDF(filePath) {
   let win = new electron.remote.BrowserWindow({
     width: 1200,
     height: 800
@@ -383,41 +396,41 @@ function openPDF(filePath){
   win.loadURL(filePath)
 }
 
-function selectParcel(id){
+function selectParcel(id) {
   let selected = false;
   let i = null;
   selectedParcels.forEach((parcel, index) => {
-    if(parcel==id){
+    if (parcel == id) {
       selected = true;
       i = index;
       break;
     }
-    
+
   })
 
-  if(selected){
-    if($('#myparcel').find('tr').length - 1 == selectedParcels.length){
+  if (selected) {
+    if ($('#myparcel').find('tr').length - 1 == selectedParcels.length) {
       $('#myparcel').find(".checkmark").eq(0).removeClass('fa-check-square').addClass("fa-square");
     }
     selectedParcels.splice(i, 1);
     $(`.checkmark${id}`).removeClass("fa-check-square").addClass("fa-square");
   }
-  else{
+  else {
     selectedParcels.push(id);
     $(`.checkmark${id}`).removeClass("fa-square").addClass("fa-check-square");
-    if($('#myparcel').find('tr').length - 1 == selectedParcels.length){
+    if ($('#myparcel').find('tr').length - 1 == selectedParcels.length) {
       $('#myparcel').find(".checkmark").eq(0).removeClass('fa-square').addClass("fa-check-square");
     }
   }
 }
 
-function TrackTrace(id){
+function TrackTrace(id) {
   let data = '';
   var options = {
     hostname: mpURL,
     path: `/tracktraces/${id}`,
     method: "GET",
-    headers:{
+    headers: {
       "Host": mpURL,
       "Authorization": `base ${base64Key}`,
       "Content-Type": "application/json;charset=utf-8",
@@ -430,43 +443,43 @@ function TrackTrace(id){
     }
   }
 
-  var request = https.request(options, (response)=>{
+  var request = https.request(options, (response) => {
     response.on('data', (d) => {
       data += d;
     })
 
-    response.on('end', ()=>{
+    response.on('end', () => {
     })
   })
 
   request.end();
 }
 
-function selectAllParcels(){
+function selectAllParcels() {
   let rows = $('#myparcel').find('tr');
   parcelLength = selectedParcels.length;
   selectedParcels = [];
 
-  if(rows.length - 1 > parcelLength){
-    for(let i = 0; i < rows.length; i++){
-      if(rows[i].getAttribute('data-id') != null){
+  if (rows.length - 1 > parcelLength) {
+    for (let i = 0; i < rows.length; i++) {
+      if (rows[i].getAttribute('data-id') != null) {
         selectedParcels.push(rows[i].getAttribute("data-id"));
       }
     }
 
     $('#myparcel').find(".checkmark").removeClass('fa-square').addClass("fa-check-square");
   }
-  else{
+  else {
     $('#myparcel').find(".checkmark").removeClass('fa-check-square').addClass("fa-square");
   }
 }
 
-function showEditStatus(zending){
+function showEditStatus(zending) {
   var popup = $('#statusPopup');
   popup.find('h2').eq(0).text('Status aanpassen voor ' + zending.kenmerk);
   console.log(zending)
   var options = popup.find('#statusSelection').find('option');
-  for(let i = 0; i < options.length; i++){
+  for (let i = 0; i < options.length; i++) {
     options[i].remove();
   }
   $('<option value=0>Geen Status</option>').appendTo(popup.find('#statusSelection'))
@@ -476,37 +489,37 @@ function showEditStatus(zending){
     option.appendTo(popup.find('#statusSelection'));
   })
 
-  if(zending.lsCustomStatus === null){
+  if (zending.lsCustomStatus === null) {
     popup.find('#statusSelection').val(0);
   }
-  else{
+  else {
     popup.find('#statusSelection').val(zending.lsCustomStatus.id);
   }
 
   popup.find('.save').eq(0).off('click')
 
   popup.find('.save').eq(0).click(() => {
-    if(popup.find('#statusSelection').val() == null){
+    if (popup.find('#statusSelection').val() == null) {
       zending.lightspeedOrder.customStatusId = null;
     }
-    else{
+    else {
       zending.lightspeedOrder.customStatusId = popup.find('#statusSelection').val();
     }
     saveStatus(zending);
     popup.removeClass('visible')
   })
-  
+
   popup.addClass('visible');
 }
 
-async function saveStatus(zending){
+async function saveStatus(zending) {
   console.log(zending)
   await lightspeed.updateOrder(zending.lightspeedOrder);
   var targetElement = zending.row.getElementsByTagName('mark')[0];
   var customColor = 'rgba(0,0,0,0); color: white';
   var customTitle = '/'
-  customStatusesArray.forEach((element)=>{
-    if(element.id == zending.lightspeedOrder.customStatusId){
+  customStatusesArray.forEach((element) => {
+    if (element.id == zending.lightspeedOrder.customStatusId) {
       zending.lsCustomStatus = {
         id: element.id,
         color: element.color,
@@ -520,13 +533,13 @@ async function saveStatus(zending){
   targetElement.innerHTML = customTitle;
 }
 
-function deleteShipment(id){
+function deleteShipment(id) {
   var data = '';
   var options = {
     hostname: mpURL,
     path: `/shipments/${id}`,
     method: "DELETE",
-    headers:{
+    headers: {
       "Host": mpURL,
       "Authorization": `base ${base64Key}`,
       "Content-Type": "application/json;charset=utf-8",
@@ -539,7 +552,7 @@ function deleteShipment(id){
     }
   }
 
-  var request = https.request(options, function(result){
+  var request = https.request(options, function (result) {
     result.on('data', (d) => {
       //De tussentijdse data wordt toegevoegd aan een variabele
       data += d;
@@ -555,7 +568,7 @@ function deleteShipment(id){
   setTimeout(getMyParcelData, 500);
 }
 
-function getTrackTrace(barcode, postcode){
+function getTrackTrace(barcode, postcode) {
   let win = new electron.remote.BrowserWindow({
     width: 1200,
     height: 800,
@@ -565,188 +578,188 @@ function getTrackTrace(barcode, postcode){
   win.loadURL(`https://jouw.postnl.nl/track-and-trace/${barcode}-NL-${postcode}`);
 }
 
-function sortDatum(){
+function sortDatum() {
   let btn = $('#datumButton');
 
 
-  if(gesorteerd == "DNO"){
+  if (gesorteerd == "DNO") {
     redisplayMPInfo(datumOudNaarNieuw);
     btn.text(btn.text() + arrowUp);
     gesorteerd = "DON";
   }
-  else{
+  else {
     redisplayMPInfo(datumNieuwNaarOud);
     btn.text(btn.text() + arrowDown);
     gesorteerd = "DNO";
   }
 }
 
-function sortNaam(){
+function sortNaam() {
   let btn = $('#naamButton');
 
 
-  if(gesorteerd == "NAL"){
+  if (gesorteerd == "NAL") {
     redisplayMPInfo(naamOmgekeerd);
     btn.text(btn.text() + arrowUp);
     gesorteerd = "NOM";
   }
-  else{
+  else {
     redisplayMPInfo(naamAlfabetisch);
     btn.text(btn.text() + arrowDown);
     gesorteerd = "NAL";
   }
 }
 
-function sortStad(){
+function sortStad() {
   let btn = $('#stadButton');
 
 
-  if(gesorteerd == "SAL"){
+  if (gesorteerd == "SAL") {
     redisplayMPInfo(stadOmgekeerd);
     btn.text(btn.text() + arrowUp);
     gesorteerd = "SOM";
   }
-  else{
+  else {
     redisplayMPInfo(stadAlfabetisch);
     btn.text(btn.text() + arrowDown);
     gesorteerd = "SAL";
   }
 }
 
-function sortStatus(){
+function sortStatus() {
   let btn = $('#statusButton');
 
 
-  if(gesorteerd == "SGK"){
+  if (gesorteerd == "SGK") {
     redisplayMPInfo(statusKleinGroot);
     btn.text(btn.text() + arrowUp);
     gesorteerd = "SKG";
   }
-  else{
+  else {
     redisplayMPInfo(statusGrootKlein);
     btn.text(btn.text() + arrowDown);
     gesorteerd = "SGK";
   }
 }
 
-function sortType(){
+function sortType() {
   let btn = $('#typeButton');
 
 
-  if(gesorteerd == "TGK"){
+  if (gesorteerd == "TGK") {
     redisplayMPInfo(typeKleinGroot);
     btn.text(btn.text() + arrowUp);
     gesorteerd = "TKG";
   }
-  else{
+  else {
     redisplayMPInfo(typeGrootKlein);
     btn.text(btn.text() + arrowDown);
     gesorteerd = "TGK";
   }
 }
 
-function datumOudNaarNieuw(a,b){
-  if(a.datum < b.datum){
+function datumOudNaarNieuw(a, b) {
+  if (a.datum < b.datum) {
     return -1;
   }
-  if(a.datum > b.datum){
+  if (a.datum > b.datum) {
     return 1;
   }
   return 0;
 }
 
-function datumNieuwNaarOud(a,b){
-  if(a.datum > b.datum){
+function datumNieuwNaarOud(a, b) {
+  if (a.datum > b.datum) {
     return -1;
   }
-  if(a.datum < b.datum){
+  if (a.datum < b.datum) {
     return 1;
   }
   return 0;
 }
 
-function naamAlfabetisch(a,b){
-  if(a.naam.split(" ")[a.naam.split(" ").length - 1] < b.naam.split(" ")[b.naam.split(" ").length - 1]){
+function naamAlfabetisch(a, b) {
+  if (a.naam.split(" ")[a.naam.split(" ").length - 1] < b.naam.split(" ")[b.naam.split(" ").length - 1]) {
     return -1;
   }
-  if(a.naam.split(" ")[a.naam.split(" ").length - 1]  > b.naam.split(" ")[b.naam.split(" ").length - 1]){
+  if (a.naam.split(" ")[a.naam.split(" ").length - 1] > b.naam.split(" ")[b.naam.split(" ").length - 1]) {
     return 1;
   }
   return 0;
 }
 
-function naamOmgekeerd(a,b){
-  if(a.naam.split(" ")[a.naam.split(" ").length - 1] > b.naam.split(" ")[b.naam.split(" ").length - 1]){
+function naamOmgekeerd(a, b) {
+  if (a.naam.split(" ")[a.naam.split(" ").length - 1] > b.naam.split(" ")[b.naam.split(" ").length - 1]) {
     return -1;
   }
-  if(a.naam.split(" ")[a.naam.split(" ").length - 1] < b.naam.split(" ")[b.naam.split(" ").length - 1]){
+  if (a.naam.split(" ")[a.naam.split(" ").length - 1] < b.naam.split(" ")[b.naam.split(" ").length - 1]) {
     return 1;
   }
   return 0;
 }
 
-function stadAlfabetisch(a,b){
-  if(a.stad < b.stad){
+function stadAlfabetisch(a, b) {
+  if (a.stad < b.stad) {
     return -1;
   }
-  if(a.stad > b.stad){
+  if (a.stad > b.stad) {
     return 1;
   }
   return 0;
 }
 
-function stadOmgekeerd(a,b){
-  if(a.stad > b.stad){
+function stadOmgekeerd(a, b) {
+  if (a.stad > b.stad) {
     return -1;
   }
-  if(a.stad < b.stad){
+  if (a.stad < b.stad) {
     return 1;
   }
   return 0;
 }
 
-function statusGrootKlein(a,b){
-  if(a.status < b.status){
+function statusGrootKlein(a, b) {
+  if (a.status < b.status) {
     return -1;
   }
-  if(a.status > b.status){
+  if (a.status > b.status) {
     return 1;
   }
   return 0;
 }
 
-function statusKleinGroot(a,b){
-  if(a.status > b.status){
+function statusKleinGroot(a, b) {
+  if (a.status > b.status) {
     return -1;
   }
-  if(a.status < b.status){
+  if (a.status < b.status) {
     return 1;
   }
   return 0;
 }
 
-function typeGrootKlein(a,b){
-  if(a.type < b.type){
+function typeGrootKlein(a, b) {
+  if (a.type < b.type) {
     return -1;
   }
-  if(a.type > b.type){
+  if (a.type > b.type) {
     return 1;
   }
   return 0;
 }
 
-function typeKleinGroot(a,b){
-  if(a.type > b.type){
+function typeKleinGroot(a, b) {
+  if (a.type > b.type) {
     return -1;
   }
-  if(a.type < b.type){
+  if (a.type < b.type) {
     return 1;
   }
   return 0;
 }
-class Shipment{
-  
-  constructor(id, type, status, kenmerk, barcode, naam, postcode, straat, huisnummer, stad, land, email, telefoon, datum, lightspeedOrder, lightspeedShipment, lsStatus, lsCustomStatus){
+class Shipment {
+
+  constructor(id, type, status, kenmerk, barcode, naam, postcode, straat, huisnummer, stad, land, email, telefoon, datum, lightspeedOrder, lightspeedShipment, lsStatus, lsCustomStatus) {
     this.id = id;
     this.type = type;
     this.status = status;
@@ -772,11 +785,11 @@ class Shipment{
     this.row.innerHTML = '';
     this.row.setAttribute('data-id', this.id);
 
-    let checkMark = $(`<td><span><a onclick="selectParcel(${this.id})"><i class="fas ${(selectedParcels.includes(this.id))?'fa-check-square':'fa-square'} checkmark checkmark${this.id}"></i></a></span></td>`);
+    let checkMark = $(`<td><span><a onclick="selectParcel(${this.id})"><i class="fas ${(selectedParcels.includes(this.id)) ? 'fa-check-square' : 'fa-square'} checkmark checkmark${this.id}"></i></a></span></td>`);
     checkMark.appendTo(this.row);
 
     let type = document.createElement('td');
-    switch(this.type){
+    switch (this.type) {
       case 1:
         type.innerHTML = 'Standaard pakket';
         break;
@@ -796,7 +809,7 @@ class Shipment{
 
     let status = document.createElement('td');
     status.innerHTML = '<i class="fas fa-box"></i>'
-    switch(this.status){
+    switch (this.status) {
       case 1:
         status.innerHTML += 'Concept';
         break;
@@ -817,9 +830,9 @@ class Shipment{
         status.style = 'color: red;';
         break;
     }
-    
+
     status.innerHTML += '<br><i class="fas fa-rocket"></i>'
-    switch(this.lsStatus){
+    switch (this.lsStatus) {
       case 'new':
         status.innerHTML += 'Nieuw';
         break;
@@ -851,7 +864,7 @@ class Shipment{
         status.innerHTML += 'Geannuleerd';
         break;
     }
-    if(this.lsCustomStatus  !== null){
+    if (this.lsCustomStatus !== null) {
       status.innerHTML += `<br><i class="fas fa-info-circle"></i><mark style="background-color: ${this.lsCustomStatus.color};">${this.lsCustomStatus.title}</mark>`
     } else {
       status.innerHTML += '<br><i class="fas fa-info-circle"></i><mark style="background-color: rgba(0,0,0,0); color: white">/</mark>'
@@ -861,7 +874,7 @@ class Shipment{
     kenmerk.innerHTML = this.kenmerk;
 
     let barcode = document.createElement('td');
-    barcode.innerHTML = (this.barcode != '')?`<a class='barcode' onclick = 'getTrackTrace(\"${this.barcode}\", \"${this.postcode}\")'>${this.barcode}</a>`:'/';
+    barcode.innerHTML = (this.barcode != '') ? `<a class='barcode' onclick = 'getTrackTrace(\"${this.barcode}\", \"${this.postcode}\")'>${this.barcode}</a>` : '/';
 
     let name = document.createElement('td');
     name.innerHTML = this.naam;
@@ -870,30 +883,30 @@ class Shipment{
     adres.innerHTML = `${this.straat} ${this.huisnummer}<br>${this.postcode}<br>${this.stad}, ${this.land}`;
 
     let contact = document.createElement('td');
-    contact.innerHTML = `<span><i class="fas fa-envelope"></i></span> ${(this.email !== "") ? `<a style=\"color: #9fda34;\" href=\"mailto:${this.email}\">${this.email}</a>` : "/"}<br><span><i class="fas fa-phone-alt"></i></span> ${(this.telefoon != '')?this.telefoon:'/'}`;
+    contact.innerHTML = `<span><i class="fas fa-envelope"></i></span> ${(this.email !== "") ? `<a style=\"color: #9fda34;\" href=\"mailto:${this.email}\">${this.email}</a>` : "/"}<br><span><i class="fas fa-phone-alt"></i></span> ${(this.telefoon != '') ? this.telefoon : '/'}`;
 
     let datum = document.createElement('td');
     datum.innerHTML = `${this.datum.getDate()}/${this.datum.getMonth() + 1}/${this.datum.getFullYear()}`;
 
     let buttons = document.createElement('td');
-    buttons.innerHTML = `<span><a id='print${this.id}'><i class='fas fa-file-pdf fa-lg'></i>${(this.status == 1)? `<a onclick='deleteShipment(${this.id})'><i class='fas fa-trash fa-lg' style='color: red'></i></a>`: ''}</span>`;
+    buttons.innerHTML = `<span><a id='print${this.id}'><i class='fas fa-file-pdf fa-lg'></i>${(this.status == 1) ? `<a onclick='deleteShipment(${this.id})'><i class='fas fa-trash fa-lg' style='color: red'></i></a>` : ''}</span>`;
 
     this.row.append(type, status, kenmerk, barcode, name, adres, contact, datum, buttons);
     parent.append(this.row);
 
-    this.row.getElementsByClassName('editBtn')[0].addEventListener("click", ()=>{
+    this.row.getElementsByClassName('editBtn')[0].addEventListener("click", () => {
       showEditStatus(this);
     })
-    
-    if(this.lightspeedOrder != null){
+
+    if (this.lightspeedOrder != null) {
       document.getElementById(`print${this.id}`).addEventListener('click', () => {
         lightspeed.getOrderVerzendLabel(this.lightspeedOrder, this.lightspeedShipment, path.resolve('./data'));
-        setTimeout(() => {getMyParcelData()}, 500);
+        setTimeout(() => { getMyParcelData() }, 500);
       });
-    }else{
+    } else {
       document.getElementById(`print${this.id}`).addEventListener('click', () => {
         getPDF(this.id, path.resolve('./data'));
-        setTimeout(() => {getMyParcelData()}, 500);
+        setTimeout(() => { getMyParcelData() }, 500);
       });
     }
   }
