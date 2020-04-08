@@ -345,11 +345,11 @@ async function displayMPInfo(data) {
   })
   var today = new Date();
   var alreadySaved = false;
+  $('#fileSelection').find('.fileSelectionList').eq(0).empty();
   if(!fs.existsSync('./data/zendingen')){
     fs.mkdirSync('./data/zendingen');
   }
   fs.readdirSync('./data/zendingen/').forEach(file => {
-    console.log(file)
     let fileDate = file.replace('.json', '').split('-');
     console.log(new Date(Number(fileDate[2]), Number(fileDate[1]) - 1, Number(fileDate[0]) + 7))
     if(new Date(Number(fileDate[2]), Number(fileDate[1]) - 1, Number(fileDate[0]) + 7) <= today){
@@ -360,8 +360,17 @@ async function displayMPInfo(data) {
       $(`<li class="fileSelectionOption"><a onclick="loadBackup('${file}')">${file.replace('.json', '')}</a></li>`).appendTo($('#fileSelection').find('.fileSelectionList').eq(0))
     }
     else{
-      $(`<li class="fileSelectionOption"><a>${file.replace('.json', '')}</a></li>`).appendTo($('#fileSelection').find('.fileSelectionList').eq(0))
+      $(`<li class="fileSelectionOption"><a onclick="loadBackup('${file}')">${file.replace('.json', '')}</a></li>`).appendTo($('#fileSelection').find('.fileSelectionList').eq(0))
     }
+  })
+  var newBackup = $(`<li class="fileSelectionOption"><a><i>Nieuwe backup</i></a></li>`).appendTo($('#fileSelection').find('.fileSelectionList').eq(0))
+  newBackup.click(()=>{
+    $('#backupPopup').find('.errormsg').eq(0).css('visibility', "hidden");
+    $('#backupPopup').addClass('visible');
+  })
+
+  $('#backupPopup').find('.save').eq(0).off('click').click(() => {
+    makeBackup();
   })
   if (!alreadySaved) {
     fs.writeFileSync('./data/zendingen/' + today.getDate() + "-" + (today.getMonth() + 1) + "-" + today.getFullYear() + '.json', JSON.stringify(zendingen));
@@ -479,6 +488,18 @@ function loadBackup(file){
     zendingen[index] = new Shipment(zending.id, zending.type, zending.status, zending.kenmerk, zending.barcode, zending.naam, zending.postcode, zending.straat, zending.huisnummer, zending.stad, zending.land, zending.email, zending.telefoon, new Date(zending.datum), zending.lightspeedOrder, zending.lightspeedShipment, zending.lsStatus, zending.lsCustomStatus);
     zendingen[index].show($('#zendingen'));
   })
+}
+
+function makeBackup(){
+  var name = $('#backupPopup').find('input').val();
+  if(name === ''){
+    $('#backupPopup').find('.errormsg').eq(0).css('visibility', "visible");
+  }
+  else{
+    fs.writeFileSync('./data/zendingen/' + name + ".json", JSON.stringify(zendingen));
+    $('#backupPopup').removeClass('visible');
+    $(`<li class="fileSelectionOption"><a onclick="loadBackup('${name}.json')">${name}</a></li>`).prependTo($('#fileSelection').find('.fileSelectionList').eq(0))
+  }
 }
 
 function selectAllParcels() {
