@@ -381,14 +381,7 @@ function redisplayMPInfo(sortingMethod) {
   for (let i = 0; i < zendingen.length; i++) {
     zendingen[i].show($('#zendingen'));
   }
-
-  search();
-  if (statusFilter !== null) {
-    filter('Status', statusFilter, null);
-  }
-  else if (typeFilter !== null) {
-    filter('Type', typeFilter, null);
-  }
+  filter();
 }
 
 function openPDF(filePath) {

@@ -17,7 +17,7 @@ if (window.location.pathname.split('/').pop() != 'index.html' && window.location
 
 if (window.location.pathname.split('/').pop() == 'home.html') {
     const config = JSON.parse(fs.readFileSync("./config/config.json"));
-    document.getElementById('welkom').innerHTML = 'Welkom, ' + config.name + "!!!";
+    document.getElementById('welkom').innerHTML = 'Welkom, ' + config.name + "!";
 }
 
 async function makeAccount() {
