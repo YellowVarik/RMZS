@@ -43,25 +43,9 @@ var arrowDown = String.fromCharCode(9660);
 
 getMyParcelData();
 
-function search() {
+function filter(category, value, element) {
   var input = document.getElementById("searchBox");
   var query = input.value.toLowerCase();
-
-  let tr = $('#zendingen').find('tr');
-  if (tr.length > 0) {
-    for (let i = 0; i < tr.length; i++) {
-      tr[i].remove();
-    }
-  }
-
-  for (let i = 0; i < zendingen.length; i++) {
-    if (zendingen[i].kenmerk.toLowerCase().includes(query) || zendingen[i].naam.toLowerCase().includes(query) || zendingen[i].stad.toLowerCase().includes(query) || zendingen[i].straat.toLowerCase().includes(query) || zendingen[i].postcode.toLowerCase().includes(query) || zendingen[i].email.toLowerCase().includes(query)) {
-      zendingen[i].show($('#zendingen'));
-    }
-  }
-}
-
-function filter(category, value, element) {
 
   let tr = $('#zendingen').find('tr');
   if (tr.length > 0) {
@@ -126,11 +110,12 @@ function filter(category, value, element) {
     }
     else if (lsCustomStatusFilter !== null && (zending.lsCustomStatus == null || zending.lsCustomStatus.id != lsCustomStatusFilter)) {
     }
+    else if(!zending.kenmerk.toLowerCase().includes(query) && !zending.naam.toLowerCase().includes(query) && !zending.stad.toLowerCase().includes(query) && !zending.straat.toLowerCase().includes(query) && !zending.postcode.toLowerCase().includes(query) && !zending.email.toLowerCase().includes(query)){
+    }
     else {
       zending.show($('#zendingen'));
     }
   })
-
 
 }
 
