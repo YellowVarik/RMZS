@@ -400,7 +400,6 @@ function selectParcel(id) {
     if (parcel == id) {
       selected = true;
       i = index;
-      break;
     }
 
   })
