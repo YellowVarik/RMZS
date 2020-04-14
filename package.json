@@ -15,15 +15,14 @@
   },
   "build": {
     "appId": "com.rmzs.app",
-    "publish": [
-      "github"
-    ],
     "productName": "Rood met Zwarte Stippen",
     "mac": {
+      "publish": [ "github" ],
       "category": "public.app-category.business",
       "icon": "img/icon.png"
     },
     "win": {
+      "publish": [ "github" ],
       "icon": "img/icon.png"
     }
   },
