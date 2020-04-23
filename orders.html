@@ -80,6 +80,7 @@
           <ul class='fileSelectionList'>
           </ul>
         </div>
+        <p style="margin-left: 20px; color: white">Nu aan het bekijken: <b id="selectedBackup">Huidige zendingen</b></p>
         <input type='text' onkeyup="filter()" id="searchBox" placeholder="Zoek een zending...">
       </div>
 
@@ -90,16 +91,6 @@
         <table class="tableFixHead" style="width: 100%;">
 
           <thead>
-            <!-- <th><span><a onclick='selectAllParcels()'><i id="selectAllIcon" class="fas fa-square checkmark"></i></a></span></th>
-                <th>Type</th>
-                <th>Status</th>
-                <th>Kenmerk</th>
-                <th>Barcode</th>
-                <th>Naam</th>
-                <th>Adres</th>
-                <th>Contact</th>
-                <th>Datum</th>
-              <th><a class='reload' onclick="getMyParcelData(); $(this).addClass('spin'); $(this).on('transitionend MSTransitionEnd webkitTransitionEnd oTransitionEnd', ()=>{$(this).addClass('notransition');$(this).removeClass('spin');$(this)[0].offsetHeight; $(this).removeClass('notransition')})"><i class="fas fa-sync"></i></a>  <a onclick='getPDF(selectedParcels)'><i class="fas fa-print"></i></a></th> -->
 
             <th><span><a onclick='selectAllParcels()'><i id="selectAllIcon" class="fas fa-square checkmark"
                     style="padding-left: 23.5%;"></i></a></span></th>
@@ -111,9 +102,10 @@
             <th><a onclick="sortStad()" class='sortBtn' id='stadButton'>Adres</a></th>
             <th>Contact</th>
             <th><a onclick="sortDatum()" class='sortBtn' id="datumButton">Datum</a></th>
-            <th><a style="margin-right: 1vw; padding-left: 14%;"
+            <th><a style="margin-right: 1vw; padding-left: 14%;" id="printSelectedButton"
                 onclick='printSelected(selectedParcels); setTimeout(() => {getMyParcelData()}, 500);'><i
-                  class="fas fa-print"></i></a><a class='reload'
+                  class="fas fa-print"></i></a>
+              <a class='reload'
                 onclick="getMyParcelData(); $(this).addClass('spin'); $(this).on('transitionend MSTransitionEnd webkitTransitionEnd oTransitionEnd', ()=>{$(this).addClass('notransition');$(this).removeClass('spin');$(this)[0].offsetHeight; $(this).removeClass('notransition')})"><i
                   class="fas fa-sync"></i></a></th>
 
@@ -174,12 +166,12 @@
     </div>
   </div>
 
-  <div id="backupPopup"class="overlay">
+  <div id="backupPopup" class="overlay">
     <div class="popup" style='height: 300px; text-align: center;'>
       <h2>Nieuwe backup maken</h2>
       <p class='errormsg' style='color: red; visibility: hidden;'><i>De naam moet minstend 1 teken lang zijn!</i></p>
       <form>
-        <label for = '.title'>Naam: </label>
+        <label for='.title'>Naam: </label>
         <input type="text" class='title' placeholder="Naam van backup">
       </form>
       <br>

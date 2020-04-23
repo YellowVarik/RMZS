@@ -315,7 +315,7 @@ async function displayMPInfo(data) {
         }
       }
     }
-    let shipment = new Shipment(zending[i].id, zending[i].options.package_type, zending[i].status, zending[i].options.label_description, zending[i].barcode, klant.person, klant.postal_code, klant.street, klant.number + ((klant.number_suffix != null) ? klant.number_suffix : ''), klant.city, klant.cc, klant.email, klant.phone, new Date(zending[i].modified), lightspeedOrder, lightspeedShipment, lsStatus, lsCustomStatus);
+    let shipment = new Shipment(zending[i].id, zending[i].options.package_type, zending[i].status, zending[i].options.label_description, zending[i].barcode, klant.person, klant.postal_code, klant.street, klant.number + ((klant.number_suffix != null) ? klant.number_suffix : ''), klant.city, klant.cc, klant.email, klant.phone, new Date(zending[i].modified), lightspeedOrder, lightspeedShipment, lsStatus, lsCustomStatus, false);
     zendingen[i] = shipment;
   }
   let filterParent = $('#lsCustomStatusFilter').find('.filterList').eq(0);
@@ -360,6 +360,9 @@ async function displayMPInfo(data) {
   if (!alreadySaved) {
     fs.writeFileSync('./data/zendingen/' + today.getDate() + "-" + (today.getMonth() + 1) + "-" + today.getFullYear() + '.json', JSON.stringify(zendingen));
   }
+  
+  $("#printSelectedButton").attr("onclick", 'printSelected(selectedParcels); setTimeout(() => {getMyParcelData()}, 500);').css("color", "white");
+  $('#selectedBackup').text("Huidige zendingen");
   $('#loading').remove();
 }
 
@@ -462,9 +465,11 @@ function loadBackup(file){
 
   newZendingen = require('./data/zendingen/' + file);
   newZendingen.forEach((zending, index) => {
-    zendingen[index] = new Shipment(zending.id, zending.type, zending.status, zending.kenmerk, zending.barcode, zending.naam, zending.postcode, zending.straat, zending.huisnummer, zending.stad, zending.land, zending.email, zending.telefoon, new Date(zending.datum), zending.lightspeedOrder, zending.lightspeedShipment, zending.lsStatus, zending.lsCustomStatus);
+    zendingen[index] = new Shipment(zending.id, zending.type, zending.status, zending.kenmerk, zending.barcode, zending.naam, zending.postcode, zending.straat, zending.huisnummer, zending.stad, zending.land, zending.email, zending.telefoon, new Date(zending.datum), zending.lightspeedOrder, zending.lightspeedShipment, zending.lsStatus, zending.lsCustomStatus, true);
     zendingen[index].show($('#zendingen'));
   })
+  $("#printSelectedButton").removeAttr("onclick").css("color", "grey");
+  $("#selectedBackup").text(file.replace(".json", ''));
 }
 
 function makeBackup(){
@@ -783,7 +788,7 @@ function typeKleinGroot(a, b) {
 }
 class Shipment {
 
-  constructor(id, type, status, kenmerk, barcode, naam, postcode, straat, huisnummer, stad, land, email, telefoon, datum, lightspeedOrder, lightspeedShipment, lsStatus, lsCustomStatus) {
+  constructor(id, type, status, kenmerk, barcode, naam, postcode, straat, huisnummer, stad, land, email, telefoon, datum, lightspeedOrder, lightspeedShipment, lsStatus, lsCustomStatus, isBackup) {
     this.id = id;
     this.type = type;
     this.status = status;
@@ -803,6 +808,7 @@ class Shipment {
     this.lsStatus = lsStatus;
     this.lsCustomStatus = lsCustomStatus;
     this.row = document.createElement('tr');
+    this.isBackup = isBackup;
   }
 
   show(parent) {
@@ -893,7 +899,7 @@ class Shipment {
     } else {
       status.innerHTML += '<br><i class="fas fa-info-circle"></i><mark style="background-color: rgba(0,0,0,0); color: white">/</mark>'
     }
-    status.innerHTML += `<a class="editBtn" ><i class="fas fa-edit"></i></a>`
+    status.innerHTML += (!this.isBackup)?`<a class="editBtn" ><i class="fas fa-edit"></i></a>`:"";
     let kenmerk = document.createElement('td');
     kenmerk.innerHTML = this.kenmerk;
 
@@ -913,21 +919,26 @@ class Shipment {
     datum.innerHTML = `${this.datum.getDate()}/${this.datum.getMonth() + 1}/${this.datum.getFullYear()}`;
 
     let buttons = document.createElement('td');
-    buttons.innerHTML = `<span><a id='print${this.id}'><i class='fas fa-file-pdf fa-lg'></i>${(this.status == 1) ? `<a onclick='deleteShipment(${this.id})'><i class='fas fa-trash fa-lg' style='color: red'></i></a>` : ''}</span>`;
+    if(!this.isBackup){
+      buttons.innerHTML = `<span><a id='print${this.id}'><i class='fas fa-file-pdf fa-lg'></i>${(this.status == 1) ? `<a onclick='deleteShipment(${this.id})'><i class='fas fa-trash fa-lg' style='color: red'></i></a>` : ''}</span>`;
+    }
 
     this.row.append(type, status, kenmerk, barcode, name, adres, contact, datum, buttons);
     parent.append(this.row);
 
-    this.row.getElementsByClassName('editBtn')[0].addEventListener("click", () => {
-      showEditStatus(this);
-    })
 
-    if (this.lightspeedOrder != null) {
+    if(!this.isBackup){
+      this.row.getElementsByClassName('editBtn')[0].addEventListener("click", () => {
+        showEditStatus(this);
+      })
+    }
+
+    if (this.lightspeedOrder != null && !this.isBackup) {
       document.getElementById(`print${this.id}`).addEventListener('click', () => {
         lightspeed.getOrderVerzendLabel(this.lightspeedOrder, this.lightspeedShipment, path.resolve('./data'));
         setTimeout(() => { getMyParcelData() }, 500);
       });
-    } else {
+    } else if(!this.isBackup) {
       document.getElementById(`print${this.id}`).addEventListener('click', () => {
         getPDF(this.id, path.resolve('./data'));
         setTimeout(() => { getMyParcelData() }, 500);
