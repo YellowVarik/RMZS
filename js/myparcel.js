@@ -75,6 +75,7 @@ function filter(category, value, element) {
         $('#typeFilter').find('.filterTitle').eq(0).text(element.innerHTML);
         typeFilter = value;
       }
+
       break;
     case 'lsStatus':
       if (category == value) {
@@ -100,22 +101,33 @@ function filter(category, value, element) {
 
 
   }
+  
 
-  zendingen.forEach((zending) => {
+  for (let i = 0; i < zendingen.length; i++) {
+    const zending = zendingen[i];
+    
     if (statusFilter !== null && zending.status != statusFilter) {
+      continue
     }
-    else if (typeFilter !== null && zending.type != typeFilter) {
+    if (typeFilter !== null && zending.type != typeFilter) {
+      continue;
     }
-    else if (lsStatusFilter !== null && zending.lsStatus != lsStatusFilter) {
+    else if (lsStatusFilter !== null && lsStatusFilter != zending.lsStatus){
+      if(lsStatusFilter != "completed" ){
+        continue;
+      }
+      else if(zending.lsStatus != "completed" && zending.lsStatus != "completed_shipped" && zending.lsStatus != "completed_picked_up"){
+        continue
+      }
     }
-    else if (lsCustomStatusFilter !== null && (zending.lsCustomStatus == null || zending.lsCustomStatus.id != lsCustomStatusFilter)) {
+    if (lsCustomStatusFilter !== null && (zending.lsCustomStatus == null || zending.lsCustomStatus.id != lsCustomStatusFilter)) {
+      continue
     }
-    else if(!zending.kenmerk.toLowerCase().includes(query) && !zending.naam.toLowerCase().includes(query) && !zending.stad.toLowerCase().includes(query) && !zending.straat.toLowerCase().includes(query) && !zending.postcode.toLowerCase().includes(query) && !zending.email.toLowerCase().includes(query)){
+    if(!zending.kenmerk.toLowerCase().includes(query) && !zending.naam.toLowerCase().includes(query) && !zending.stad.toLowerCase().includes(query) && !zending.straat.toLowerCase().includes(query) && !zending.postcode.toLowerCase().includes(query) && !zending.email.toLowerCase().includes(query)){
+      continue;
     }
-    else {
-      zending.show($('#zendingen'));
-    }
-  })
+    zending.show($('#zendingen'));
+  }
 
 }
 
@@ -336,7 +348,6 @@ async function displayMPInfo(data) {
   }
   fs.readdirSync('./data/zendingen/').forEach(file => {
     let fileDate = file.replace('.json', '').split('-');
-    console.log(new Date(Number(fileDate[2]), Number(fileDate[1]) - 1, Number(fileDate[0]) + 7))
     if(new Date(Number(fileDate[2]), Number(fileDate[1]) - 1, Number(fileDate[0]) + 7) <= today){
       fs.unlinkSync('./data/zendingen/' + file);
     }
@@ -506,7 +517,6 @@ function selectAllParcels() {
 function showEditStatus(zending) {
   var popup = $('#statusPopup');
   popup.find('h2').eq(0).text('Status aanpassen voor ' + zending.kenmerk);
-  console.log(zending)
   var options = popup.find('#statusSelection').find('option');
   for (let i = 0; i < options.length; i++) {
     options[i].remove();
@@ -542,7 +552,6 @@ function showEditStatus(zending) {
 }
 
 async function saveStatus(zending) {
-  console.log(zending)
   await lightspeed.updateOrder(zending.lightspeedOrder);
   var targetElement = zending.row.getElementsByTagName('mark')[0];
   var customColor = 'rgba(0,0,0,0); color: white';
@@ -805,7 +814,7 @@ class Shipment {
     this.datum = datum;
     this.lightspeedOrder = lightspeedOrder;
     this.lightspeedShipment = lightspeedShipment;
-    this.lsStatus = lsStatus;
+    this.lsStatus = lsStatus;    
     this.lsCustomStatus = lsCustomStatus;
     this.row = document.createElement('tr');
     this.isBackup = isBackup;
