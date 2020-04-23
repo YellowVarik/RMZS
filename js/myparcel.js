@@ -473,8 +473,10 @@ function loadBackup(file){
       tr[i].remove();
     }
   }
+  
+  var datapath = path.resolve('./data/zendingen');
 
-  newZendingen = require('./data/zendingen/' + file);
+  newZendingen = require(path.join(datapath,file));
   newZendingen.forEach((zending, index) => {
     zendingen[index] = new Shipment(zending.id, zending.type, zending.status, zending.kenmerk, zending.barcode, zending.naam, zending.postcode, zending.straat, zending.huisnummer, zending.stad, zending.land, zending.email, zending.telefoon, new Date(zending.datum), zending.lightspeedOrder, zending.lightspeedShipment, zending.lsStatus, zending.lsCustomStatus, true);
     zendingen[index].show($('#zendingen'));
