@@ -86,11 +86,19 @@
           <button onclick='changelskey()'>Wijzigen</button>
         </div>
       </div>
+      <div style="display:flex; width: 100%;">
+        <div style="margin: 1vw; width: 100%;">
+          <h1 style='text-align: center;'>Statussen</h1>
 
+          <div class='form' id='customStatusSettings' >
+          </div>
+        </div>
 
-      <h1 style='text-align: center;'>Statussen</h1>
-
-      <div class='form' id='customStatusSettings' style='margin-left: auto;margin-right: auto; width: 60%'>
+        <div style="margin: 1vw; width: 100%;">
+          <h1 style = 'text-align: center;'>Backups</h1>
+          <div class="form" id="backupSettings">
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -135,7 +143,7 @@
   <div id="customStatusPopup"class="overlay">
     <div class="popup" style='height: 700px'>
       <h2>Status aanpassen</h2>
-      <p class='errormsg' style='color: red; visibility: hidden;'><i>De naam moet minstend 1 teken lang zijn!</i></p>
+      <p class='errormsg' style='color: red; visibility: hidden;'><i>De naam moet minstens 1 teken lang zijn!</i></p>
       <form>
         <label for = '.title'>Naam: </label>
         <input type="text" class='title' placeholder="Naam van status">
@@ -160,6 +168,34 @@
       </div>
       <div class="content">
       </div>
+    </div>
+  </div>
+
+  <div id="deleteBackupPopup" class="overlay">
+    <div class="popup" style="text-align: center;">
+      <h2>Backup verwijderen</h2>
+      <p><b>Weet u zeker dat u deze backup wilt verwijderen?</b></p>
+      <div style="display: flex;">
+        <button class="ja" style="background: green; width: 50%; margin: 2%;">Ja</button>
+        <button class="nee" onclick="document.getElementById('deleteBackupPopup').classList.remove('visible')"
+          style="background: red; width: 50%; margin: 2%;">Nee</button>
+      </div>
+      <div class="content">
+      </div>
+    </div>
+  </div>
+
+  <div id="backupPopup"class="overlay">
+    <div class="popup" style="padding-bottom: 70px;">
+      <h2>Backup aanpassen</h2>
+      <p class='errormsg' style='color: red; visibility: hidden;'><i>De naam moet minstens 1 teken lang zijn!</i></p>
+      <form>
+        <label for = '.title'>Naam: </label>
+        <input type="text" class='title' placeholder="Naam van backup">
+      </form>
+      <br>
+      <button class='save'>Opslaan</button>
+      <a class="close" onclick='document.getElementById("backupPopup").classList.remove("visible")'>&times;</a>
     </div>
   </div>
 

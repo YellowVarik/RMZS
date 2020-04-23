@@ -4,6 +4,7 @@ const $ = require('jquery')
 
 
 showStatusses();
+showBackups();
 
 async function showStatusses() {
     var loading = $('<h2 id="loadingtext" style="padding: 10px;">Statussen aan het laden.</h2>').appendTo('#customStatusSettings');
@@ -54,6 +55,64 @@ async function showStatusses() {
 
         popup.addClass('visible');
     })
+    loading.remove();
+    clearInterval(loadingInterval);
+}
+
+async function showBackups(){
+    var loading = $('<h2 id="loadingtext" style="padding: 10px;">Statussen aan het laden.</h2>').appendTo('#customStatusSettings');
+    var count = 0;
+    var loadingInterval = setInterval(() => {
+        switch(count){
+            case 0:
+                loading.text('Statussen aan het laden..')
+                count++;
+                break;
+            case 1:
+                loading.text('Statussen aan het laden...')
+                count++;
+                break;
+            case 2:
+                loading.text('Statussen aan het laden.')
+                count = 0;
+                break;
+        }
+
+    }, 300)
+
+
+    fs.readdirSync("./data/zendingen/").forEach(file => {
+        console.log(file);
+        let fileName = file;
+        let div = $(`<div class='backup'><span><h3>${file.replace(".json", "")}</h3><a class='delete'><i class='fas fa-trash'></i></a><a class='edit'><i class='fas fa-edit'></i></a></span></div>`);
+        div.appendTo($('#backupSettings'));
+
+        div.find(".edit").eq(0).click(() => {
+
+            
+            let popup = $('#backupPopup').addClass('visible');
+            popup.find('.title').eq(0).val(fileName.replace('.json', ''));
+            popup.find('.save').eq(0).off('click').click(() => {
+                let title = popup.find('.title').eq(0).val();
+                fs.rename("./data/zendingen/" + fileName, "./data/zendingen/" + title + ".json", error => {
+                    if(error) throw error
+                });
+                fileName = title + ".json";
+                div.find("h3").eq(0).text(title);
+                popup.removeClass("visible");
+            })
+        })
+
+        div.find(".delete").eq(0).click(() => {
+            let popup = $('#deleteBackupPopup').addClass("visible");
+            popup.find(".ja").eq(0).off("click").click(() => {
+                fs.unlinkSync("./data/zendingen/" + fileName);
+                div.remove();
+                popup.removeClass("visible");
+            })
+        })
+    })
+    
     loading.remove();
     clearInterval(loadingInterval);
 }

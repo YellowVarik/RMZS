@@ -59,6 +59,41 @@ body{
   margin-right: 5px;
 }
 
+.backup{
+  width: 100%;
+  padding: 20px;
+  text-align: left;
+  cursor: pointer;
+  line-height: 30px;
+}
+
+.backup span{
+  font-size: 20px;
+  padding: 10px;
+}
+
+.backup span h3{
+  float: left;
+}
+
+.backup span a{
+  float: right;
+  opacity: 0;
+}
+
+.backup:hover span a{
+  opacity: 0.6;
+  transition: all 0.3s ease;
+}
+.backup span a:hover{
+  opacity: 1;
+}
+
+.backup span a i{
+  color: #727272;
+  margin-right: 5px;
+}
+
 .login-page {
   width: 40%;
   margin: 0;
