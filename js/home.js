@@ -11,7 +11,6 @@ getDashboard();
 async function getDashboard() {
     axios.get(lsUrl + '/dashboard.json?date_min=2013-01-01', {
     }).then(result => {
-        console.log(result.data.dashboard)
         result.data.dashboard.periods.reverse();
         getSales(result.data.dashboard);
         getOrders(result.data.dashboard);

@@ -2,8 +2,10 @@ const fs = require('fs');
 const axios = require('axios').default
 const Cryptr = require('cryptr');
 const crypto = require('crypto')
+const path = require("path");
 
 const storage = window.localStorage;
+const configPath = path.resolve('./config');
 
 if (!fs.existsSync('./config/config.json') && window.location.pathname.split('/').pop() !== 'keys.html') {
     window.location.href = "./keys.html";
@@ -172,7 +174,7 @@ function deleteAccount() {
 }
 
 function changeName() {
-    var file = require('./config/config.json');
+    const file = require(path.join(configPath, 'config.json'));
     var oldName = file.name;
     var newName = document.getElementById('namechange').value;
     file.name = newName;
@@ -186,12 +188,11 @@ function changeName() {
 }
 
 function changeUsername() {
-    const file = require('./config/config.json');
+    const file = require(path.join(configPath, 'config.json'));
     var error = false;
     var oldUsername = file.username;
     var newUsername = document.getElementById('usernamechange').value;
     var password = document.getElementById('unamepassword').value
-    console.log(password)
     var pwhash = crypto.createHash('md5').update(password).digest("hex");
     var cryptr = new Cryptr(pwhash);
 
@@ -217,7 +218,7 @@ function changeUsername() {
 }
 
 function changePassword() {
-    const file = require('./config/config.json');
+    const file = require(path.join(configPath, 'config.json'));
     var oldPassword = document.getElementById('passwordchangeold').value;
     var newPassword = document.getElementById('passwordchangenew').value;
     var newPasswordRepeat = document.getElementById('passwordchangenewrepeat').value;
@@ -256,7 +257,6 @@ function changePassword() {
         file.mpKey = cryptr.encrypt(storage.getItem('mpKey'));
         file.lsKey = cryptr.encrypt(storage.getItem('lsKey'));
         file.lsSecret = cryptr.encrypt(storage.getItem('lsSecret'));
-        console.log(file)
         fs.writeFileSync('./config/config.json', JSON.stringify(file));
         document.getElementsByClassName('changemessage')[0].innerHTML = 'Uw wachtwoord is aangepast!';
         document.getElementById('popupchange').classList.add('visible');
@@ -270,17 +270,17 @@ function changePassword() {
 }
 
 async function changempkey() {
-    const file = require('./config/config.json');
+    const file = require(path.join(configPath, 'config.json'));
     var errormsg = '';
     var error = false;
     var mpKeyBuffer = new Buffer.from(document.getElementById('myparcelkeychange').value);
     var mpKey = mpKeyBuffer.toString('base64')
-    
+
 
     if (document.getElementById('myparcelkeychange').value.length != 40) {
         errormsg += "De MyParcel API key moet 40 tekens lang zijn!<br><br>"
         error = true;
-    }else{
+    } else {
         await axios.get("https://api.myparcel.nl/shipments", {
             headers: {
                 "Authorization": `base ${mpKey}`
@@ -289,7 +289,7 @@ async function changempkey() {
             errormsg += 'De MyParcel API Key is onjuist!<br><br>';
             error = true;
         })
-    
+
     }
 
 
@@ -305,7 +305,7 @@ async function changempkey() {
         errormsg += "Het wachtwoord is niet correct!<br><br>";
         error = true;
     }
-    
+
 
     if (error) {
         document.getElementsByClassName('errormsg')[0].innerHTML = errormsg + "<font style='font-size: 10px;'><b>Klopt dit niet? Neem contact op met de systeembeheerder!</b></font>";
@@ -325,7 +325,7 @@ async function changempkey() {
 }
 
 async function changelskey() {
-    const file = require('./config/config.json');
+    const file = require(path.join(configPath, 'config.json'));
     var errormsg = '';
     var error = false;
     var lsKey = document.getElementById('lightspeedkeychange').value;
@@ -333,17 +333,17 @@ async function changelskey() {
 
 
     var password = document.getElementById('lspassword').value;
-    
+
 
     if (document.getElementById('lightspeedkeychange').value.length != 32 || document.getElementById('lightspeedkeychange').value.length != 32) {
         errormsg += "De Key en Secret moeten 40 tekens lang zijn!<br><br>"
         error = true;
-    }else{
+    } else {
         await axios.get(`https://${lsKey}:${lsSecret}@api.webshopapp.com/nl/orders.json`).catch(() => {
             errormsg += 'De Lightspeed API Key of secret is onjuist!<br><br>';
             error = true;
         });
-    
+
     }
 
 
@@ -356,7 +356,7 @@ async function changelskey() {
         errormsg += "Het wachtwoord is niet correct!<br><br>";
         error = true;
     }
-    
+
 
     if (error) {
         document.getElementsByClassName('errormsg')[0].innerHTML = errormsg + "<font style='font-size: 10px;'><b>Klopt dit niet? Neem contact op met de systeembeheerder!</b></font>";

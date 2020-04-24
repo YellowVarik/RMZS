@@ -2,7 +2,6 @@ const https = require('https')
 const electron = require('electron')
 const pdfWindow = require('electron-pdf-window')
 const lightspeed = require(__dirname + '/js/lightspeed')
-const path = require('path')
 
 //jQuery moet op een andere manier worden toegevoegd
 const $ = require('jquery')

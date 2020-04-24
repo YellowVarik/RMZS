@@ -234,7 +234,6 @@ async function makePakbon(orders, shipments, verzendLabelUrls, datapath) {
     const pakbonTextHeight = regular.heightAtSize(pakbonTextSize);
     for (var i = 0; i < orders.length; i++) {
         var page = doc.addPage();
-        console.log(verzendLabelUrls[i])
         var verzendLabelDocument = await PDFDocument.load(fs.readFileSync(verzendLabelUrls[i]));
 
         var verzendLabel = await doc.embedPage(verzendLabelDocument.getPages()[0], {

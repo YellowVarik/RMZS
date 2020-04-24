@@ -27,7 +27,6 @@ async function showStatusses() {
 
     }, 300)
     var { shipments, orders, products, customStatuses } = await lightspeed.getLightspeedData();
-    console.log(customStatuses)
     for (let i = 0; i < customStatuses.length; i++) {
         addStatus(customStatuses[i]);
     }
@@ -47,7 +46,6 @@ async function showStatusses() {
                 popup.find('.errormsg').css('visibility', 'visible');
                 return
             }
-            console.log({ color, title });
             let customStatus = await lightspeed.addCustomStatus(color, title);
             addStatus(customStatus);
             popup.removeClass('visible')
@@ -82,7 +80,6 @@ async function showBackups(){
 
 
     fs.readdirSync("./data/zendingen/").forEach(file => {
-        console.log(file);
         let fileName = file;
         let div = $(`<div class='backup'><span><h3>${file.replace(".json", "")}</h3><a class='delete'><i class='fas fa-trash'></i></a><a class='edit'><i class='fas fa-edit'></i></a></span></div>`);
         div.appendTo($('#backupSettings'));
