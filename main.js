@@ -1,10 +1,43 @@
-const { app, BrowserWindow, autoUpdater, dialog } = require('electron')
+const { app, BrowserWindow } = require('electron')
 const fs = require('fs')
 const log = require('electron-log')
+const path = require('path');
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 
-let win
+const myDocs = app.getPath("documents");
+
+if(!fs.existsSync(path.join(myDocs, "RMZS"))){
+  fs.mkdirSync(path.join(myDocs, "RMZS"));
+}
+
+
+
+const rmzsFolder = path.join(myDocs, "RMZS");
+const configFolder = path.join(rmzsFolder, 'config');
+const backupsFolder = path.join(rmzsFolder, 'backups');
+const pakbonnenFolder = path.join(rmzsFolder, 'pakbonnen');
+
+global.folders = {
+  main: rmzsFolder,
+  config: configFolder,
+  backups: backupsFolder,
+  pakbonnen: pakbonnenFolder
+}
+
+if(!fs.existsSync(configFolder)){
+  fs.mkdirSync(configFolder);
+}
+
+if(!fs.existsSync(backupsFolder)){
+  fs.mkdirSync(backupsFolder);
+}
+
+if(!fs.existsSync(pakbonnenFolder)){
+  fs.mkdirSync(pakbonnenFolder);
+}
+
+let win;
 
 function createWindow() {
   // Create the browser window.

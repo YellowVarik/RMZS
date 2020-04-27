@@ -1,5 +1,7 @@
 const { PDFDocument, rgb } = require('pdf-lib');
 const fontkit = require('@pdf-lib/fontkit')
+const pakbonnenFolder = electron.remote.getGlobal('folders').pakbonnen;
+
 
 const api_key = window.localStorage.getItem('lsKey');
 const api_secret = window.localStorage.getItem('lsSecret');
@@ -10,6 +12,8 @@ var fontBold = __dirname + '/../fonts/Roboto-Bold.ttf'
 var shipments, orders, products, customStatuses;
 
 var lsUrl = `https://${api_key}:${api_secret}@api.webshopapp.com/nl`
+
+
 
 module.exports = {
     getLightspeedData: async function () {
@@ -39,7 +43,7 @@ module.exports = {
         return { shipments, orders, products, customStatuses };
     },
 
-    getOrderVerzendLabel: async function (order, shipment, datapath) {
+    getOrderVerzendLabel: async function (order, shipment) {
         var shipmentId;
         var ordersArr = [];
         var shipmentsArr = [];
@@ -72,10 +76,7 @@ module.exports = {
                         "Accept": "application/pdf",
                     }
                 }
-                if (!fs.existsSync("../data")) {
-                    fs.mkdirSync("../data");
-                }
-                let pdfFile = fs.createWriteStream(path.join(datapath ,`verzendLabel${order[i].number}.pdf`));
+                let pdfFile = fs.createWriteStream(path.join(pakbonnenFolder ,`verzendLabel${order[i].number}.pdf`));
                 let data = '';
                 var request = await https.request(options, function (result) {
                     result.on('data', (d) => {
@@ -86,7 +87,7 @@ module.exports = {
                     result.on("end", () => {
                         pdfFile.end();
                         if(i === order.length - 1){
-                            makePakbon(ordersArr, shipmentsArr, labelsArr, datapath)
+                            makePakbon(ordersArr, shipmentsArr, labelsArr, pakbonnenFolder)
                         }
                     })
                 })
@@ -98,7 +99,7 @@ module.exports = {
                 
                 ordersArr[i] = order[i];
                 shipmentsArr[i] = shipment[i];
-                labelsArr[i] = path.join(datapath,`verzendLabel${order[i].number}.pdf`);
+                labelsArr[i] = path.join(pakbonnenFolder,`verzendLabel${order[i].number}.pdf`);
             }
         } else {
             await axios.get(`https://api.myparcel.nl/shipments?q=${order.number}`, {
@@ -131,7 +132,7 @@ module.exports = {
             if (!fs.existsSync("./data")) {
                 fs.mkdirSync("./data");
             }
-            var pdfFile = fs.createWriteStream(path.join(datapath ,`verzendLabel${order.number}.pdf`))
+            var pdfFile = fs.createWriteStream(path.join(pakbonnenFolder ,`verzendLabel${order.number}.pdf`))
             var data = '';
             var request = await https.request(options, function (result) {
                 result.on('data', (d) => {
@@ -143,8 +144,8 @@ module.exports = {
                     pdfFile.end();
                     ordersArr[0] = order;
                     shipmentsArr[0] = shipment;
-                    labelsArr[0] = path.join(datapath ,`verzendLabel${order.number}.pdf`);
-                    makePakbon(ordersArr, shipmentsArr, labelsArr, datapath);
+                    labelsArr[0] = path.join(pakbonnenFolder ,`verzendLabel${order.number}.pdf`);
+                    makePakbon(ordersArr, shipmentsArr, labelsArr, pakbonnenFolder);
                 })
             })
 
@@ -217,7 +218,7 @@ module.exports = {
     }
 }
 
-async function makePakbon(orders, shipments, verzendLabelUrls, datapath) {
+async function makePakbon(orders, shipments, verzendLabelUrls, pakbonnenFolder) {
     const doc = await PDFDocument.create();
     doc.registerFontkit(fontkit);
 
@@ -779,8 +780,8 @@ async function makePakbon(orders, shipments, verzendLabelUrls, datapath) {
         })
     }
 
-    var file = fs.createWriteStream(path.resolve(datapath + `/pakbon.pdf`));
+    var file = fs.createWriteStream(path.resolve(pakbonnenFolder + `/pakbon.pdf`));
     var buffer = await doc.save();
     file.write(buffer);
-    openPDF(path.resolve(datapath + `/pakbon.pdf`))
+    openPDF(path.resolve(pakbonnenFolder + `/pakbon.pdf`))
 }

@@ -1,5 +1,4 @@
 const https = require('https')
-const electron = require('electron')
 const pdfWindow = require('electron-pdf-window')
 const lightspeed = require(__dirname + '/js/lightspeed')
 
@@ -134,7 +133,6 @@ function printSelected(parcels) {
   var selectedOrders = [];
   var selectedShipments = [];
   var verzendLabels = [];
-  var datapath = path.resolve('./data');
   for (var i = 0; i < parcels.length; i++) {
     for (x = 0; x < zendingen.length; x++) {
       if (zendingen[x].id == parcels[i]) {
@@ -149,10 +147,10 @@ function printSelected(parcels) {
   }
 
   if (selectedOrders.length > 0) {
-    lightspeed.getOrderVerzendLabel(selectedOrders, selectedShipments, datapath);
+    lightspeed.getOrderVerzendLabel(selectedOrders, selectedShipments, folders.pakbonnen);
   }
   if (verzendLabels.length > 0) {
-    getPDF(verzendLabels, datapath);
+    getPDF(verzendLabels, folders.pakbonnen);
   }
 }
 
@@ -195,7 +193,7 @@ function getPDF(id, datapath) {
   if (!fs.existsSync("./data")) {
     fs.mkdirSync("./data");
   }
-  var pdfFile = fs.createWriteStream(path.join(datapath, `label${fileName}.pdf`))
+  var pdfFile = fs.createWriteStream(path.join(folders.pakbonnen, `label${fileName}.pdf`))
   var request = https.request(options, function (result) {
     result.on('data', (d) => {
       data += d;
@@ -204,7 +202,7 @@ function getPDF(id, datapath) {
 
     result.on("end", () => {
       pdfFile.end();
-      openPDF(path.join(datapath, `label${fileName}.pdf`));
+      openPDF(path.join(folders.pakbonnen, `label${fileName}.pdf`));
     })
   })
 
@@ -245,30 +243,11 @@ async function getMyParcelData() {
       data += d;
     });
     result.on("end", () => {
-      //De data wordt verwerkt
       displayMPInfo(data);
-      //De data wordt opgeslagen in een bestand
-      if (!fs.existsSync("./data")) {
-        fs.mkdirSync("./data");
-      }
-      fs.writeFile("data/zendingen.json", data, (e) => {
-        if (e) throw e;
-      })
     })
   })
   request.on('error', (e) => {
     console.error("KON DATA VAN MYPARCEL NIET OPHALEN \n" + e);
-
-    //Als er geen data kon worden opgehaald wordt het uit een bestand gehaald
-    if (fs.existsSync("./data/zendingen.json")) {
-      fs.readFile("data/zendingen.json", function (err, data) {
-        displayMPInfo(data);
-      });
-    }
-    else {
-      let error = "<p>Kon data niet vinden</p>";
-      $("#myparcel").append(error);
-    }
   });
   request.end();
 
@@ -342,13 +321,10 @@ async function displayMPInfo(data) {
   var today = new Date();
   var alreadySaved = false;
   $('#fileSelection').find('.fileSelectionList').eq(0).empty();
-  if(!fs.existsSync('./data/zendingen')){
-    fs.mkdirSync('./data/zendingen');
-  }
-  fs.readdirSync('./data/zendingen/').forEach(file => {
+  fs.readdirSync(folders.backups).forEach(file => {
     let fileDate = file.replace('.json', '').split('-');
     if(new Date(Number(fileDate[2]), Number(fileDate[1]) - 1, Number(fileDate[0]) + 7) <= today){
-      fs.unlinkSync('./data/zendingen/' + file);
+      fs.unlinkSync(folders.backups + file);
     }
     else if (fileDate[0] == today.getDate() && fileDate[1] == (today.getMonth() + 1) && fileDate[2] == today.getFullYear()) {
       alreadySaved = true;
@@ -368,7 +344,7 @@ async function displayMPInfo(data) {
     makeBackup();
   })
   if (!alreadySaved) {
-    fs.writeFileSync('./data/zendingen/' + today.getDate() + "-" + (today.getMonth() + 1) + "-" + today.getFullYear() + '.json', JSON.stringify(zendingen));
+    fs.writeFileSync(path.join(folders.backups , today.getDate() + "-" + (today.getMonth() + 1) + "-" + today.getFullYear() + '.json'), JSON.stringify(zendingen));
   }
   
   $("#printSelectedButton").attr("onclick", 'printSelected(selectedParcels); setTimeout(() => {getMyParcelData()}, 500);').css("color", "white");
@@ -472,10 +448,8 @@ function loadBackup(file){
       tr[i].remove();
     }
   }
-  
-  var datapath = path.resolve('./data/zendingen');
 
-  newZendingen = require(path.join(datapath,file));
+  newZendingen = require(path.join(folders.backups, file));
   newZendingen.forEach((zending, index) => {
     zendingen[index] = new Shipment(zending.id, zending.type, zending.status, zending.kenmerk, zending.barcode, zending.naam, zending.postcode, zending.straat, zending.huisnummer, zending.stad, zending.land, zending.email, zending.telefoon, new Date(zending.datum), zending.lightspeedOrder, zending.lightspeedShipment, zending.lsStatus, zending.lsCustomStatus, true);
     zendingen[index].show($('#zendingen'));
@@ -490,7 +464,7 @@ function makeBackup(){
     $('#backupPopup').find('.errormsg').eq(0).css('visibility', "visible");
   }
   else{
-    fs.writeFileSync('./data/zendingen/' + name + ".json", JSON.stringify(zendingen));
+    fs.writeFileSync(path.join(folders.backups, name + ".json"), JSON.stringify(zendingen));
     $('#backupPopup').removeClass('visible');
     $(`<li class="fileSelectionOption"><a onclick="loadBackup('${name}.json')">${name}</a></li>`).prependTo($('#fileSelection').find('.fileSelectionList').eq(0))
   }

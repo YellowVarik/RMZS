@@ -3,11 +3,13 @@ const axios = require('axios').default
 const Cryptr = require('cryptr');
 const crypto = require('crypto')
 const path = require("path");
+const electron = require('electron');
+const folders = electron.remote.getGlobal('folders');
 
 const storage = window.localStorage;
-const configPath = path.resolve('./config');
+const configFile = path.join(folders.config, 'config.json');
 
-if (!fs.existsSync('./config/config.json') && window.location.pathname.split('/').pop() !== 'keys.html') {
+if (!fs.existsSync(configFile) && window.location.pathname.split('/').pop() !== 'keys.html') {
     window.location.href = "./keys.html";
 }
 
@@ -18,7 +20,7 @@ if (window.location.pathname.split('/').pop() != 'index.html' && window.location
 }
 
 if (window.location.pathname.split('/').pop() == 'home.html') {
-    const config = JSON.parse(fs.readFileSync("./config/config.json"));
+    const config = JSON.parse(fs.readFileSync(configFile));
     document.getElementById('welkom').innerHTML = 'Welkom, ' + config.name + "!";
 }
 
@@ -114,10 +116,7 @@ async function makeAccount() {
     let account = { "name": name, "username": uname, "mpKey": cryptr.encrypt(mpKey), "lsKey": cryptr.encrypt(lsKey), "lsSecret": cryptr.encrypt(lsSecret) };
 
     try {
-        if (!fs.existsSync("./config")) {
-            fs.mkdirSync("./config");
-        }
-        fs.writeFileSync('./config/config.json', JSON.stringify(account));
+        fs.writeFileSync(configFile, JSON.stringify(account));
         storage.setItem('mpKey', mpKey);
         storage.setItem('lsKey', lsKey);
         storage.setItem('lsSecret', lsSecret);
@@ -132,8 +131,8 @@ async function login() {
     let username = document.getElementById("username").value;
     let password = document.getElementById("password").value;
 
-    configFile = fs.readFileSync('./config/config.json');
-    configData = JSON.parse(configFile);
+    configFileRead = fs.readFileSync(configFile);
+    configData = JSON.parse(configFileRead);
 
     let error = false;
     let errormsg = '<br>';
@@ -166,7 +165,7 @@ async function login() {
 }
 
 function deleteAccount() {
-    fs.unlinkSync('./config/config.json', (e) => {
+    fs.unlinkSync(configFile, (e) => {
         if (e) throw e;
     })
     storage.clear();
@@ -174,11 +173,11 @@ function deleteAccount() {
 }
 
 function changeName() {
-    const file = require(path.join(configPath, 'config.json'));
+    const file = require(configFile);
     var oldName = file.name;
     var newName = document.getElementById('namechange').value;
     file.name = newName;
-    fs.writeFileSync('./config/config.json', JSON.stringify(file));
+    fs.writeFileSync(configFile, JSON.stringify(file));
     document.getElementsByClassName('changemessage')[0].innerHTML = `Uw naam is veranderd van \"${oldName}\" naar \"${newName}\"`;
     document.getElementById('popupchange').classList.add('visible');
     var inputs = document.getElementsByTagName('input')
@@ -188,7 +187,7 @@ function changeName() {
 }
 
 function changeUsername() {
-    const file = require(path.join(configPath, 'config.json'));
+    const file = require(configFile);
     var error = false;
     var oldUsername = file.username;
     var newUsername = document.getElementById('usernamechange').value;
@@ -208,7 +207,7 @@ function changeUsername() {
         return
     }
     file.username = newUsername;
-    fs.writeFileSync('./config/config.json', JSON.stringify(file));
+    fs.writeFileSync(configFile, JSON.stringify(file));
     document.getElementsByClassName('changemessage')[0].innerHTML = `Uw gebruikersnaam is veranderd van \"${oldUsername}\" naar \"${newUsername}\"`;
     document.getElementById('popupchange').classList.add('visible');
     var inputs = document.getElementsByTagName('input')
@@ -218,7 +217,7 @@ function changeUsername() {
 }
 
 function changePassword() {
-    const file = require(path.join(configPath, 'config.json'));
+    const file = require(configFile);
     var oldPassword = document.getElementById('passwordchangeold').value;
     var newPassword = document.getElementById('passwordchangenew').value;
     var newPasswordRepeat = document.getElementById('passwordchangenewrepeat').value;
@@ -257,7 +256,7 @@ function changePassword() {
         file.mpKey = cryptr.encrypt(storage.getItem('mpKey'));
         file.lsKey = cryptr.encrypt(storage.getItem('lsKey'));
         file.lsSecret = cryptr.encrypt(storage.getItem('lsSecret'));
-        fs.writeFileSync('./config/config.json', JSON.stringify(file));
+        fs.writeFileSync(configFile, JSON.stringify(file));
         document.getElementsByClassName('changemessage')[0].innerHTML = 'Uw wachtwoord is aangepast!';
         document.getElementById('popupchange').classList.add('visible');
         var inputs = document.getElementsByTagName('input')
@@ -270,7 +269,7 @@ function changePassword() {
 }
 
 async function changempkey() {
-    const file = require(path.join(configPath, 'config.json'));
+    const file = require(configFile);
     var errormsg = '';
     var error = false;
     var mpKeyBuffer = new Buffer.from(document.getElementById('myparcelkeychange').value);
@@ -315,7 +314,7 @@ async function changempkey() {
 
     file.mpKey = cryptr.encrypt(mpKey);
     storage.setItem('mpKey', mpKey);
-    fs.writeFileSync('./config/config.json', JSON.stringify(file));
+    fs.writeFileSync(configFile, JSON.stringify(file));
     document.getElementsByClassName('changemessage')[0].innerHTML = 'Uw MyParcel API Key is aangepast!';
     document.getElementById('popupchange').classList.add('visible');
     var inputs = document.getElementsByTagName('input')
@@ -325,7 +324,7 @@ async function changempkey() {
 }
 
 async function changelskey() {
-    const file = require(path.join(configPath, 'config.json'));
+    const file = require(configFile);
     var errormsg = '';
     var error = false;
     var lsKey = document.getElementById('lightspeedkeychange').value;
@@ -368,7 +367,7 @@ async function changelskey() {
     file.lsSecret = cryptr.encrypt(lsSecret);
     storage.setItem('lsKey', lsKey);
     storage.setItem('lsSecret', lsSecret);
-    fs.writeFileSync('./config/config.json', JSON.stringify(file));
+    fs.writeFileSync(configFile, JSON.stringify(file));
     document.getElementsByClassName('changemessage')[0].innerHTML = 'Uw Lightspeed API Key en Secret zijn aangepast!';
     document.getElementById('popupchange').classList.add('visible');
     var inputs = document.getElementsByTagName('input')

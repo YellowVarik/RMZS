@@ -79,7 +79,7 @@ async function showBackups(){
     }, 300)
 
 
-    fs.readdirSync("./data/zendingen/").forEach(file => {
+    fs.readdirSync(folders.backups).forEach(file => {
         let fileName = file;
         let div = $(`<div class='backup'><span><h3>${file.replace(".json", "")}</h3><a class='delete'><i class='fas fa-trash'></i></a><a class='edit'><i class='fas fa-edit'></i></a></span></div>`);
         div.appendTo($('#backupSettings'));
@@ -91,7 +91,7 @@ async function showBackups(){
             popup.find('.title').eq(0).val(fileName.replace('.json', ''));
             popup.find('.save').eq(0).off('click').click(() => {
                 let title = popup.find('.title').eq(0).val();
-                fs.rename("./data/zendingen/" + fileName, "./data/zendingen/" + title + ".json", error => {
+                fs.rename(path.join(folders.backups, fileName), path.join(folders.backups, title + ".json"), error => {
                     if(error) throw error
                 });
                 fileName = title + ".json";
@@ -103,7 +103,7 @@ async function showBackups(){
         div.find(".delete").eq(0).click(() => {
             let popup = $('#deleteBackupPopup').addClass("visible");
             popup.find(".ja").eq(0).off("click").click(() => {
-                fs.unlinkSync("./data/zendingen/" + fileName);
+                fs.unlinkSync(path.join(folders.backups, fileName));
                 div.remove();
                 popup.removeClass("visible");
             })
