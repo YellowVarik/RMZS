@@ -1,16 +1,27 @@
-const { app, BrowserWindow } = require('electron')
+const { app, BrowserWindow, Menu } = require('electron')
 const fs = require('fs')
 const log = require('electron-log')
 const path = require('path');
+const contextMenu = require('electron-context-menu');
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 
 const myDocs = app.getPath("documents");
 
-if(!fs.existsSync(path.join(myDocs, "RMZS"))){
+if (!fs.existsSync(path.join(myDocs, "RMZS"))) {
   fs.mkdirSync(path.join(myDocs, "RMZS"));
 }
 
+contextMenu({
+  showInspectElement: false,
+  showCopyImage: false,
+  labels: {
+    copy: 'Kopiëren',
+    cut: 'Knippen',
+    searchWithGoogle: 'Zoeken met Google',
+    paste: 'Plakken'
+  }
+})
 
 
 const rmzsFolder = path.join(myDocs, "RMZS");
@@ -25,15 +36,15 @@ global.folders = {
   pakbonnen: pakbonnenFolder
 }
 
-if(!fs.existsSync(configFolder)){
+if (!fs.existsSync(configFolder)) {
   fs.mkdirSync(configFolder);
 }
 
-if(!fs.existsSync(backupsFolder)){
+if (!fs.existsSync(backupsFolder)) {
   fs.mkdirSync(backupsFolder);
 }
 
-if(!fs.existsSync(pakbonnenFolder)){
+if (!fs.existsSync(pakbonnenFolder)) {
   fs.mkdirSync(pakbonnenFolder);
 }
 
