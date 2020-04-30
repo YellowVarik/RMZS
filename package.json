@@ -39,7 +39,7 @@
     "electron-context-menu": "^2.0.0",
     "electron-log": "^4.1.0",
     "electron-pdf-window": "^1.0.12",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "pdf-lib": "^1.4.1"
   }
 }
