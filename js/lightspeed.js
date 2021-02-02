@@ -9,7 +9,7 @@ const api_secret = window.localStorage.getItem('lsSecret');
 var fontRegular = __dirname + '/../fonts/Roboto-Regular.ttf';
 var fontBold = __dirname + '/../fonts/Roboto-Bold.ttf'
 
-var shipments, orders, products, customStatuses;
+var shipments, orders, products, customStatuses, shop, company;
 
 var lsUrl = `https://${api_key}:${api_secret}@api.webshopapp.com/nl`
 
@@ -40,6 +40,21 @@ module.exports = {
         }).catch(error => {
             console.log(error);
         })
+
+        await axios.get(`${lsUrl}/shop.json`).then(response => {
+            shop = response.data.shop;
+            console.log(shop);
+        }).catch(error => {
+            console.log(error);
+        })
+
+        await axios.get(`${lsUrl}/shop/company.json`).then(response => {
+            company = response.data.shopCompany;
+            console.log(company);
+        }).catch(error => {
+            console.log(error);
+        })
+
         return { shipments, orders, products, customStatuses };
     },
 
@@ -232,6 +247,7 @@ module.exports = {
 }
 
 async function makePakbon(orders, shipments, verzendLabelUrls, pakbonnenFolder) {
+
     const doc = await PDFDocument.create();
     doc.registerFontkit(fontkit);
 
@@ -332,7 +348,7 @@ async function makePakbon(orders, shipments, verzendLabelUrls, pakbonnenFolder) 
             color: rgb(0, 0, 0)
         })
 
-        var bedrijfsNaamText = 'RMZS Development';
+        var bedrijfsNaamText = company.name;
         var bedrijfsNaamTextWidth = regular.widthOfTextAtSize(bedrijfsNaamText, textSize);
 
         page.drawText(bedrijfsNaamText, {
@@ -343,7 +359,7 @@ async function makePakbon(orders, shipments, verzendLabelUrls, pakbonnenFolder) 
             color: rgb(0, 0, 0)
         })
 
-        var bedrijfsEmailText = '103047@lingecollege.nl';
+        var bedrijfsEmailText = company.email;
         var bedrijfsEmailTextWidth = regular.widthOfTextAtSize(bedrijfsEmailText, textSize);
 
         page.drawText(bedrijfsEmailText, {
@@ -354,7 +370,7 @@ async function makePakbon(orders, shipments, verzendLabelUrls, pakbonnenFolder) 
             color: rgb(0, 0, 0)
         })
 
-        var bedrijfTelefoonText = 'Tel +31634895100';
+        var bedrijfTelefoonText = `Tel ${company.phone}`;
         var bedrijfTelefoonTextWidth = regular.widthOfTextAtSize(bedrijfTelefoonText, textSize);
 
         page.drawText(bedrijfTelefoonText, {
