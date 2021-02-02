@@ -324,7 +324,7 @@ async function displayMPInfo(data) {
   fs.readdirSync(folders.backups).forEach(file => {
     let fileDate = file.replace('.json', '').split('-');
     if(new Date(Number(fileDate[2]), Number(fileDate[1]) - 1, Number(fileDate[0]) + 7) <= today){
-      fs.unlinkSync(folders.backups + file);
+      fs.unlinkSync(folders.backups + "/" + file);
     }
     else if (fileDate[0] == today.getDate() && fileDate[1] == (today.getMonth() + 1) && fileDate[2] == today.getFullYear()) {
       alreadySaved = true;

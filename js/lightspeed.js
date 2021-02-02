@@ -49,6 +49,13 @@ module.exports = {
         var shipmentsArr = [];
         var labelsArr = [];
         if (order instanceof Array) {
+            var ratelimit = await getRateLimit();
+            if(ratelimit.remaining < order.length * 2){
+                var tempOrderArray = order.splice(ratelimit.remaining / 2);
+                var tempShipmentArray = shipment.splice(ratelimit.remaining / 2);
+                console.log(tempOrderArray);
+                setTimeout(this.getOrderVerzendLabel(tempOrderArray, tempShipmentArray), ratelimit.reset);
+            }
             for (let i = 0; i < order.length; i++) {
                 await axios.get(`https://api.myparcel.nl/shipments?q=${order[i].number}`, {
                     headers: {
@@ -76,7 +83,7 @@ module.exports = {
                         "Accept": "application/pdf",
                     }
                 }
-                let pdfFile = fs.createWriteStream(path.join(pakbonnenFolder ,`verzendLabel${order[i].number}.pdf`));
+                let pdfFile = fs.createWriteStream(path.join(pakbonnenFolder, `verzendLabel${order[i].number}.pdf`));
                 let data = '';
                 var request = await https.request(options, function (result) {
                     result.on('data', (d) => {
@@ -86,7 +93,7 @@ module.exports = {
 
                     result.on("end", () => {
                         pdfFile.end();
-                        if(i === order.length - 1){
+                        if (i === order.length - 1) {
                             makePakbon(ordersArr, shipmentsArr, labelsArr, pakbonnenFolder)
                         }
                     })
@@ -96,10 +103,10 @@ module.exports = {
                     console.error("KON LABEL NIET OPHALEN \n" + e);
                 });
                 request.end();
-                
+
                 ordersArr[i] = order[i];
                 shipmentsArr[i] = shipment[i];
-                labelsArr[i] = path.join(pakbonnenFolder,`verzendLabel${order[i].number}.pdf`);
+                labelsArr[i] = path.join(pakbonnenFolder, `verzendLabel${order[i].number}.pdf`);
             }
         } else {
             await axios.get(`https://api.myparcel.nl/shipments?q=${order.number}`, {
@@ -132,7 +139,7 @@ module.exports = {
             if (!fs.existsSync("./data")) {
                 fs.mkdirSync("./data");
             }
-            var pdfFile = fs.createWriteStream(path.join(pakbonnenFolder ,`verzendLabel${order.number}.pdf`))
+            var pdfFile = fs.createWriteStream(path.join(pakbonnenFolder, `verzendLabel${order.number}.pdf`))
             var data = '';
             var request = await https.request(options, function (result) {
                 result.on('data', (d) => {
@@ -144,7 +151,7 @@ module.exports = {
                     pdfFile.end();
                     ordersArr[0] = order;
                     shipmentsArr[0] = shipment;
-                    labelsArr[0] = path.join(pakbonnenFolder ,`verzendLabel${order.number}.pdf`);
+                    labelsArr[0] = path.join(pakbonnenFolder, `verzendLabel${order.number}.pdf`);
                     makePakbon(ordersArr, shipmentsArr, labelsArr, pakbonnenFolder);
                 })
             })
@@ -156,10 +163,10 @@ module.exports = {
         }
     },
 
-    updateOrder: async function(order){
+    updateOrder: async function (order) {
         axios.put(`${lsUrl}/orders/${order.id}.json`, {
             order
-        },{
+        }, {
             headers: {
                 "Content-Type": "application/json"
             }
@@ -168,13 +175,13 @@ module.exports = {
         })
     },
 
-    updateCustomStatus: async function(color, title, id){
+    updateCustomStatus: async function (color, title, id) {
         axios.put(`${lsUrl}/orders/customstatuses/${id}.json`, {
-            "customStatus":{
+            "customStatus": {
                 "color": color,
                 "title": title
             }
-        },{
+        }, {
             headers: {
                 "Content-Type": "application/json"
             }
@@ -185,7 +192,7 @@ module.exports = {
         })
     },
 
-    addCustomStatus: async function(color, title){
+    addCustomStatus: async function (color, title) {
         var newcolor, newtitle, newid;
         await axios.post(`${lsUrl}/orders/customstatuses.json`, {
             "customStatus": {
@@ -201,20 +208,26 @@ module.exports = {
             var status = response.data.customStatus;
             newcolor = status.color;
             newtitle = status.title,
-            newid = status.id;
+                newid = status.id;
         }).catch(error => {
             console.error(error);
         })
-        
-        return ({"color": newcolor, "title": newtitle, "id": newid});
+
+        return ({ "color": newcolor, "title": newtitle, "id": newid });
     },
 
-    deleteCustomStatus: async function(id){
+    deleteCustomStatus: async function (id) {
         await axios.delete(`${lsUrl}/orders/customstatuses/${id}.json`).then(response => {
             console.log(response.data);
         }).catch(error => {
             console.error(error);
         })
+    },
+
+    getRequestLimit: function () {
+        return {
+
+        }
     }
 }
 
@@ -728,21 +741,21 @@ async function makePakbon(orders, shipments, verzendLabelUrls, pakbonnenFolder) 
             color: rgb(0, 0, 0)
         })
 
-        var opmerkingenText = (orders[i].comment != "")?orders[i].comment:"Geen opmerkingen";
+        var opmerkingenText = (orders[i].comment != "") ? orders[i].comment : "Geen opmerkingen";
         var textLimit = 40;
         var opmerkingenTextArray = opmerkingenText.split(' ');
-        for (var z = 0; z + 1 < opmerkingenTextArray.length; z++){
-            while(z < opmerkingenTextArray.length - 1 && opmerkingenTextArray[z].length + opmerkingenTextArray[z + 1].length + 1 < textLimit){
+        for (var z = 0; z + 1 < opmerkingenTextArray.length; z++) {
+            while (z < opmerkingenTextArray.length - 1 && opmerkingenTextArray[z].length + opmerkingenTextArray[z + 1].length + 1 < textLimit) {
                 opmerkingenTextArray[z] += " " + opmerkingenTextArray[z + 1];
                 opmerkingenTextArray.splice((z + 1), 1);
             }
         }
 
-        if(opmerkingenTextArray[0].length > textLimit){
-            opmerkingenTextArray =  opmerkingenText.match(/.{1,35}/g);
+        if (opmerkingenTextArray[0].length > textLimit) {
+            opmerkingenTextArray = opmerkingenText.match(/.{1,35}/g);
         }
         opmerkingenText = "";
-        for(var y = 0; y < opmerkingenTextArray.length; y++){
+        for (var y = 0; y < opmerkingenTextArray.length; y++) {
             opmerkingenText += opmerkingenTextArray[y] + '\n'
         }
         page.drawText(opmerkingenText, {
@@ -784,4 +797,14 @@ async function makePakbon(orders, shipments, verzendLabelUrls, pakbonnenFolder) 
     var buffer = await doc.save();
     file.write(buffer);
     openPDF(path.resolve(pakbonnenFolder + `/pakbon.pdf`))
+}
+
+async function getRateLimit() {
+    var ratelimit;
+    await axios.get(`${lsUrl}/account/ratelimit.json`).then(response => {
+        console.log(response.data.accountRatelimit.limit5Min.remaining, response.data.accountRatelimit.limit5Min.reset);
+        ratelimit = response.data.accountRatelimit.limit5Min;
+    })
+
+    return ratelimit;
 }
