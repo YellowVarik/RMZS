@@ -1,3 +1,4 @@
+require
 const { app, BrowserWindow, Menu } = require('electron')
 const fs = require('fs')
 const log = require('electron-log')

@@ -1,6 +1,6 @@
 {
   "name": "rmzs",
-  "version": "1.0.4",
+  "version": "1.0.6",
   "description": "",
   "main": "main.js",
   "repository": {
@@ -33,13 +33,14 @@
   "dependencies": {
     "@pdf-lib/fontkit": "0.0.4",
     "a-color-picker": "^1.2.1",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "chart.js": "^2.9.3",
     "cryptr": "^6.0.1",
     "electron-context-menu": "^2.0.0",
     "electron-log": "^4.1.0",
     "electron-pdf-window": "^1.0.12",
-    "jquery": "^3.4.1",
-    "pdf-lib": "^1.4.1"
+    "jquery": "^3.5.1",
+    "pdf-lib": "^1.4.1",
+    "update-electron-app": "^2.0.1"
   }
 }
