@@ -656,7 +656,7 @@ async function makePakbon(orders, shipments, verzendLabelUrls, pakbonnenFolder) 
             color: rgb(0, 0, 0)
         })
 
-        var verzendAdresStraatText = orders[i].addressShippingStreet;
+        var verzendAdresStraatText = orders[i].addressShippingStreet + ' ' + orders[i].addressShippingNumber;
         page.drawText(verzendAdresStraatText, {
             x: 20,
             y: height - 3 * pakbonTextHeight - 4 * boldTextHeight - 6 * regularTextHeight - 3 * gapSize - 50 - 1 * offset * (2 * gapSize + 5),
@@ -665,19 +665,10 @@ async function makePakbon(orders, shipments, verzendLabelUrls, pakbonnenFolder) 
             color: rgb(0, 0, 0)
         })
 
-        var verzendAdresHuisnummerText = orders[i].addressShippingNumber;
-        page.drawText(verzendAdresHuisnummerText, {
-            x: 20,
-            y: height - 3 * pakbonTextHeight - 4 * boldTextHeight - 7 * regularTextHeight - 3 * gapSize - 50 - 1 * offset * (2 * gapSize + 5),
-            size: textSize,
-            font: regular,
-            color: rgb(0, 0, 0)
-        })
-
         var verzendAdresPostcodeText = orders[i].addressShippingZipcode + ' ' + orders[i].addressShippingCity;
         page.drawText(verzendAdresPostcodeText, {
             x: 20,
-            y: height - 3 * pakbonTextHeight - 4 * boldTextHeight - 8 * regularTextHeight - 3 * gapSize - 50 - 1 * offset * (2 * gapSize + 5),
+            y: height - 3 * pakbonTextHeight - 4 * boldTextHeight - 7 * regularTextHeight - 3 * gapSize - 50 - 1 * offset * (2 * gapSize + 5),
             size: textSize,
             font: regular,
             color: rgb(0, 0, 0)
@@ -686,7 +677,7 @@ async function makePakbon(orders, shipments, verzendLabelUrls, pakbonnenFolder) 
         var verzendAdresLandText = orders[i].addressShippingCountry.title;
         page.drawText(verzendAdresLandText, {
             x: 20,
-            y: height - 3 * pakbonTextHeight - 4 * boldTextHeight - 9 * regularTextHeight - 3 * gapSize - 50 - 1 * offset * (2 * gapSize + 5),
+            y: height - 3 * pakbonTextHeight - 4 * boldTextHeight - 8 * regularTextHeight - 3 * gapSize - 50 - 1 * offset * (2 * gapSize + 5),
             size: textSize,
             font: regular,
             color: rgb(0, 0, 0)
@@ -711,19 +702,10 @@ async function makePakbon(orders, shipments, verzendLabelUrls, pakbonnenFolder) 
             color: rgb(0, 0, 0)
         })
 
-        var factuurAdresStraatText = orders[i].addressBillingStreet;
-        page.drawText(verzendAdresStraatText, {
+        var factuurAdresStraatText = orders[i].addressBillingStreet + ' ' + orders[i].addressBillingNumber;
+        page.drawText(factuurAdresStraatText, {
             x: (width - 40) / 3,
             y: height - 3 * pakbonTextHeight - 4 * boldTextHeight - 6 * regularTextHeight - 3 * gapSize - 50 - 1 * offset * (2 * gapSize + 5),
-            size: textSize,
-            font: regular,
-            color: rgb(0, 0, 0)
-        })
-
-        var factuurAdresHuisnummerText = orders[i].addressBillingNumber;
-        page.drawText(factuurAdresHuisnummerText, {
-            x: (width - 40) / 3,
-            y: height - 3 * pakbonTextHeight - 4 * boldTextHeight - 7 * regularTextHeight - 3 * gapSize - 50 - 1 * offset * (2 * gapSize + 5),
             size: textSize,
             font: regular,
             color: rgb(0, 0, 0)
@@ -732,7 +714,7 @@ async function makePakbon(orders, shipments, verzendLabelUrls, pakbonnenFolder) 
         var factuurAdresPostcodeText = orders[i].addressBillingZipcode + ' ' + orders[i].addressBillingCity;
         page.drawText(factuurAdresPostcodeText, {
             x: (width - 40) / 3,
-            y: height - 3 * pakbonTextHeight - 4 * boldTextHeight - 8 * regularTextHeight - 3 * gapSize - 50 - 1 * offset * (2 * gapSize + 5),
+            y: height - 3 * pakbonTextHeight - 4 * boldTextHeight - 7 * regularTextHeight - 3 * gapSize - 50 - 1 * offset * (2 * gapSize + 5),
             size: textSize,
             font: regular,
             color: rgb(0, 0, 0)
@@ -741,7 +723,7 @@ async function makePakbon(orders, shipments, verzendLabelUrls, pakbonnenFolder) 
         var factuurAdresLandText = orders[i].addressBillingCountry.title;
         page.drawText(factuurAdresLandText, {
             x: (width - 40) / 3,
-            y: height - 3 * pakbonTextHeight - 4 * boldTextHeight - 9 * regularTextHeight - 3 * gapSize - 50 - 1 * offset * (2 * gapSize + 5),
+            y: height - 3 * pakbonTextHeight - 4 * boldTextHeight - 8 * regularTextHeight - 3 * gapSize - 50 - 1 * offset * (2 * gapSize + 5),
             size: textSize,
             font: regular,
             color: rgb(0, 0, 0)

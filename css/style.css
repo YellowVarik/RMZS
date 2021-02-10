@@ -307,6 +307,8 @@ body{
 .filterList {
   position: absolute;
   display: none;
+  height: 500px;
+  overflow-y: auto;
 }
 
 .filter:hover .filterList {
@@ -317,9 +319,12 @@ body{
   background-color: #9fda34;
   color: white;
   text-align: center;
-  width: 100%;
   display: block;
-  min-width: 160px;
+  width: 160px;
+  height: 24px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   border-right: 2px solid white;
   cursor: pointer;
 }
@@ -354,6 +359,8 @@ body{
 .fileSelectionList {
   position: absolute;
   display: none;
+  height: 500px;
+  overflow-y: auto;
 }
 
 .fileSelection:hover .fileSelectionList {
@@ -403,8 +410,9 @@ body{
   padding: 20px;
 }
 
-.popup .save:hover{
-  background-color: #43A047;
+
+.reload {
+  float: inline-end;
 }
 
 .reload i {
@@ -439,6 +447,7 @@ a {
 th {
   user-select: none;
   padding: 5px;
+  min-width: 100px;
 }
 
 td {
@@ -489,6 +498,14 @@ input[type=text]:focus {
 
 #zendingen tr .editBtn{
   float: right;
+}
+
+#zendingen .fa-file-pdf{
+  float:inline-start;
+}
+
+#zendingen .fa-trash{
+  float:inline-end;
 }
 
 .sortBtn:hover {

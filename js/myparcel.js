@@ -212,6 +212,41 @@ function getPDF(id, datapath) {
   request.end();
 }
 
+async function getMyparcelStatus() {
+  var data = "";
+
+  var options = {
+    hostname: mpURL,
+    path: "/shipments?size=200",
+    method: "GET",
+    headers: {
+      "Host": mpURL,
+      "Authorization": `base ${base64Key}`,
+      "Content-Type": "application/json;charset=utf-8",
+      "Connection": "keep-alive",
+      "Pragma": "no-cache",
+      "Cache-Control": "no-cache",
+      "Upgrade-Insecure-Requests": 1,
+      "Accept-Encoding": "gzip, deflate, sdch, br",
+      "User-Agent": "CustomApiCall/2"
+    }
+  }
+
+  var request = https.request(options, function (result) {
+    result.on('data', (d) => {
+      //De tussentijdse data wordt toegevoegd aan een variabele
+      data += d;
+    });
+    result.on("end", () => {
+      console.log(JSON.parse(data));
+    })
+  })
+  request.on('error', (e) => {
+    console.error("KON DATA VAN MYPARCEL NIET OPHALEN \n" + e);
+  });
+  request.end();
+}
+
 async function getMyParcelData() {
   loadScreen.appendTo($('.main_content')[0]);
   var data = "";
@@ -823,6 +858,7 @@ class Shipment {
 
     let status = document.createElement('td');
     status.innerHTML = '<i class="fas fa-box"></i>'
+    console.log(this)
     switch (this.status) {
       case 1:
         status.innerHTML += 'Concept';
@@ -831,13 +867,70 @@ class Shipment {
         status.innerHTML += 'Voorgemeld';
         break;
       case 3:
-        status.innerHTML += 'Onderweg';
+        status.innerHTML += 'Afgeleverd aan Postdienst';
         break;
       case 4:
-        status.innerHTML += 'Afgeleverd';
+        status.innerHTML += 'Wordt gesorteerd';
         break;
       case 5:
-        status.innerHTML += 'Retour';
+        status.innerHTML += 'In distributie';
+        break;
+      case 6:
+        status.innerHTML += 'Bij douane';
+        break;
+      case 7:
+        status.innerHTML += 'Afgeleverd aan ontvanger';
+        break;
+      case 8:
+        status.innerHTML += 'Klaar om op te halen';
+        break;
+      case 9:
+        status.innerHTML += 'Afgeleverd en opgehaald';
+        break;
+      case 10:
+        status.innerHTML += 'Retour - Klaar om op te halen';
+        break;
+      case 11:
+        status.innerHTML += 'Retour - Opgehaald';
+        break;
+      case 12:
+        status.innerHTML += 'Uitgeprint - Brief';
+        break;
+      case 13:
+        status.innerHTML += 'Inactief - Gecrediteerd';
+        break;
+      case 14:
+        status.innerHTML += 'Uitgeprint - Digitale postzegel';
+        break;
+      case 30:
+        status.innerHTML += 'Inactief - Concept';
+        break;
+      case 31:
+        status.innerHTML += 'Inactief - Geregistreerd';
+        break;
+      case 32:
+        status.innerHTML += 'Inactief - Afgeleverd aan Postdienst';
+        break;
+      case 33:
+        status.innerHTML += 'Inactief - Wordt gesorteerd';
+        break;
+      case 34:
+        status.innerHTML += 'Inactief - In distributie';
+        break;
+      case 35:
+        status.innerHTML += 'Inactief - Bij douane';
+        break;
+      case 36:
+        status.innerHTML += 'Inactief - Afgeleverd aan ontvanger';
+        break;
+      case 37:
+        status.innerHTML += 'Inactief - Klaar om op te halen ';
+        break;
+      case 38:
+        status.innerHTML += 'Inactief - Afgeleverd en Opgehaald ';
+        break;
+      case 99:
+        status.innerHTML += 'Inactief - Onbekend';
         break;
       default:
         status.innerHTML += 'Kon status niet ophalen';
@@ -904,7 +997,7 @@ class Shipment {
 
     let buttons = document.createElement('td');
     if(!this.isBackup){
-      buttons.innerHTML = `<span><a id='print${this.id}'><i class='fas fa-file-pdf fa-lg'></i>${(this.status == 1) ? `<a onclick='deleteShipment(${this.id})'><i class='fas fa-trash fa-lg' style='color: red'></i></a>` : ''}</span>`;
+      buttons.innerHTML = `<span><a id='print${this.id}'><i class='fas fa-file-pdf fa-lg'></i>${(this.status == 1) ? `<a onclick='document.getElementById("popupdeleteshipment").classList.add("visible"); document.getElementById("popupdeleteshipment").onclick = function() {deleteShipment(${this.id}); document.getElementById("popupdeleteshipment").classList.remove("visible")};'><i class='fas fa-trash fa-lg' style='color: red'></i></a>` : ''}</span>`;
     }
 
     this.row.append(type, status, kenmerk, barcode, name, adres, contact, datum, buttons);

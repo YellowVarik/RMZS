@@ -42,9 +42,28 @@
             <li class='filterOption'><a onclick='filter("Status", "Status", this)'>-</a></li>
             <li class='filterOption'><a onclick='filter("Status", 1, this)'>Concept</a></li>
             <li class='filterOption'><a onclick='filter("Status", 2, this)'>Voorgemeld</a></li>
-            <li class='filterOption'><a onclick='filter("Status", 3, this)'>Onderweg</a></li>
-            <li class='filterOption'><a onclick='filter("Status", 4, this)'>Afgeleverd</a></li>
-            <li class='filterOption'><a onclick='filter("Status", 5, this)'>Retour</a></li>
+            <li class='filterOption'><a onclick='filter("Status", 3, this)'>Afgeleverd aan Postdienst</a></li>
+            <li class='filterOption'><a onclick='filter("Status", 4, this)'>Wordt gesorteerd</a></li>
+            <li class='filterOption'><a onclick='filter("Status", 5, this)'>In distributie</a></li>
+            <li class='filterOption'><a onclick='filter("Status", 6, this)'>Bij douane</a></li>
+            <li class='filterOption'><a onclick='filter("Status", 7, this)'>Afgeleverd aan ontvanger</a></li>
+            <li class='filterOption'><a onclick='filter("Status", 8, this)'>Klaar om op te halen</a></li>
+            <li class='filterOption'><a onclick='filter("Status", 9, this)'>Afgeleverd en opgehaald</a></li>
+            <li class='filterOption'><a onclick='filter("Status", 10, this)'>Retour - Klaar om op te halen</a></li>
+            <li class='filterOption'><a onclick='filter("Status", 11, this)'>Retour - Opgehaald</a></li>
+            <li class='filterOption'><a onclick='filter("Status", 12, this)'>Uitgeprint - Brief</a></li>
+            <li class='filterOption'><a onclick='filter("Status", 13, this)'>Inactief - Gecrediteerd</a></li>
+            <li class='filterOption'><a onclick='filter("Status", 14, this)'>Uitgeprint - Digitale postzegel</a></li>
+            <li class='filterOption'><a onclick='filter("Status", 30, this)'>Inactief - Concept</a></li>
+            <li class='filterOption'><a onclick='filter("Status", 31, this)'>Inactief - Geregistreerd</a></li>
+            <li class='filterOption'><a onclick='filter("Status", 32, this)'>Inactief - Afgeleverd aan Postdienst</a></li>
+            <li class='filterOption'><a onclick='filter("Status", 33, this)'>Inactief - Wordt gesorteerd</a></li>
+            <li class='filterOption'><a onclick='filter("Status", 34, this)'>Inactief - In distributie</a></li>
+            <li class='filterOption'><a onclick='filter("Status", 35, this)'>Inactief - Bij douane</a></li>
+            <li class='filterOption'><a onclick='filter("Status", 36, this)'>Inactief - Afgeleverd aan ontvanger</a></li>
+            <li class='filterOption'><a onclick='filter("Status", 37, this)'>Inactief - Klaar om op te halen</a></li>
+            <li class='filterOption'><a onclick='filter("Status", 38, this)'>Inactief - Afgeleverd en Opgehaald</a></li>
+            <li class='filterOption'><a onclick='filter("Status", 99, this)'>Inactief - Onbekend</a></li>
           </ul>
         </div>
 
@@ -142,6 +161,21 @@
         <button class="ja" onclick='window.location.href="./index.html";localStorage.clear();'
           style="background: green; width: 50%; margin: 2%;">Ja</button>
         <button class="nee" onclick="document.getElementById('popuplogout').classList.remove('visible')"
+          style="background: red; width: 50%; margin: 2%;">Nee</button>
+      </div>
+      <div class="content">
+      </div>
+    </div>
+  </div>
+
+  <div id="popupdeleteshipment" class="overlay">
+    <div class="popup" style="text-align: center;">
+      <h2>Zending Verwijderen</h2>
+      <p><b>Weet u zeker dat u deze zending wilt verwijderen?</b></p>
+      <div style="display: flex;">
+        <button class="ja" 
+          style="background: green; width: 50%; margin: 2%;">Ja</button>
+        <button class="nee" onclick="document.getElementById('popupdeleteshipment').classList.remove('visible')"
           style="background: red; width: 50%; margin: 2%;">Nee</button>
       </div>
       <div class="content">
