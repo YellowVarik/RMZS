@@ -997,7 +997,7 @@ class Shipment {
 
     let buttons = document.createElement('td');
     if(!this.isBackup){
-      buttons.innerHTML = `<span><a id='print${this.id}'><i class='fas fa-file-pdf fa-lg'></i>${(this.status == 1) ? `<a onclick='document.getElementById("popupdeleteshipment").classList.add("visible"); document.getElementById("popupdeleteshipment").onclick = function() {deleteShipment(${this.id}); document.getElementById("popupdeleteshipment").classList.remove("visible")};'><i class='fas fa-trash fa-lg' style='color: red'></i></a>` : ''}</span>`;
+      buttons.innerHTML = `<span><a id='print${this.id}'><i class='fas fa-file-pdf fa-lg'></i>${(this.status == 1) ? `<a onclick='document.getElementById("popupdeleteshipment").classList.add("visible"); document.getElementById("popupdeleteshipment").getElementsByClassName("ja")[0].onclick = function() {deleteShipment(${this.id}); document.getElementById("popupdeleteshipment").classList.remove("visible")};'><i class='fas fa-trash fa-lg' style='color: red'></i></a>` : ''}</span>`;
     }
 
     this.row.append(type, status, kenmerk, barcode, name, adres, contact, datum, buttons);
