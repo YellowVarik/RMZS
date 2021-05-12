@@ -34,7 +34,7 @@
     "@pdf-lib/fontkit": "0.0.4",
     "a-color-picker": "^1.2.1",
     "axios": "^0.21.1",
-    "chart.js": "^2.9.3",
+    "chart.js": "^2.9.4",
     "cryptr": "^6.0.1",
     "electron-context-menu": "^2.0.0",
     "electron-log": "^4.1.0",
